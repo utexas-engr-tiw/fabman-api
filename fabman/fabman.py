@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 """Main file for the Fabman API library.
 """
+
+#  TODO: Sanitize datetime inputs to ensure they are appropriate
+#  TODO: Check 429 responses for retry-after headers
+#  TODO: refactor accounts to not use **kwargs, instead giving all possible arguments as keyword arguments
 import sys
 import requests
 import logging
@@ -96,6 +100,8 @@ class Fabman:
         Returns:
             List of Dict: List of accounts matching the query.
         """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
         url_path = f'/accounts?limit={limit}&orderBy={orderBy}&order={order}'
         valid_kwargs = ['offset', 'embed', 'q',
                         'eq', 'trial', 'countryCode', 'deleted']
@@ -225,6 +231,8 @@ class Fabman:
         Returns:
             Union[Dict, List]: _description_
         """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
         url_path = f'/bookings?order={order}&limit={limit}&offset={offset}&summary={summary}'
         if state and state in ['pending', 'confirmed', 'cancelled']:
             url_path += f'&state={state}'
@@ -289,6 +297,8 @@ class Fabman:
         Returns:
             Union[Dict, List]: _description_
         """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
         url_path = f'/bookings/export?order={order}'
         if state and state in ['pending', 'confirmed', 'cancelled']:
             url_path += f'&state={state}'
@@ -324,3 +334,56 @@ class Fabman:
         """
         url_path = f'/bridge-commands/{id}&wait={wait}'
         return self.__get(url_path)
+    
+    def get_charges(self, account: Optional[str] = None, member: Optional[str] = None, limit: int = 50, offset: int = 0, 
+                    resourceLog: Optional[int] = None, booking: Optional[int] = None, onlyInvoiced: bool = True, 
+                    fromDateTime: Optional[str] = None, untilDateTime: Optional[str] = None, 
+                    order: str = 'asc') -> Union[Dict, List]:
+        """Get a list of charges from the Fabman API.
+
+        Args:
+            account (Optional[str], optional): Account number to be queried. Defaults to None.
+            member (Optional[str], optional): Member number who is being charged. Defaults to None.
+            limit (int, optional): number of charges to be returned. Defaults to 50.
+            offset (int, optional): Offset of the page. Can be used for pagination, but consumers should use the next 
+            page link provided by the API. Defaults to 0.
+            resourceLog (Optional[int], optional): ResourceLog to be queried. Defaults to None.
+            booking (Optional[int], optional): ID of booking to be charged. Defaults to None.
+            onlyInvoiced (bool, optional): Only return charges which have been invoiced. Defaults to True.
+            fromDateTime (Optional[str], optional): Start datetime of query. Defaults to None.
+            untilDateTime (Optional[str], optional): End datetime of query. Defaults to None.
+            order (str, optional): Order of results. Defaults to 'asc'.
+
+        Returns:
+            Union[Dict, List]: List of charges matching the query
+        """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
+        url_path = f'/charges?limit={limit}&offset={offset}&order={order}&onlyInvoiced={onlyInvoiced}'
+        if account:
+            url_path += f'&account={account}'
+        if member:
+            url_path += f'&member={member}'
+        if resourceLog:
+            url_path += f'&resourceLog={resourceLog}'
+        if booking:
+            url_path += f'&booking={booking}'
+        if fromDateTime: 
+            url_path += f'&fromDateTime={fromDateTime}'
+        if untilDateTime:
+            url_path += f'&untilDateTime={untilDateTime}'
+        return self.__get(url_path)
+        
+    def get_charge_by_id(self, id: int) -> Union[Dict, List]:
+        """Returns a single charge given an ID
+
+        Args:
+            id (int): ID of the charge to be queried
+
+        Returns:
+            Union[Dict, List]: Object describing the queried charge
+        """
+        url_path = f'/charges/{id}'
+        return self.__get(url_path)
+    
+    
