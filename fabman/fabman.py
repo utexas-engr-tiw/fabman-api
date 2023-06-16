@@ -396,4 +396,4 @@ class Fabman:
         """Returns List of currency abbreviations, names, and symbols for countries around the world.
         """
         url_path = '/currencies'
-        return self.get(url_path)
+        return self.__get(url_path)
