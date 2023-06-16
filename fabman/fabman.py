@@ -386,4 +386,14 @@ class Fabman:
         url_path = f'/charges/{id}'
         return self.__get(url_path)
     
+    def get_countries(self) -> Union[Dict, List]:
+        """Returns list of country codes and appropriate VAT settings where applicable.
+        """
+        url_path = '/countries'
+        return self.__get(url_path)
     
+    def get_currencies(self) -> Union[Dict, List]:
+        """Returns List of currency abbreviations, names, and symbols for countries around the world.
+        """
+        url_path = '/currencies'
+        return self.get(url_path)
