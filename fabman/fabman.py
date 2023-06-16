@@ -63,3 +63,6 @@ class Fabman:
         """
         return self.__api_token
     
+    def get_user_me(self) -> str:
+        return self.__get('/user/me')
+    
