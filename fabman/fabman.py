@@ -41,6 +41,8 @@ class Fabman:
             return response.json()
         elif response.status_code == 401:
             raise Exception('Invalid API token')
+        elif response.status_code == 403:
+            raise Exception('Insufficient permissions')
         elif response.status_code == 404:
             raise Exception('Not found')
         elif response.status_code == 429:
@@ -60,6 +62,8 @@ class Fabman:
             return response.json()
         elif response.status_code == 401:
             raise Exception('Invalid API token')
+        elif response.status_code == 403:
+            raise Exception('Insufficient permissions')
         elif response.status_code == 404:
             raise Exception('Not found')
         elif response.status_code == 429:
