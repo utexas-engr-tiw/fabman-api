@@ -311,3 +311,16 @@ class Fabman:
         if untilDateTime:
             url_path += f'&untilDateTime={untilDateTime}'
         return self.__get(url_path)
+    
+    def get_bridge_commands(self, id: int, wait: bool = False) -> Union[Dict, List]:
+        """Get a list of bridge commands for the provided ID.
+
+        Args:
+            id (int): ID of the bridge to query
+            wait (bool, optional): Wait for an update on the command before returning. Defaults to False.
+
+        Returns:
+            Union[Dict, List]: Returns a list of commands for the bridge
+        """
+        url_path = f'/bridge-commands/{id}&wait={wait}'
+        return self.__get(url_path)
