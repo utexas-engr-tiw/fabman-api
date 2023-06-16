@@ -279,10 +279,10 @@ class Fabman:
 
         return self.__get(url_path)
 
-    def get_bookings_export(self, account: Optional[str] = None, space: Optional[str] = None, 
-                            resource: Optional[str] = None, member: Optional[str] = None, 
-                            fromDateTime: Optional[str] = None, untilDateTime: Optional[str] = None, 
-                            state: Optional[str] = None, resolve: Optional[str] = None, 
+    def get_bookings_export(self, account: Optional[str] = None, space: Optional[str] = None,
+                            resource: Optional[str] = None, member: Optional[str] = None,
+                            fromDateTime: Optional[str] = None, untilDateTime: Optional[str] = None,
+                            state: Optional[str] = None, resolve: Optional[str] = None,
                             order: str = 'desc') -> Union[Dict, List, str]:
         """Returns a download link for a CSV document containing the information of _all_ bookings matching the query.
 
@@ -325,7 +325,7 @@ class Fabman:
         if untilDateTime:
             url_path += f'&untilDateTime={untilDateTime}'
         return self.__get(url_path)
-    
+
     def get_bridge_commands(self, id: int, wait: bool = False) -> Union[Dict, List]:
         """Get a list of bridge commands for the provided ID.
 
@@ -338,10 +338,10 @@ class Fabman:
         """
         url_path = f'/bridge-commands/{id}&wait={wait}'
         return self.__get(url_path)
-    
-    def get_charges(self, account: Optional[str] = None, member: Optional[str] = None, limit: int = 50, offset: int = 0, 
-                    resourceLog: Optional[int] = None, booking: Optional[int] = None, onlyInvoiced: bool = True, 
-                    fromDateTime: Optional[str] = None, untilDateTime: Optional[str] = None, 
+
+    def get_charges(self, account: Optional[str] = None, member: Optional[str] = None, limit: int = 50, offset: int = 0,
+                    resourceLog: Optional[int] = None, booking: Optional[int] = None, onlyInvoiced: bool = True,
+                    fromDateTime: Optional[str] = None, untilDateTime: Optional[str] = None,
                     order: str = 'asc') -> Union[Dict, List]:
         """Get a list of charges from the Fabman API.
 
@@ -372,12 +372,12 @@ class Fabman:
             url_path += f'&resourceLog={resourceLog}'
         if booking:
             url_path += f'&booking={booking}'
-        if fromDateTime: 
+        if fromDateTime:
             url_path += f'&fromDateTime={fromDateTime}'
         if untilDateTime:
             url_path += f'&untilDateTime={untilDateTime}'
         return self.__get(url_path)
-        
+
     def get_charge_by_id(self, id: int) -> Union[Dict, List]:
         """Returns a single charge given an ID
 
@@ -389,15 +389,46 @@ class Fabman:
         """
         url_path = f'/charges/{id}'
         return self.__get(url_path)
-    
+
     def get_countries(self) -> Union[Dict, List]:
         """Returns list of country codes and appropriate VAT settings where applicable.
         """
         url_path = '/countries'
         return self.__get(url_path)
-    
+
     def get_currencies(self) -> Union[Dict, List]:
         """Returns List of currency abbreviations, names, and symbols for countries around the world.
         """
         url_path = '/currencies'
+        return self.__get(url_path)
+
+    def get_firmwares(self, limit: int = 50, offset: Optional[int] = None) -> Union[Dict, List]:
+        """Returns a list of firmwares
+
+        Args:
+            limit (int, optional): Number of firmwares to return. Defaults to 50.
+            offset (int, optional): Offset of the page. Defaults to 0.
+
+        Returns:
+            Union[Dict, List]: List of firmwares
+        """
+        
+        url_path = f'/firmwares?limit={limit}'
+        if offset and offset >= 0:
+            url_path += f'&offset={offset}'
+        elif offset:
+            raise KeyError("Offset must be positive!")
+        return self.__get(url_path)
+    
+    def get_firmware_by_id(self, id: int) -> Union[Dict, List]:
+        """Return information about a single firmware
+
+        Args:
+            id (int): ID of the firmware being queried
+
+        Returns:
+            Union[Dict, List]: Dictionary of firmware information
+        """
+        
+        url_path = f'/firmwares/{id}'
         return self.__get(url_path)
