@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""This file creates a model for resoure-logs objects from the Fabman API.
+"""This file creates a model for resource-logs objects from the Fabman API.
     
-    According the the Fabman API documentation, a resour-logs object has the following attributes:
+    According the the Fabman API documentation, a resource-logs object has the following attributes:
     Log record {
         id*	integer
             minimum: -2147483648
