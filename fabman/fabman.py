@@ -5,6 +5,8 @@
 #  TODO: Sanitize datetime inputs to ensure they are appropriate
 #  TODO: Check 429 responses for retry-after headers
 #  TODO: refactor accounts to not use **kwargs, instead giving all possible arguments as keyword arguments
+#  TODO: better implement fields such as state which can be provided as a list and have multiple values
+#  TODO: check automatic boolean values.
 import sys
 import requests
 import logging
@@ -432,3 +434,200 @@ class Fabman:
         
         url_path = f'/firmwares/{id}'
         return self.__get(url_path)
+    
+    def get_invoices(self, account: Optional[int] = None, member: Optional[int] = None, fromDate: Optional[str] = None, 
+                     untilDate: Optional[str] = None, state: Optional[List[str]] = None, balanced: Optional[bool] = None, 
+                     q: Optional[str] = None, resolve: Optional[List[str]] = None, orderBy: str = 'date', 
+                     order: str = 'desc', limit: int = 50, offset: int = 0, summary: bool = False) -> Union[Dict, List]:
+        """Returns a list of invoices matching the query.
+
+        Args:
+            account (Optional[int], optional): Account number issuing the invoices. Defaults to None.
+            member (Optional[int], optional): Member id number who owes the invoice. Defaults to None.
+            fromDate (Optional[str], optional): Start date of search. Defaults to None.
+            untilDate (Optional[str], optional): End date of search. Defaults to None.
+            state (Optional[List[str]], optional): State of the invoice, multiple values are possible. Should be a list 
+            of of the following possible states: unpaid, pending, processing, paid, or cancelled. Defaults to None.
+            balanced (Optional[bool], optional): Se to false to fetch only invoices where paid != totalPayable. Defaults to None.
+            q (Optional[str], optional): Search string to search notes or other information on the invoice. Defaults to None.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Current only 
+            valid value is member. Defaults to None.
+            orderBy (str, optional): How to order the return list. Defaults to 'date'.
+            order (str, optional): Return list in descending or ascending order. Defaults to 'desc'.
+            limit (int, optional): Number of items returned in the list. Defaults to 50.
+            offset (int, optional): Offset within the returned list. Defaults to 0.
+            summary (bool, optional): Add headers with summary information about the found records. Defaults to False.
+
+        Returns:
+            Union[Dict, List]: List of invoice details matching the query.
+        """
+        
+        url_path = f'/invoices?limit={limit}&offset={offset}&orderBy={orderBy}&order={order}&summary={str(summary).lower()}'
+        if account:
+            url_path += f'&account={account}'
+        if member:
+            url_path += f'&member={member}'
+        if fromDate:
+            url_path += f'&fromDate={fromDate}'
+        if untilDate:
+            url_path += f'$untilDate={untilDate}'
+        if state:
+            for st in state:
+                if st not in ['unpaid', 'pending', 'processing', 'paid', 'cancelled']:
+                    raise KeyError(st)
+                url_path += f'&state={st}'
+        if balanced is not None:
+            url_path += f'&balanced={str(balanced).lower()}'
+        if q:
+            url_path += f'&q={q}'
+        if resolve:
+            for res in resolve:
+                if res not in ['member']:
+                    raise KeyError(res)
+                url_path += f'&resolve={res}'
+        return self.__get(url_path)
+    
+    def get_invoice_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[Dict, List]:
+        """Returns details about a specific invoice
+
+        Args:
+            id (int): Invoice ID to be queries
+            embed (Optional[List[str]], optional): List which allows embedding related entities to reduce the number of 
+            requests needed. Can be any combination of details, member, payments, and cancelledInvoice. Defaults to None.
+
+        Returns:
+            Union[Dict, List]: Dictionary of invoice.
+        """
+        url_path = f'/invoices/{id}'
+        if embed:
+            for em in embed:
+                if em not in ['member', 'details', 'payments', 'cancelledInvoice']:
+                    raise KeyError(em)
+                url_path += f'?embed={em}'
+            
+        return self.__get(url_path)
+                
+    def get_invoice_details_by_id(self, id: int) -> Union[Dict, List]:
+        """Returns details of particular invoice ID
+
+        Args:
+            id (int): Id of invoice to be queried
+
+        Returns:
+            Union[Dict, List]: Dictionary of invoice details
+        """
+        url_path = f'/invoices/{id}/details'
+        return self.__get(url_path)
+    
+    def get_invoices_export(self, account: Optional[int] = None, member: Optional[int] = None, 
+                            fromDate: Optional[str] = None, untilDate: Optional[str] = None, state: Optional[List[str]] = None, 
+                            balanced: Optional[bool] = None, q: Optional[str] = None, resolve: Optional[List[str]] = None, 
+                            orderBy: str = 'date', order: str = 'desc') -> Union[Dict, List]:
+        """Returns a download link for invoice information matching the query in a CSV format.
+
+        Args:
+            account (Optional[int], optional): Account number issuing the invoices. Defaults to None.
+            member (Optional[int], optional): Member id number who owes the invoice. Defaults to None.
+            fromDate (Optional[str], optional): Start date of search. Defaults to None.
+            untilDate (Optional[str], optional): End date of search. Defaults to None.
+            state (Optional[List[str]], optional): State of the invoice, multiple values are possible. Should be a list 
+            of of the following possible states: unpaid, pending, processing, paid, or cancelled. Defaults to None.
+            balanced (Optional[bool], optional): Se to false to fetch only invoices where paid != totalPayable. Defaults to None.
+            q (Optional[str], optional): Search string to search notes or other information on the invoice. Defaults to None.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Current only 
+            valid value is member. Defaults to None.
+            orderBy (str, optional): How to order the return list. Defaults to 'date'.
+            order (str, optional): Return list in descending or ascending order. Defaults to 'desc'.
+
+        Returns:
+            Union[Dict, List]: Download link for CSV file
+        """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
+        if orderBy not in ['number', 'date', 'totalWithFees', 'state']:
+            raise KeyError(orderBy)
+        url_path = f"/invoices/export?orderBy={orderBy}&order={order}"
+        if account:
+            url_path += f'&account={account}'
+        if member:
+            url_path += f'&member={member}'
+        if fromDate:
+            url_path += f'&fromDate={fromDate}'
+        if untilDate:
+            url_path += f'$untilDate={untilDate}'
+        if state:
+            for st in state:
+                if st not in ['unpaid', 'pending', 'processing', 'paid', 'cancelled']:
+                    raise KeyError(st)
+                url_path += f'&state={st}'
+        if balanced is not None:
+            url_path += f'&balanced={str(balanced).lower()}'
+        if q:
+            url_path += f'&q={q}'
+        if resolve:
+            for res in resolve:
+                if res not in ['member']:
+                    raise KeyError(res)
+                url_path += f'&resolve={res}'
+        return self.__get(url_path)
+        
+    def get_jobs(self, limit: int = 50, offset: int = None, account: Optional[int] = None, type: Optional[str] = None, 
+                 state: Optional[Union[List[str], str]] = None) -> Union[List, Dict]:
+        """Returns list of jobs matching the query parameters.
+
+        Args:
+            limit (int, optional): Number of jobs to return. Defaults to 50.
+            offset (int, optional): Offset within the returned list of jobs. Defaults to None.
+            account (Optional[int], optional): Account number of the space. Defaults to None.
+            type (Optional[str], optional): Type of job to be returned. Can be either 'invoices' or 'payments'. Defaults to None.
+            state (Optional[List[str]], optional): State of jobs to be returned. Can be any combination of pending, done, or failed. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: _description_
+        """
+        if type and type not in ['invoices', 'payments']:
+            raise KeyError(type)
+        if state and isinstance(state, list):
+            for st in state:
+                if st not in ['pending', 'done', 'failed']:
+                    raise KeyError(st)
+        elif state and isinstance(state, str):
+            if state not in ['pending', 'done', 'failed']:
+                raise KeyError(state)
+        
+        url_path = f'/jobs?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if account:
+            url_path += f'&account={account}'
+        if type:
+            url_path += f'&type={type}'
+        if state and isinstance(state, list):
+            for st in state:
+                url_path += f'&state={st}'
+        elif state and isinstance(state, str):
+            url_path += f'&state={state}'
+        
+        return self.__get(url_path)
+        
+    def get_job_by_id(self, id: int, wait: bool = False) -> Union[List, Dict]:
+        """Returns information of a single job given an ID.
+
+        Args:
+            id (int): ID of the job to be queried
+            wait (bool, optional): Wait for an update on the job before returning. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Information about a particular job
+        """
+        if not isinstance(wait, bool):
+            raise TypeError(wait)
+        url_path = f'/jobs/{id}?wait={wait}'
+        return self.__get(url_path)
+        
+    def get_locales(self) -> Union[List, Dict]:
+        """Returns a list of locales recognized by Fabman.
+        """
+        url_path = '/locales'
+        return self.__get(url_path)
+    
