@@ -31,10 +31,12 @@ class Fabman:
     """Main Fabman class. All interaction with the library should be done through this class.
     """
 
+    
     def __init__(self, api_token: str) -> None:
         self.__api_token: str = api_token
         self.__base_url: str = 'https://fabman.io/api/v1'
 
+    ##  Begin Helper Functions
     def __get(self, path, params=None) -> Union[Dict, List]:
         """Performs a GET request to the Fabman API.
         """
@@ -100,6 +102,8 @@ class Fabman:
         else:
             raise KeyError(f'{provided} is not a valid value for {arg_name}')
 
+    ##  End Helper Functions
+    ##  Begin API GET Functions
     def get_api_token(self) -> Union[AnyStr, str, None]:
         """Returns the API token.
         """
@@ -1435,3 +1439,336 @@ class Fabman:
             url_path += f'&offset={offset}'
         
         return self.__get(url_path)
+    
+    ## End GET methods
+    ## Begin POST methods
+    def create_api_key(self, label: str, member: int) -> Union[List, Dict]:
+        """Creates a new API key for the member ID with a specified label. Returns information about the new API key. 
+        The token can be retrieved by the `get_api_token()` method.
+
+        Args:
+            label (str): Label for the new api token
+            member (int): Member ID who will be associated with the new token
+
+        Returns:
+            Union[List, Dict]: Information about the new api key.
+        """
+        data = {
+            "label": label,
+            "member": member
+        }
+        
+        url_path = "/api-keys"
+        return self.__post(url_path, data=data)
+    
+    def create_booking(self, resource: int, member: str, fromDateTime: str, untilDateTime: str, 
+                       state: str = 'confirmed', ignoreMemberRestrictions: bool = False) -> Union[List, Dict]:
+        """Creates a new booking for a member. Returns information about the new booking assuming the booking
+        went through fine.
+
+        Args:
+            resource (int): Resource to be booked
+            member (str): Member ID booking the resource
+            fromDateTime (str): Start of the booking interval
+            untilDateTime (str): End of the booking interval
+            state (str, optional): State of the booking. Can be one of pending, confirmed, or cancelled. Defaults to 'confirmed'.
+            ignoreMemberRestrictions (bool, optional): If you book as an admin for other members, you can opt to ignore 
+            booking restrictions such as "this resource cannot be booked", booking windows, booking time limits, etc.
+            Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Confirmation information of the booking
+        """
+        if state not in ['confirmed', 'peding', 'cancelled']:
+            raise KeyError(state)
+        
+        data = {
+            "resource": resource,
+            "member": member,
+            "fromDateTime": fromDateTime,
+            "untilDateTime": untilDateTime,
+            "state": state,
+            "ignoreMemberRestrictions": ignoreMemberRestrictions
+        }
+        url_path = "/bookings"
+        return self.__post(url_path, data=data)
+    
+    # TODO: bridge endpoints? 
+    def create_charges(self, member: int, description: str, price: float, dateTime: Optional[str] = None, 
+                       details: Optional[str] = None, taxPercent: Optional[float] = None, resourceLog: Optional[int] = None, 
+                       booking: Optional[int] = None) -> Union[List, Dict]:
+        """Create a new charge for a member. Returns information about the new charge assuming the charge went through fine.
+
+        Args:
+            member (int): ID of the member to be charged
+            description (str): brief description of the charge, limit to 255 characters
+            price (float): Amount of the charge
+            taxPercent (Optional[float]): Tax percentage of the charge.
+            dateTime (Optional[str], optional): DateTime of the charge. Defaults to None.
+            details (Optional[str], optional): Extended details of the charge, no limit on length. Defaults to None.
+            resourceLog (Optional[int], optional): Resource Log id to be associated with the charge. Defaults to None.
+            booking (Optional[int], optional): Booking ID to be associated with the charge. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Information about the new charge
+        """
+        
+        if len(description) > 255:
+            description = description[:255]
+        
+        data = {
+            "member": member,
+            "description": description,
+            "price": price
+        }
+        
+        if taxPercent:
+            data['taxPercent'] = taxPercent
+        if dateTime:
+            data['dateTime'] = dateTime
+        if details:
+            data['details'] = details
+        if resourceLog:
+            data['resourceLog'] = resourceLog
+        if booking:
+            data['booking'] = booking
+            
+        url_path = "/charges"
+        return self.__post(url_path, data=data)
+    
+    def create_invoice(self, member: int, date: str, number: Optional[str] = None, text: Optional[str] = None, 
+                       charges: Optional[List[int]] = None, dueDate: Optional[str] = None, 
+                       dunningFee: Optional[float] = None, discount: Optional[float] = None, notes: Optional[str] = None, 
+                       applyOpenPayments: Optional[bool] = True) -> Union[List, Dict]:
+        """Creates a New Invoice
+
+        Args:
+            member (int): ID for the member to be invoiced
+            date (str): Date the invoice is published
+            number (Optional[str], optional): Invoice number. Should be left empty to auto-generate the next invoice 
+            number. Only provide a number if you want to bypass the automatic invoice number generator. Defaults to None.
+            text (Optional[str], optional): Invoice Text. Defaults to None.
+            charges (Optional[List[int]], optional): List of charges to be associated with the invoice. If provided, 
+            must be a list of at least one item. Defaults to None.
+            dueDate (Optional[str], optional): Due date of the invoice. Defaults to None.
+            dunningFee (Optional[float], optional): Dunning Fee. Defaults to None.
+            discount (Optional[float], optional): Any discoutn applied to the invoice. Defaults to None.
+            notes (Optional[str], optional): Additional notes on the invoice. Defaults to None.
+            applyOpenPayments (Optional[bool], optional): Apply any open payments from the member. Defaults to True on 
+            the api if not supplied.
+
+        Returns:
+            Union[List, Dict]: Invoice information
+        """
+        
+        url_path = "/invoices"
+        data = {
+            "member": member,
+            "date": date,
+            "applyOpenPayments": applyOpenPayments
+        }
+        if number:
+            data['number'] = number
+        if text:
+            data['text'] = text
+        if charges:
+            data['charges'] = charges
+        if dueDate:
+            data['dueDate'] = dueDate
+        if dunningFee:
+            data['dunningFee'] = dunningFee
+        if discount:
+            data['discount'] = discount
+        if notes:
+            data['notes'] = notes
+        
+        return self.__post(url_path, data=data)
+    
+    def create_invoice_preview(self, member: int, charges: Optional[List[int]] = None) -> Union[List, Dict]:
+        """Create an invoice preview for a given member
+
+        Args:
+            member (int): ID for member to create invoice
+            charges (Optional[List[int]], optional): Optional list of charges to be included. If provided must be a list of at least size 1. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Returns an invoice preview
+        """
+        url_path = "/invoices/preview"
+        data = {
+            "member": member
+        }
+        if charges:
+            data['charges'] = charges
+        
+        return self.__post(url_path, data=data)
+    
+    def create_key_assignments(self, member: int) -> Union[List, Dict]:
+        """Creates a key assignment
+
+        Args:
+            member (int): ID for the member to assign a key
+
+        Returns:
+            Union[List, Dict]: Key assignment created upon success
+        """
+        
+        url_path = "/key-assignments"
+        data = {
+            "member": member
+        }
+        
+        return self.__post(url_path, data=data)
+    
+    def create_member(self, account: int, space: Optional[int] = None, memberNumber: Optional[int] = None, 
+                      gender: Optional[str] = None, dateOfBirth: Optional[str] = None, emailAddress: Optional[str] = None,
+                      company: Optional[str] = None, phone: Optional[str] = None, address: Optional[str] = None, 
+                      address2: Optional[str] = None, city: Optional[str] = None, zip: Optional[str] = None, 
+                      countryCode: Optional[str] = None, region: Optional[str] = None, notes: Optional[str] = None,
+                      billingFirstName: Optional[str] = None, billingLastName: Optional[str] = None, billingCompany: Optional[str] = None,
+                      billingAddress: Optional[str] = None, billingAddress2: Optional[str] = None, billingCity: Optional[str] = None,
+                      billingZip: Optional[str] = None, billingCountryCode: Optional[str] = None, billingRegion: Optional[str] = None,
+                      billingInvoiceText: Optional[str] = None, paidForBy: Optional[int] = None, 
+                      metadata: Optional[Dict] = None, stripeCustomer: Optional[int] = None, language: Optional[str] = None, 
+                      createdAt: Optional[str] = None, firstName: Optional[str] = None, lastName: Optional[str] = None,
+                      state: Optional[str] = None, taxExempt: Optional[bool] = None, hasBillingAddress: bool = False, 
+                      requireUpFrontPayment: bool = False, upFrontMinimumBalance: Optional[float] = None) -> Union[List, Dict]:
+        """Creates a new member given the parameters.
+
+        Args:
+            account (int): Account for the member to belong to. This is required and not assumed from the API key in use.
+            space (Optional[int], optional): Space the member is a part of. Required if the account has more than one space. Defaults to None.
+            memberNumber (Optional[int], optional): Override member numbering system. Not recommended. Defaults to None.
+            gender (Optional[str], optional): Member's gender. Can be one of male, female, or other. Defaults to None.
+            dateOfBirth (Optional[str], optional): Date of birth of the user. Defaults to None.
+            emailAddress (Optional[str], optional): Member's email address. Defaults to None.
+            company (Optional[str], optional): Member's company. Defaults to None.
+            phone (Optional[str], optional): Member's phone number. Defaults to None.
+            address (Optional[str], optional): Member's address. Defaults to None.
+            address2 (Optional[str], optional): Member's second address line for apartment, po box, etc. Defaults to None.
+            city (Optional[str], optional): Member's City. Defaults to None.
+            zip (Optional[str], optional): Member's Zip Code. Defaults to None.
+            countryCode (Optional[str], optional): Member's Country Code. Use `get_country_codes()` for available country codes . Defaults to None.
+            region (Optional[str], optional): Regional information. Defaults to None.
+            notes (Optional[str], optional): Notes about the member. No space limitation. Defaults to None.
+            billingFirstName (Optional[str], optional): Billing First name if different from the member name. Defaults to None.
+            billingLastName (Optional[str], optional): Billing last name if different from member name. Defaults to None.
+            billingCompany (Optional[str], optional): Billing company if different from the company. Defaults to None.
+            billingAddress (Optional[str], optional): Billing address. Defaults to None.
+            billingAddress2 (Optional[str], optional): Billing address second line. Defaults to None.
+            billingCity (Optional[str], optional): Billing city. Defaults to None.
+            billingZip (Optional[str], optional): Billing zip code. Defaults to None.
+            billingCountryCode (Optional[str], optional): Billing country code. Defaults to None.
+            billingRegion (Optional[str], optional): Billing region. Defaults to None.
+            billingInvoiceText (Optional[str], optional): Text to be included on the billing invoice. Defaults to None.
+            paidForBy (Optional[int], optional): Member ID of other member who pays for this member. Defaults to None.
+            metadata (Optional[Dict], optional): Any JSON object with up to 2k of Data. Not checked by this interface. Defaults to None.
+            stripeCustomer (Optional[int], optional): Stripe Customer ID. Defaults to None.
+            language (Optional[str], optional): Member's native language. Defaults to None.
+            createdAt (Optional[str], optional): Overrides the createdAt datetime. Not recommended. Defaults to None.
+            firstName (Optional[str], optional): Member's First Name. Defaults to None.
+            lastName (Optional[str], optional): Member's last name. Defaults to None.
+            state (Optional[str], optional): State of the user's access. Must be one of active or locked. Defaults to 
+            None, which fills in 'active' in the database
+            taxExempt (Optional[bool], optional): Flag to declare the member tax exempt. Defaults to None.
+            hasBillingAddress (bool, optional): Does the member have a billing address?. Defaults to False.
+            requireUpFrontPayment (bool, optional): Required up front payment from Member. Defaults to False.
+            upFrontMinimumBalance (Optional[float], optional): Establish a minimum balance for Member. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Newly created member object
+        """
+        
+        args = locals()
+        data = dict()
+        for k, v in args.items():
+            if k == 'gender' and v not in ['female', 'male', 'other', None]:
+                raise KeyError("Gender must be one of female, male, or other. Or you could not specify it cause it doesn't matter.")
+            if k == 'state' and v not in ['active', 'locked', None]:
+                raise KeyError("State must be one of active or locked.")
+            if v is not None:
+                data[k] = v
+        url_path = "/members"
+        
+        return self.__post(url_path, data=data)
+    
+    def create_member_credit(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_member_invitation(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_member_key(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_member_training(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_member_collections(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_member_by_impoty(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def convert_member_uninvoinced_charges_to_invoice(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_packages(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_package_credits(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_package_permissions(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_payment(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_payment_request(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_payment_intent(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_resource_log(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_resource_type(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_resource(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_resource_switch_on_event(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_space(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_space_holiday(self)
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_training_course(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_user_verification(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_user_login(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_user_logout(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_user_password_reset_email(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_user(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_webhook(self):
+        raise NotImplementedError("This method is not yet implemented.")
+    
+    def create_webhook_test(self):
+        raise NotImplementedError("This method is not yet implemented.")
