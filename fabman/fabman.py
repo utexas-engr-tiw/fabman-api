@@ -115,36 +115,48 @@ class Fabman:
         """
         return self.__get('/user/me')
 
-    def get_accounts(self, limit=50, orderBy='name', order='asc', **kwargs) -> Union[Dict, List]:
-        """Returns a list of accounts
-
+    def get_accounts(self, limit: int = 50, offset: Optional[int] = None, embed: Optional[List[str]] = None, 
+                     q: str = None, eq: str = None, trial: Optional[bool] = None, countryCode: Optional[str] = None, 
+                     orderBy: str = 'name', order: str = 'asc', deleted: Optional[bool] = None) -> Union[Dict, List]:
+        """Returns a list of accounts matching the query parameters.
+        
         Args:
-            limit (int, optional): Numberof accounts to return. Defaults to 50.
-            orderBy (str, optional): Field to order by. Can be 'name', 'id', 'plan', 'createdAt', 'trialEndDate'. 
-            Defaults to 'name'.
-            order (str, optional): Order ascending or descending. Defaults to 'asc'.
-            **kwargs: Additional arguments to filter the results. Valid arguments are 'offset', 'embed', 'q', 'eq', 
-            'trial', 'countryCode', 'deleted'. Refer to the fabman API documentation for more information.
-
-        Raises:
-            KeyError: Raised when an incorrect value has been passed to one of the keyword arguments.
-        Returns:
-            List of Dict: List of accounts matching the query.
+            limit (int, optional): Number of accounts to return. Defaults to 50.
+            offset (Optional[int], optional): Offset of the page. Defaults to None.
+            embed (Optional[List[str]], optional): Embed additional information in the returned information. Only valid
+            argument is spaces. Defaults to None
+            q (str, optional): Search string to search notes or other information on the account. Defaults to None.
+            eq (str, optional): Extended search string to search notes or other information on the account. Includes 
+            fields from Admin and Owner members. Defaults to None.
+            trial: Return only accounts in trial or not in trial (omit for both). Defaults to None
+            countryCode: Return only accounts in a specific country. Default is None
+            orderBy (str, optional): How to order the return list. Valid options are id, name, plan, createdAt, or 
+            trialEndDate. Defaults to 'name'.
+            order (str, optional): Return list in descending or ascending order. Defaults to 'asc'.
+            deleted (Optional[bool], optional): Return only deleted or not deleted accounts. Defaults to None.
+            
+        Returns
+            Union[Dict, List]: _description_
         """
-        if order not in ['asc', 'desc']:
+        embeds = ['spaces']
+        if order not in ORDERS:
             raise KeyError(order)
         url_path = f'/accounts?limit={limit}&orderBy={orderBy}&order={order}'
-        valid_kwargs = ['offset', 'embed', 'q',
-                        'eq', 'trial', 'countryCode', 'deleted']
-        if orderBy not in ['name', 'id', 'plan', 'createdAt', 'trialEndDate']:
-            raise KeyError(orderBy)
-        args = ''
-        for key in kwargs:
-            if key not in valid_kwargs:
-                raise KeyError(key)
-            if key == 'embed' and kwargs[key] != 'spaces':
-                raise KeyError(kwargs[key])
-            args += f"&key={kwargs[key]}"
+        if offset:
+            url_path += f'&offset={offset}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        if q:
+            url_path += f'&q={q}'
+        if eq:
+            url_path += f'&eq={eq}'
+        if trial is not None:
+            url_path += f'&trial={str(trial).lower()}'
+        if countryCode:
+            url_path += f'&countryCode={countryCode}'
+        if deleted is not None:
+            url_path += f'&deleted={str(deleted).lower()}'
+            
         return self.__get(url_path)
 
     def get_account_by_id(self, id: str, embed: Optional[str] = None) -> Union[Dict, List]:
@@ -1359,4 +1371,67 @@ class Fabman:
             Union[List, Dict]: Training course
         """
         url_path = f'/training-courses/{id}'
+        retun self.__get(url_path)
+    
+    def get_current_user(self) -> Union[List, Dict]:
+        """Returns information about the holder of the API token
+
+        Returns:
+            Union[List, Dict]: User information
+        """
+        url_path = self.__get('/user/me')
+        return self.__get(url_path)
+    
+    def get_webhooks(self, limit: int = 50, offset: Optional[int] = None, account: Optional[int] = None) -> Union[List, Dict]:
+        """Return a list of webhooks for the account
+
+        Args:
+            limit (int, optional): Max number of webhooks to return. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned webhooks. Defaults to None.
+            account (Optional[int], optional): Account in question. If not specified, the account of the API token
+            holder is assumed. Defaults to None.
+            
+        Returns:
+            Union[List, Dict]: List of webhooks
+        """
+        url_path = f'/webhooks?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if account:
+            url_path += f'&account={account}'
+        
+        return self.__get(url_path)
+    
+    def get_webhook_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Return information about a specific webhook given its ID
+
+        Args:
+            id (int): ID of the webhook in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Can be any combination of account and space. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Webhook
+        """
+        embeds = ['account', 'space']
+        url_path = f'/webhooks/{id}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        return self.__get(url_path)
+    
+    def get_webhook_events(self, id: int, limit: int = 50, offset: Optional[int] = None) -> Union[List, Dict]:
+        """Return a list of events for a specific webhook
+        
+        Args:
+            id (int): ID of the webhook in question
+            limit (int, optional): Max number of events to return. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned events. Defaults to None.
+            
+        Returns:
+            Union[List, Dict]: List of events
+        """
+        url_path = f'/webhooks/{id}/events?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        
         return self.__get(url_path)
