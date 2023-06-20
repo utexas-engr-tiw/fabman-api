@@ -1323,5 +1323,40 @@ class Fabman:
     
     # TODO: finish the spaces minutia
     
-    
+    def get_training_courses(self, limit: int = 50, offset: Optional[int] = None, account: Optional[int] = None, 
+                             resource: Optional[int] = None, archived: bool = False) -> Union[List, Dict]:
+        """Return a list of training courses available to the account
+
+        Args:
+            limit (int, optional): Max number of training courses to return. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned training courses. Defaults to None.
+            account (Optional[int], optional): Account in question. If not specified, the account of the API token 
+            holder is assumed. Defaults to None.
+            resource (Optional[int], optional): ID of a specific resource. Defaults to None.
+            archived (bool, optional): Return archived training courses. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: List of training courses
+        """
         
+        url_path = f'/training-courses?limit={limit}&archived={str(archived).lower()}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if account:
+            url_path += f'&account={account}'
+        if resource:
+            url_path += f'&resource={resource}'
+        
+        return self.__get(url_path)
+    
+    def get_training_course_by_id(self, id:int) -> Union[List, Dict]:
+        """Return information about a specific training course given its ID
+
+        Args:
+            id (int): ID of the training course in question
+
+        Returns:
+            Union[List, Dict]: Training course
+        """
+        url_path = f'/training-courses/{id}'
+        return self.__get(url_path)
