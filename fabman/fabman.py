@@ -1379,6 +1379,17 @@ class Fabman:
         return self.__get(url_path)
     
     # TODO: finish the spaces minutia
+    def get_space_billing_settings(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_space_holidays(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_space_holidays_by_id(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_space_opening_hours(self):
+        raise NotImplementedError("This method is not yet implemented")
     
     def get_training_courses(self, limit: int = 50, offset: Optional[int] = None, account: Optional[int] = None, 
                              resource: Optional[int] = None, archived: bool = False) -> Union[List, Dict]:
