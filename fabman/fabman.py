@@ -1035,4 +1035,135 @@ class Fabman:
         url_path = f'/qr/{code}'
         return self.__get(url_path)
     
+    def get_resource_logs(self, account: Optional[int] = None, space: Optional[int] = None, 
+                          resource: Optional[int] = None, member: Optional[int] = None, _from: Optional[str] = None, 
+                          until: Optional[str] = None, status: str = 'all', type: Optional[List[str]] = None, 
+                          resolve: Optional[List[str]] = None, order: str = 'desc', limit: int = 50, 
+                          offset: Optional[int] = None, summary: bool = False) -> Union[List, Dict]:
+        """Return list of logs matching the query parameters.
+
+        Args:
+            account (Optional[int], optional): Account number in control of the logs. If not specified, defaults to the 
+            account of the API token holder. Defaults to None.
+            space (Optional[int], optional): ID of the space in questions. Defaults to None.
+            resource (Optional[int], optional): ID of a particular resource in question. Defaults to None.
+            member (Optional[int], optional): ID of a particular member in question. Defaults to None.
+            _from (Optional[str], optional): Beginning date of the logs. Defaults to None.
+            until (Optional[str], optional): End date of the logs. Defaults to None.
+            status (Optional[str], optional): Status of the logs. Can be one of all, active, or complete. Defaults to 'all''.
+            type (Optional[List[str]], optional): Type of log to be returned. Can be any combination of denied, allowed, 
+            pairing, keyAssigned, checkIn, reboot, offline, resourceDisabled, or resourceEnabled. Defaults to None.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Can be any 
+            combination of resource, member, or originalMember. Defaults to None.
+            order (str, optional): Order of the returned list of logs. Defaults to 'desc'.
+            limit (int, optional): Number of log items to be returned. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned logs.. Defaults to None.
+            summary (bool, optional): Add headers with summary information about the found records. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: List of resource log items
+        """
+        
+        types = ['denied', 'allowed', 'pairing', 'keyAssigned', 'checkIn', 'reboot', 'offline', 'resourceDisabled', 'resourceEnabled']
+        resolves = ['resource', 'member', 'originalMember']
+        if order not in ORDERS:
+            raise KeyError(order)
+        
+        url_path = f'/resource-logs?limit={limit}&order={order}&summary={str(summary).lower()}'
+        if account:
+            url_path += f'&account={account}'
+        if space:
+            url_path += f'&space={space}'
+        if resource:
+            url_path += f'&resource={resource}'
+        if member:
+            url_path += f'&member={member}'
+        if _from:
+            url_path += f'&from={_from}'
+        if until:
+            url_path += f'&until={until}'
+        if status and status in ['all', 'active', 'complete']:
+            url_path += f'&status={status}'
+        elif status:
+            raise KeyError(status)
+        if type:
+            url_path += self.__check_arg_array(type, types, 'type')
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
+        if offset:
+            url_path += f'&offset={offset}'
+            
+        return self.__get(url_path)
+    
+    def get_resource_logs_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Return information about a particular resource log given an ID
+
+        Args:
+            id (int): ID of the resource log in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Can be any combination of resource, member, originalMember, charges, or creditUses. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Resource log item specified by the ID
+        """
+        embeds = ['resource', 'member', 'originalMember', 'charges', 'creditUses']
+        url_path = f'/resource-logs/{id}'
+        
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+            
+        return self.__get(url_path)
+    
+    def get_resource_logs_export(self, account: Optional[int] = None, space: Optional[int] = None, 
+                                 resource: Optional[int] = None, member: Optional[int] = None, _from: Optional[str] = None,
+                                 until: Optional[str] = None, status: str = 'all', type: Optional[List[str]] = None, 
+                                 resolve: Optional[List[str]] = None, order: str = 'desc') -> Union[List, Dict]:
+        """Returns a blob as 'text/csv' with all logs matching the query parameters.
+
+        Args:
+            account (Optional[int], optional): Account number in control of the logs. If not specified, defaults to the 
+            account of the API token holder. Defaults to None.
+            space (Optional[int], optional): ID of the space in questions. Defaults to None.
+            resource (Optional[int], optional): ID of a particular resource in question. Defaults to None.
+            member (Optional[int], optional): ID of a particular member in question. Defaults to None.
+            _from (Optional[str], optional): Beginning date of the logs. Defaults to None.
+            until (Optional[str], optional): End date of the logs. Defaults to None.
+            status (Optional[str], optional): Status of the logs. Can be one of all, active, or complete. Defaults to 'all''.
+            type (Optional[List[str]], optional): Type of log to be returned. Can be any combination of denied, allowed, 
+            pairing, keyAssigned, checkIn, reboot, offline, resourceDisabled, or resourceEnabled. Defaults to None.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Can be any 
+            combination of resource, member, or originalMember. Defaults to None.
+            order (str, optional): Order of the returned list of logs. Defaults to 'desc'.
+
+        Returns:
+            Union[List, Dict]: _description_
+        """
+        
+        types = ['denied', 'allowed', 'pairing', 'keyAssigned', 'checkIn', 'reboot', 'offline', 'resourceDisabled', 'resourceEnabled']
+        resolves = ['resource', 'member', 'originalMember']
+        if order not in ORDERS:
+            raise KeyError(order)
+        url_path = f'/resource-logs/export?order={order}'
+        if account:
+            url_path += f'&account={account}'
+        if space:
+            url_path += f'&space={space}'
+        if resource:
+            url_path += f'&resource={resource}'
+        if member:
+            url_path += f'&member={member}'
+        if _from:
+            url_path += f'&from={_from}'
+        if until:
+            url_path += f'&until={until}'
+        if status and status in ['all', 'active', 'complete']:
+            url_path += f'&status={status}'
+        elif status:
+            raise KeyError(status)
+        if type:
+            url_path += self.__check_arg_array(type, types, 'type')
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
+        
+        return self.__get(url_path)
     
