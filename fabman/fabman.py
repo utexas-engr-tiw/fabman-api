@@ -1278,3 +1278,50 @@ class Fabman:
         """
         url_path = f'/resources/{id}/bridge/api-key'
         return self.__get(url_path)
+    
+    def get_spaces(self, limit: int = 50, offset: Optional[int] = None, account: Optional[int] = None, 
+                   embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Return a list of spaces given the query parameters
+
+        Args:
+            limit (int, optional): Number of spaces to be returned. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of results. Defaults to None.
+            account (Optional[int], optional): Account in question. If not specified, the account of the API token 
+            holder is assumed. Defaults to None.
+            embed (Optional[List[str]], optional): Allows the embedding of entities to reduce the number of requests 
+            needed. Can be any combination of openingHours and billingSettings. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: List of Spaces
+        """
+        embeds = ['openingHours', 'billingSettings']
+        url_path = f'/spaces?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if account:
+            url_path += f'&account={account}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        return self.__get(url_path)
+    
+    def get_space_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Return information of a specific space given its ID
+
+        Args:
+            id (int): ID of the space in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. can be any combination of openingHours, holidays, or billingSettings. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Information of the Space
+        """
+        embeds = ['openingHours', 'holidays', 'billingSettings']
+        url_path = f'/spaces/{id}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        return self.__get(url_path)
+    
+    # TODO: finish the spaces minutia
+    
+    
+        
