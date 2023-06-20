@@ -946,6 +946,47 @@ class Fabman:
         return self.__get(url_path)
     
     #TODO: finish the minutia of get member api endpoints
+    def get_member_packages(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_packages_by_id(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_payment_account(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_payment_method(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_payment_method_mandate_preview(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_privileges(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_trained_resources(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_trainings(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_trainings_by_id(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_due_invoices(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_due_invoices_by_id(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_member_due_invoices_sepa_export(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_members_export(self):
+        raise NotImplementedError("This method is not yet implemented")
+    
+    def get_members_uninvoiced_charges(self):
+        raise NotImplementedError("This method is not yet implemented")
     
     def get_payments(self, account: Optional[int] = None, member: Optional[int] = None, fromDate: Optional[str] = None, 
                     untilDate: Optional[str] = None, state: Optional[List[str]] = None, memberInitiated: bool = False,
