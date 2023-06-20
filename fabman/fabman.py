@@ -1022,3 +1022,17 @@ class Fabman:
             url_path += self.__check_arg_array(embed, embeds, 'embed')
         
         return self.__get(url_path)
+    
+    def get_qr(self, code: str) -> Union[List, Dict]:
+        """Get information of a QR code given the code
+
+        Args:
+            code (str): Code of the QR in question
+
+        Returns:
+            Union[List, Dict]
+        """
+        url_path = f'/qr/{code}'
+        return self.__get(url_path)
+    
+    
