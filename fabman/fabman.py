@@ -1167,3 +1167,114 @@ class Fabman:
         
         return self.__get(url_path)
     
+    def get_resource_types(self, account: Optional[int] = None, limit: int = 50, offset: Optional[int] = None) -> Union[List, Dict]:
+        """List resource categories of a given account (previously simply called 'types')
+
+        Args:
+            account (Optional[int], optional): Account in question. If not specified, the account of the API token 
+            holder is assumed. Defaults to None.
+            limit (int, optional): Number of resource types to be returned. Defaults to 50.
+            offset (Optional[int], optional): Offset in the list of types being returned. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: list of resource types
+        """
+        
+        url_path = f'/resource-types?limit={limit}'
+        if account:
+            url_path += f'&account={account}'
+        if offset:
+            url_path += f'&offset={offset}'
+            
+        return self.__get(url_path)
+    
+    def get_resources(self, limit: int = 50, offset: Optional[int] = None, account: Optional[int] = None, 
+                      space: Optional[int] = None, type: Optional[int] = None, targetFirmware: Optional[List[int]] = None, 
+                      exclusiveUsage: bool = False, embed: Optional[List[str]] = None, q: Optional[str] = None, 
+                      eq: Optional[str] = None, orderBy: str = 'name', order: str = 'asc') -> Union[List, Dict]:
+        """Return a list of resources given the query parameters
+
+        Args:
+            limit (int, optional): Number of resources to return. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned resources. Defaults to None.
+            account (Optional[int], optional): Account in question. If not specified, the account of the API token 
+            holder is assumed. Defaults to None.
+            space (Optional[int], optional): Space containing the resources. Defaults to None.
+            type (Optional[int], optional): Filter resources by container (requires resource type id). Defaults to None.
+            targetFirmware (Optional[List[int]], optional): Filter resources by a specific firmware. Defaults to None.
+            exclusiveUsage (bool, optional): Filter if the resource has exclusive Usage. Defaults to False.
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Defaults to None.
+            q (Optional[str], optional): Search string. Defaults to None.
+            eq (Optional[str], optional): Extended search string (includes fields from Account and Bridge). Defaults to None.
+            orderBy (str, optional): Which field to order the results. Can be one of name, type, or space . Defaults to 'name'.
+            order (str, optional): Direction of the order. Defaults to 'asc'.
+
+        Returns:
+            Union[List, Dict]: List of resources
+        """
+        if order not in ORDERS:
+            raise KeyError(order)
+        embeds = ['bridge']
+        url_path = f'/resources?limit={limit}&orderBy={orderBy}&order={order}&exclusiveUsage={str(exclusiveUsage).lower()}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if account:
+            url_path += f'&account={account}'
+        if space:
+            url_path += f'&space={space}'
+        if type:
+            url_path += f'&type={type}'
+        if targetFirmware and isinstance(targetFirmware, list):
+            for tf in targetFirmware:
+                url_path += f'&targetFirmware={tf}'
+        elif targetFirmware:
+            url_path += f'&targetFirmware={int(targetFirmware)}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        if q:
+            url_path += f'&q={q}'
+        if eq:
+            url_path += f'&eq={eq}'
+        
+    def get_resource_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Return information about a specific resource given its ID
+
+        Args:
+            id (int): ID of the resource in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Can be any combination of bridge and trainingCourses. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Resource
+        """
+        embeds = ['bridge', 'trainingCourses']
+        url_path = f'/resources/{id}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        
+        return self.__get(url_path)
+    
+    def get_resource_bridge_by_id(self, id: int) -> Union[List, Dict]:
+        """Return information about a specific bridge given its associated resource ID
+
+        Args:
+            id (int): ID of the resource in question
+
+        Returns:
+            Union[List, Dict]: Bridge
+        """
+        url_path = f'/resources/{id}/bridge'
+        return self.__get(url_path)
+    
+    def get_resource_bridge_api_key_by_id(self, id: int) -> Union[List, Dict]:
+        """Returns the api key of the bridge associated with the given resource
+
+        Args:
+            id (int): ID of the resource in question
+
+        Returns:
+            Union[List, Dict]: API key
+        """
+        url_path = f'/resources/{id}/bridge/api-key'
+        return self.__get(url_path)
