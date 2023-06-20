@@ -631,3 +631,329 @@ class Fabman:
         url_path = '/locales'
         return self.__get(url_path)
     
+    def get_member_invitations(self, token: str) -> Union[List, Dict]:
+        """Returns information about a member invitation given the invitation token string.
+
+        Args:
+            token (str): Token string of the invitation
+
+        Returns:
+            Union[List, Dict]: Information about the invitation
+        """
+        url_path = f"/member-invitations/{token}"
+        return self.__get(url_path)
+    
+    def get_members(self, account: Optional[int] = None, keyType: Optional[str] = None, keyToken: Optional[str] = None, 
+                    embed: Optional[List[str]] = None, packages: Optional[List[int]] = None, 
+                    privileges: Optional[str] = None, trainingCourses: Optional[List[str]] = None, q: Optional[str] = None,
+                    metadataKey: Optional[List[str]] = None, metadataValue: Optional[List[str]] = None, 
+                    memberNumber: Optional[str] = None, paidForBy: Optional[int] = None, orderBy: str = 'name', 
+                    order: str = 'asc', limit: int=50, offset: Optional[int] = None) -> Union[List, Dict]:
+        """Returns list of members matching the query parameters.
+
+        Args:
+            account (Optional[int], optional): Account number that the member belongs. Defaults to None, indicating the account of the api key used.
+            keyType (Optional[str], optional): String indicating the key type of the keyToken field. Must be one of em4102,
+            nfca, nfcb, nfcf, iso15693, or hid. Defaults to None. Required if keyToken field is supplied
+            keyToken (Optional[str], optional): Search for members via access key token. Must be between 4 and 18 bytes, 
+            depending on the key type, as a hexadecimal string. Defaults to None.
+            embed (Optional[List[str]], optional): Allows embedding of related entities to reduce the number of requests 
+            needed. Can be any combination of memberPackages, activePackages, privileges, and trainings. Defaults to None.
+            packages (Optional[List[int]], optional): Search for members who currently have all the given packages. Use 
+            "none" to search for members without any active package and "any" to search for members with any active package. Defaults to None, which specifies "any".
+            privileges (Optional[str], optional): Return members matching the given privilege. If specified, must be one 
+            of member, admin, owner. Defaults to None.
+            trainingCourses (Optional[List[str]], optional): Search for members who have participated in all of the given
+            training courses by the training course ids. Defaults to None.
+            q (Optional[str], optional): Search String. Defaults to None.
+            metadataKey (Optional[List[str]], optional): Use with metadataValue to search for members who have that given 
+            metadata key containing that value. Can be specified multiple times. Defaults to None.
+            metadataValue (Optional[List[str]], optional): Use with metadataKey to search for members who have that given 
+            metadata key containing that value. Can be specified multiple times. Defaults to None.
+            memberNumber (Optional[str], optional): Search for member given a member number. Defaults to None.
+            paidForBy (Optional[int], optional): Search for members who are paid for by a given entity. Defaults to None.
+            orderBy (str, optional): Field to order by. Must be either name or memberNumber . Defaults to 'name'.
+            order (str, optional): Order of results. Must be either 'asc' or 'desc'. Defaults to 'asc'.
+            limit (int, optional): Number of results to return. Defaults to 50.
+            offset (Optional[int], optional): Offset of start of returned values. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: List of Member objects which match the query
+            
+        TODO: generate and return Member objects rather than raw data
+        """
+        if order not in ['asc', 'desc']:
+            raise KeyError(order)
+        if orderBy not in ['name', 'memberNumber']:
+            raise KeyError(order)
+        if (keyType and keyToken is None) or (keyType is None and keyToken):
+            raise KeyError("keyType and keyToken must be specified together")        
+        if (metadataKey and metadataValue is None) or (metadataKey is None and metadataValue):
+            raise KeyError("metadataKey and metadataValue must be specified together")
+        elif len(metadataKey) != len(metadataValue):
+            raise KeyError("metadataKey and metadataValue must be the same length")
+        if embed and isinstance(embed, list):
+            for e in embed:
+                if e not in ['memberPackages', 'activePackages', 'privileges', 'trainings']:
+                    raise KeyError(e)
+        elif embed and embed not in ['memberPackages', 'activePackages', 'privileges', 'trainings']:
+            raise KeyError(embed)
+        if privileges and privileges not in ['member', 'admin', 'owner']:
+            raise KeyError(privileges)
+        
+        url_path = f'/members?limit={limit}&orderBy={orderBy}&order={order}'
+        if account:
+            url_path += f'&account={account}'
+        if keyType and keyToken:
+            url_path += f'&keyType={keyType}&keyToken={keyToken}'
+        if embed and isinstance(embed, list):
+            for e in embed:
+                url_path += f'&embed={e}'
+        elif embed:
+            url_path += f'&embed={embed}'
+        if packages and isinstance(packages, list):
+            for p in packages:
+                url_path += f'&packages={p}'
+        elif packages:
+            url_path += f'&packages={packages}'
+        if privileges:
+            url_path += f'&privileges={privileges}'
+        if trainingCourses and isinstance(trainingCourses, list):
+            for t in trainingCourses:
+                url_path += f'&trainingCourses={t}'
+        elif trainingCourses:
+            url_path += f'&trainingCourses={trainingCourses}'
+        if q:
+            url_path += f'&q={q}'
+        if metadataKey and isinstance(metadataKey, list):
+            for k, v in zip(metadataKey, metadataValue):
+                url_path += f'&metadataKey={k}&metadataValue={v}'
+        elif metadataKey:
+            url_path += f'&metadataKey={metadataKey}&metadataValue={metadataValue}'
+        if memberNumber:
+            url_path += f'&memberNumber={memberNumber}'
+        if paidForBy:
+            url_path += f'paidForBy={paidForBy}'
+        if offset:
+            url_path += f'&offset={offset}'
+        
+        return self.__get(url_path)
+            
+    def get_member_by_id(self, id: int, embed: Optional[List[str]] = None, keyToken: bool=False) -> Union[List, Dict]:
+        """Returns a specific member given an ID.
+
+        Args:
+            id (int): ID of the member in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Must be any combination of memberPackages, trainings, privileges, key, device, and invitation. Defaults to None.
+            keyToken (bool, optional): When embedding Keys: whether to also return the key's token. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Data dictionary of Member information
+            
+        """
+        embeds = ['memberPackages', 'trainings', 'privileges', 'key', 'device', 'invitation']
+        if embed and isinstance(embed, list):
+            for e in embed:
+                if e not in embeds:
+                    raise KeyError(e)
+        elif embed and isinstance(embed, str) and embed not in embeds:
+            raise KeyError(embed)
+        elif embed:
+            raise TypeError(embed)
+        
+        url_path = f'/members/{id}'
+        
+        if embed and isinstance(embed, list):
+            for e in embed:
+                url_path += f'?embed={e}'
+                if e == 'key':
+                    url_path += f'&keyToken={str(keyToken).lower()}'
+        elif embed and embed == 'key':
+            url_path += f'?embed=key&keyToken={str(keyToken).lower()}'
+        elif embed:
+            url_path += f'?embed={embed}'
+            
+        return self.__get(url_path)
+            
+    def get_member_balance_items(self, id: int) -> Union[List, Dict]:
+        """Returns the balance items of the given member
+
+        Args:
+            id (_type_): ID of the member in question.
+
+        Returns:
+            Union[List, Dict]: List of balance items for the member
+        """
+        url_path = f'/members/{id}/balance-items'
+        return self.__get(url_path)
+    
+    def get_member_changes(self, id: int, limit: int = 50, offset: Optional[int] = None, resolve: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Get list of changes for a given member
+
+        Args:
+            id (int): ID of the member in question
+            limit (int, optional): Number of changes to return. Defaults to 50.
+            offset (Optional[int], optional): Offset of the start of the returned list . Defaults to None.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Only acceptable
+            value is updatedBy, though left as a List for future implementations.. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Returns list of changes
+        """
+        resolves = ['updatedBy']
+        
+        url_path = f'/members/{id}/changes?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        if resolve and isinstance(resolve, list):
+            for r in resolve:
+                if r not in resolves:
+                    raise KeyError(r)
+                url_path += f'&resolve={r}'
+        elif resolve and isinstance(resolve, str):
+            url_path += f'&resolve={resolve}'
+            
+        return self.__get(url_path)
+    
+    def get_member_credits(self, id: int, limit: int = 50, offset: Optional[int] = None, predict: bool = False, 
+                           status: str = 'active') -> Union[List, Dict]:
+        """Get list of credits for a given member
+
+        Args:
+            id (int): ID of member in question
+            limit (int, optional): Number of credits to return. Defaults to 50.
+            offset (Optional[int], optional): Offset inside of return lists. Defaults to None.
+            predict (bool, optional): Undocumented in the Fabman API. Defaults to False.
+            status (str, optional): Status of the credit. Must be either active, previous, or all. Defaults to 'active'.
+
+        Returns:
+            Union[List, Dict]: _description_
+        """
+        if status not in ['active', 'previous', 'all']:
+            raise KeyError(status)
+        
+        url_path = f'/members/{id}/credits?limit={limit}&predict={str(predict).lower()}&status={status}'
+        if offset:
+            url_path += f'offset={offset}'
+            
+        return self.__get(url_path)
+    
+    def get_member_credits_by_credit_id(self, id: int, creditId: int, embed: Optional[List[str]] = None) -> Union[List, Dict]:
+        """Get a information about a specific credit given a member ID and credit ID
+
+        Args:
+            id (int): ID of member in question.
+            creditId (int): ID of credit in question.
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of 
+            requests needed. Only acceptable value is currently memberPackage Defaults to None.
+
+        Returns:
+            Union[List, Dict]: returns information on the requested Credit
+        """
+        
+        embeds = ['memberPackage']
+        url_path = f"/members/{id}/credits/{creditId}"
+        if embed and isinstance(embed, list):
+            for e in embed:
+                if e not in embeds:
+                    raise KeyError(e)
+                url_path += f'?embed={e}'
+        elif embed and isinstance(embed, str):
+            if embed not in embeds:
+                raise KeyError(embed)
+            url_path += f'?embed={embed}'
+
+        return self.__get(url_path)
+    
+    def get_member_credit_uses_by_credit_id(self, id: int, creditId: int, limit: int = 50, offset: Optional[int] = None) -> Union[List, Dict]:
+        """Returns a list of uses by member of a specific creditId
+
+        Args:
+            id (int): ID of the member in question
+            creditId (int): ID of the credit in question
+            limit (int, optional): Number of uses to be returned. Defaults to 50.
+            offset (Optional[int], optional): Offset within the list of returned items. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: List of uses of the credit
+        """
+        url_path = f'/members/{id}/credits/{creditId}/uses?limit={limit}'
+        if offset:
+            url_path += f'&offset={offset}'
+        return self.__get(url_path)
+    
+    def get_member_device(self, id: int, limit: int = 50, offset: Optional[int] = None) -> Union[List, Dict]:
+        """Returns a device associated with a member
+
+        Args:
+            id (int): ID of the member in question
+
+        Returns:
+            Union[List, Dict]: List of devices associated with the member
+        """
+        url_path = f'/members/{id}/device?id={id}'
+        return self.__get(url_path)
+    
+    def get_member_device_changes(self, id: int, limit: int = 50, since: Optional[str] = None, offset: Optional[int] = None) -> Union[List, Dict]:
+        """Returns a list of changes to a given device associated with a user.
+
+        Args:
+            id (int): ID of the member in question
+            limit (int, optional): Number of changes to be returned by the API. Defaults to 50.
+            since (Optional[str], optional): Start date of the query. Will return all changes since given date. Defaults to None.
+            offset (Optional[int], optional): Offset within the list of changes. Defaults to None.
+
+        Returns:
+            Union[List, Dict]: Returns list of changes 
+            
+        TODO: datetime checking on since
+        """
+        
+        url_path = f'/members/{id}/device/changes?limit={limit}'
+        if since:
+            url_path += f'&since={since}'
+        if offset:
+            url_path += f'&offset={offset}'
+        return self.__get(url_path)
+    
+    def get_member_export(self, id: int) -> Union[List, Dict]:
+        """Exports all stored data for that user in a text/csv format
+
+        Args:
+            id (int): ID of member
+
+        Returns:
+            Union[List, Dict]: Download string for a csv file
+        """
+        url_path = f"/members/{id}/export"
+        return self.__get(url_path)
+    
+    def get_member_invitation(self, id:int) -> Union[List, Dict]:
+        """Get member invitation information for a given member
+
+        Args:
+            id (int): ID of the member in question.
+
+        Returns:
+            Union[List, Dict]: Information about the invitation.
+        """
+        url_path = f"/members/{id}/invitation"
+        return self.__get(url_path)
+    
+    def get_member_key(self, id: int, keyToken: bool = False) -> Union[List, Dict]:
+        """Return the member's key information
+
+        Args:
+            id (int): ID of the member in question
+            keyToken (bool, optional): Whether to also return the key's token. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Key information for the member
+        """
+        
+        url_path = f'/members/{id}/key?keyToken={str(keyToken).lower()}'
+        return self.__get(url_path)
+    
+    #TODO: finish the minutia of get member api endpoints
+    
