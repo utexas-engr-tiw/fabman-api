@@ -24,6 +24,8 @@ stdout_handler.setFormatter(logging_format)
 logger.addHandler(stdout_handler)
 logger.setLevel(logging.INFO)
 
+ORDERS = ['asc', 'desc']
+
 
 class Fabman:
     """Main Fabman class. All interaction with the library should be done through this class.
@@ -74,6 +76,29 @@ class Fabman:
             time.sleep(60)
             return self.__post(path, data)
         return response.json()
+    
+    def __check_arg_array(self, provided: Union[List, str, int], valid: Union[List, list], arg_name: str) -> str:
+        """Used to check array arguments which can have a combinatoric number of values.
+
+        Args:
+            provided (Union[List, str, int]): List of args to be checked
+            valid (Union[List, list]): The valid possibilities for the argument
+            arg_name (str): The argument name
+
+        Returns:
+            str: string to be appendeded onto the url path
+        """
+        out = ""
+        if isinstance(provided, list):
+            for item in provided:
+                if item not in valid:
+                    raise KeyError(f'{item} is not a valid value for {arg_name}')
+            return f'&{arg_name}={"&{arg_name}=".join(provided)}'
+        
+        if isinstance(provided, str) and provided in valid:
+            return f'&{arg_name}={provided}'
+        else:
+            raise KeyError(f'{provided} is not a valid value for {arg_name}')
 
     def get_api_token(self) -> Union[AnyStr, str, None]:
         """Returns the API token.
@@ -237,15 +262,15 @@ class Fabman:
         Returns:
             Union[Dict, List]: _description_
         """
+        states = ['pending', 'confirmed', 'cancelled']
+        resolves = ['resource', 'member']
         if order not in ['asc', 'desc']:
             raise KeyError(order)
         url_path = f'/bookings?order={order}&limit={limit}&offset={offset}&summary={summary}'
-        if state and state in ['pending', 'confirmed', 'cancelled']:
-            url_path += f'&state={state}'
-        elif state:
-            raise KeyError(state)
-        if resolve and resolve in ['resource', 'member']:
-            url_path += f'&resolve={resolve}'
+        if state:
+            url_path += self.__check_arg_array(state, states, 'state')
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
         elif resolve:
             raise KeyError(resolve)
         if account:
@@ -273,11 +298,10 @@ class Fabman:
         Returns:
             Union[Dict, List]: Dictionary containing information of the booking.
         """
+        embeds = ['member', 'resource']
         url_path = f'/bookings/{id}'
-        if embed and embed in ['member', 'resource']:
-            url_path += f'?embed={embed}'
-        elif embed:
-            raise KeyError(embed)
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
 
         return self.__get(url_path)
 
@@ -303,17 +327,15 @@ class Fabman:
         Returns:
             Union[Dict, List]: _description_
         """
+        states = ['pending', 'confirmed', 'cancelled']
+        resolves = ['resource', 'member']
         if order not in ['asc', 'desc']:
             raise KeyError(order)
         url_path = f'/bookings/export?order={order}'
-        if state and state in ['pending', 'confirmed', 'cancelled']:
-            url_path += f'&state={state}'
-        elif state:
-            raise KeyError(state)
-        if resolve and resolve in ['resource', 'member']:
-            url_path += f'&resolve={resolve}'
-        elif resolve:
-            raise KeyError(resolve)
+        if state:
+            url_path += self.__check_arg_array(state, states, 'state')
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
         if account:
             url_path += f'&account={account}'
         if space:
@@ -461,7 +483,8 @@ class Fabman:
         Returns:
             Union[Dict, List]: List of invoice details matching the query.
         """
-        
+        states = ['unpaid', 'pending', 'processing', 'paid', 'cancelled']
+        resolves = ['member']
         url_path = f'/invoices?limit={limit}&offset={offset}&orderBy={orderBy}&order={order}&summary={str(summary).lower()}'
         if account:
             url_path += f'&account={account}'
@@ -472,19 +495,13 @@ class Fabman:
         if untilDate:
             url_path += f'$untilDate={untilDate}'
         if state:
-            for st in state:
-                if st not in ['unpaid', 'pending', 'processing', 'paid', 'cancelled']:
-                    raise KeyError(st)
-                url_path += f'&state={st}'
+            url_path += self.__check_arg_array(state, states, 'state')
         if balanced is not None:
             url_path += f'&balanced={str(balanced).lower()}'
         if q:
             url_path += f'&q={q}'
         if resolve:
-            for res in resolve:
-                if res not in ['member']:
-                    raise KeyError(res)
-                url_path += f'&resolve={res}'
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
         return self.__get(url_path)
     
     def get_invoice_by_id(self, id: int, embed: Optional[List[str]] = None) -> Union[Dict, List]:
@@ -498,12 +515,10 @@ class Fabman:
         Returns:
             Union[Dict, List]: Dictionary of invoice.
         """
+        embeds = ['details', 'member', 'payments', 'cancelledInvoice']
         url_path = f'/invoices/{id}'
         if embed:
-            for em in embed:
-                if em not in ['member', 'details', 'payments', 'cancelledInvoice']:
-                    raise KeyError(em)
-                url_path += f'?embed={em}'
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
             
         return self.__get(url_path)
                 
@@ -542,6 +557,8 @@ class Fabman:
         Returns:
             Union[Dict, List]: Download link for CSV file
         """
+        states = ['unpaid', 'pending', 'processing', 'paid', 'cancelled']
+        resolves = ['member']
         if order not in ['asc', 'desc']:
             raise KeyError(order)
         if orderBy not in ['number', 'date', 'totalWithFees', 'state']:
@@ -556,19 +573,13 @@ class Fabman:
         if untilDate:
             url_path += f'$untilDate={untilDate}'
         if state:
-            for st in state:
-                if st not in ['unpaid', 'pending', 'processing', 'paid', 'cancelled']:
-                    raise KeyError(st)
-                url_path += f'&state={st}'
+            url_path += self.__check_arg_array(state, states, 'state')
         if balanced is not None:
             url_path += f'&balanced={str(balanced).lower()}'
         if q:
             url_path += f'&q={q}'
         if resolve:
-            for res in resolve:
-                if res not in ['member']:
-                    raise KeyError(res)
-                url_path += f'&resolve={res}'
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
         return self.__get(url_path)
         
     def get_jobs(self, limit: int = 50, offset: int = None, account: Optional[int] = None, type: Optional[str] = None, 
@@ -585,6 +596,7 @@ class Fabman:
         Returns:
             Union[List, Dict]: _description_
         """
+        states = ['pending', 'done', 'failed']
         if type and type not in ['invoices', 'payments']:
             raise KeyError(type)
         if state and isinstance(state, list):
@@ -603,10 +615,7 @@ class Fabman:
         if type:
             url_path += f'&type={type}'
         if state and isinstance(state, list):
-            for st in state:
-                url_path += f'&state={st}'
-        elif state and isinstance(state, str):
-            url_path += f'&state={state}'
+            url_path += self.__check_arg_array(state, states, 'state')
         
         return self.__get(url_path)
         
@@ -682,6 +691,8 @@ class Fabman:
             
         TODO: generate and return Member objects rather than raw data
         """
+        
+        embeds = ['memberPackages', 'activePackages', 'privileges', 'trainings']
         if order not in ['asc', 'desc']:
             raise KeyError(order)
         if orderBy not in ['name', 'memberNumber']:
@@ -692,32 +703,23 @@ class Fabman:
             raise KeyError("metadataKey and metadataValue must be specified together")
         elif len(metadataKey) != len(metadataValue):
             raise KeyError("metadataKey and metadataValue must be the same length")
-        if embed and isinstance(embed, list):
-            for e in embed:
-                if e not in ['memberPackages', 'activePackages', 'privileges', 'trainings']:
-                    raise KeyError(e)
-        elif embed and embed not in ['memberPackages', 'activePackages', 'privileges', 'trainings']:
-            raise KeyError(embed)
-        if privileges and privileges not in ['member', 'admin', 'owner']:
-            raise KeyError(privileges)
         
         url_path = f'/members?limit={limit}&orderBy={orderBy}&order={order}'
         if account:
             url_path += f'&account={account}'
         if keyType and keyToken:
             url_path += f'&keyType={keyType}&keyToken={keyToken}'
-        if embed and isinstance(embed, list):
-            for e in embed:
-                url_path += f'&embed={e}'
-        elif embed:
-            url_path += f'&embed={embed}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
         if packages and isinstance(packages, list):
             for p in packages:
                 url_path += f'&packages={p}'
         elif packages:
             url_path += f'&packages={packages}'
-        if privileges:
+        if privileges and privileges in ['member', 'admin', 'owner']:
             url_path += f'&privileges={privileges}'
+        elif privileges:
+            raise KeyError(privileges)
         if trainingCourses and isinstance(trainingCourses, list):
             for t in trainingCourses:
                 url_path += f'&trainingCourses={t}'
@@ -753,27 +755,11 @@ class Fabman:
             
         """
         embeds = ['memberPackages', 'trainings', 'privileges', 'key', 'device', 'invitation']
-        if embed and isinstance(embed, list):
-            for e in embed:
-                if e not in embeds:
-                    raise KeyError(e)
-        elif embed and isinstance(embed, str) and embed not in embeds:
-            raise KeyError(embed)
-        elif embed:
-            raise TypeError(embed)
         
         url_path = f'/members/{id}'
         
-        if embed and isinstance(embed, list):
-            for e in embed:
-                url_path += f'?embed={e}'
-                if e == 'key':
-                    url_path += f'&keyToken={str(keyToken).lower()}'
-        elif embed and embed == 'key':
-            url_path += f'?embed=key&keyToken={str(keyToken).lower()}'
-        elif embed:
-            url_path += f'?embed={embed}'
-            
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
         return self.__get(url_path)
             
     def get_member_balance_items(self, id: int) -> Union[List, Dict]:
@@ -806,14 +792,9 @@ class Fabman:
         url_path = f'/members/{id}/changes?limit={limit}'
         if offset:
             url_path += f'&offset={offset}'
-        if resolve and isinstance(resolve, list):
-            for r in resolve:
-                if r not in resolves:
-                    raise KeyError(r)
-                url_path += f'&resolve={r}'
-        elif resolve and isinstance(resolve, str):
-            url_path += f'&resolve={resolve}'
-            
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
+
         return self.__get(url_path)
     
     def get_member_credits(self, id: int, limit: int = 50, offset: Optional[int] = None, predict: bool = False, 
@@ -854,15 +835,8 @@ class Fabman:
         
         embeds = ['memberPackage']
         url_path = f"/members/{id}/credits/{creditId}"
-        if embed and isinstance(embed, list):
-            for e in embed:
-                if e not in embeds:
-                    raise KeyError(e)
-                url_path += f'?embed={e}'
-        elif embed and isinstance(embed, str):
-            if embed not in embeds:
-                raise KeyError(embed)
-            url_path += f'?embed={embed}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
 
         return self.__get(url_path)
     
@@ -957,3 +931,94 @@ class Fabman:
     
     #TODO: finish the minutia of get member api endpoints
     
+    def get_payments(self, account: Optional[int] = None, member: Optional[int] = None, fromDate: Optional[str] = None, 
+                    untilDate: Optional[str] = None, state: Optional[List[str]] = None, memberInitiated: bool = False,
+                    resolve: Optional[List[str]] = None, orderBy: str = 'date', order: str = 'desc', limit: int = 50,
+                    offset: Optional[int] = None, summary: bool = False) -> Union[List, Dict]:
+        """Returns a list of payments matching the query parameters.
+
+        Args:
+            account (Optional[int], optional): Account number payments are rendered to. If unspecified, defaults to the holder of the API key. Defaults to None.
+            member (Optional[int], optional): Refine search by member ID. Defaults to None.
+            fromDate (Optional[str], optional): Start date of search. Defaults to None.
+            untilDate (Optional[str], optional): End date of search. Defaults to None.
+            state (Optional[List[str]], optional): State of the payment. Can be any combination of pending, processing, succeeded, and failed. Defaults to None.
+            memberInitiated (bool, optional): Include member-initiated, but incomplete, payments. Defaults to False.
+            resolve (Optional[List[str]], optional): Return relationship details instead of just the id. Only available option is member. Defaults to None.
+            orderBy (str, optional): Ordering option of returned results. Can be one of date, total, or state. Defaults to 'date'.
+            order (str, optional): Order of the returned results. Can be 'asc' or 'desc'. Defaults to 'desc'.
+            limit (int, optional): Max number of results to be returned. Defaults to 50.
+            offset (Optional[int], optional): Offset in the list of returns. Defaults to None.
+            summary (bool, optional): add headers with summary information about the found records. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Returns a list of payments with their information
+        """
+        states = ['pending', 'processing', 'succeeded', 'failed']
+        resolves = ['member']
+        order_bys = ['date', 'total', 'state']
+        if limit < 0:
+            raise KeyError(limit)
+        
+        if order not in ORDERS:
+            raise KeyError(order)
+        if orderBy not in order_bys:
+            raise KeyError(orderBy)
+        
+        url_path = f'/payments?limit={limit}&orderBy={orderBy}&order={order}&summary={str(summary).lower()}&memberInitiated={str(memberInitiated).lower()}'
+        
+        if account:
+            url_path += f'&account={account}'
+        if member:
+            url_path += f'&member={member}'
+        if fromDate:
+            url_path += f'&fromDate={fromDate}'
+        if untilDate:
+            url_path += f'$untilDate={untilDate}'
+        if state:
+            url_path += self.__check_arg_array(state, states, 'state')
+        if resolve:
+            url_path += self.__check_arg_array(resolve, resolves, 'resolve')
+        if offset:
+            url_path += f'&offset={offset}'
+        
+        return self.__get(url_path)
+    
+    def get_payment_by_id(self, id: int, embed: Optional[List[str]] = None, wait: bool = False) -> Union[List, Dict]:
+        """Returns information about a particular payment given its ID.
+
+        Args:
+            id (int): ID of payment in question
+            embed (Optional[List[str]], optional): Allows embedding of related entities to reduce the number of requests 
+            needed. Only available option is invoices. Defaults to None.
+            wait (bool, optional): Wait for an update on payment intent belonging to that payment before returning. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: Information about a particular payment
+        """
+        
+        embeds = ['invoices']
+        url_path = f'/payments/{id}?wait={str(wait).lower()}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        
+        return self.__get(url_path)
+    
+    def get_payments_by_token(self, token: str, embed: Optional[List[str]] = None, wait: bool = False) -> Union[List, Dict]:
+        """Returns payment information given a token
+
+        Args:
+            token (str): Token for payment in question
+            embed (Optional[List[str]], optional): Allows the embedding of related entities to reduce the number of requests needed. Can be any combination of invoices and account. Defaults to None.
+            wait (bool, optional): Wait for an update on payment intent belonging to that payment before returning. Defaults to False.
+
+        Returns:
+            Union[List, Dict]: payment information
+        """
+        
+        embeds = ['invoices', 'account']
+        url_path = f'/payments/{token}?wait={str(wait).lower()}'
+        if embed:
+            url_path += self.__check_arg_array(embed, embeds, 'embed')
+        
+        return self.__get(url_path)
