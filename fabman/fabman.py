@@ -1427,7 +1427,7 @@ class Fabman:
             Union[List, Dict]: Training course
         """
         url_path = f'/training-courses/{id}'
-        retun self.__get(url_path)
+        return self.__get(url_path)
     
     def get_current_user(self) -> Union[List, Dict]:
         """Returns information about the holder of the API token
@@ -1798,7 +1798,7 @@ class Fabman:
     def create_space(self):
         raise NotImplementedError("This method is not yet implemented.")
     
-    def create_space_holiday(self)
+    def create_space_holiday(self):
         raise NotImplementedError("This method is not yet implemented.")
     
     def create_training_course(self):
