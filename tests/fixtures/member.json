@@ -1,0 +1,240 @@
+{
+    "get_balance_items": {
+        "method": "GET",
+        "endpoint": "/members/1/balance-items",
+        "data": {
+            "sumInvoices": "0.00",
+            "sumPayments": "0.00",
+            "sumCharges": "0.00",
+            "sumUnpaidBookings": 0
+        },
+        "status_code": 200
+    },
+    "get_changes": {
+        "method": "GET",
+        "endpoint": "/members/1/changes",
+        "data": [],
+        "status_code": 200
+    },
+    "get_credits": {
+        "method": "GET",
+        "endpoint": "/members/1/credits",
+        "data": [],
+        "status_code": 200
+    },
+    "get_credit_by_id": {
+        "method": "GET",
+        "endpoint": "/members/1/credits/1",
+        "data": {},
+        "status_code": 200
+    },
+    "get_credit_uses_by_id": {
+        "method": "GET",
+        "endpoint": "/members/1/credits/1/uses",
+        "data": [],
+        "status_code": 200
+    },
+    "get_device": {
+        "method": "GET",
+        "endpoint": "/members/1/device",
+        "data": {
+            "name": "Apple iPhone",
+            "details": "iOS 16.4.1, Mobile Safari 16.4",
+            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
+            "createdAt": "2023-04-28T19:36:35.064Z",
+            "updatedAt": "2023-05-11T18:03:23.546Z"
+        },
+        "status_code": 200
+    },
+    "get_device_changes": {
+        "method": "GET",
+        "endpoint": "/members/1/device/changes",
+        "data": [
+            {
+                "id": 2,
+                "member": 1,
+                "name": "Apple iPhone",
+                "details": "iOS 16.4.1, Mobile Safari 16.4",
+                "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
+                "updatedAt": "2023-05-11T18:03:23.547Z"
+            },
+            {
+                "id": 1,
+                "member": 1,
+                "name": "Apple iPhone",
+                "details": "iOS 16.4.1, Mobile Safari 16.4",
+                "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
+                "updatedAt": "2023-05-03T15:52:19.542Z"
+            }
+        ],
+        "status_code": 200
+    }, 
+    "get_device_change_by_id": {
+        "method": "GET",
+        "endpoint": "/members/1/device/changes/1",
+        "data": {
+            "id": 1,
+            "member": 1,
+            "name": "Apple iPhone",
+            "details": "iOS 16.4.1, Mobile Safari 16.4",
+            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
+            "updatedAt": "2023-05-03T15:52:19.542Z"
+        },
+        "status_code": 200
+    },
+    "get_invitation": {
+        "method": "GET",
+        "endpoint": "/members/1/invitation",
+        "data": {
+            "member": 1,
+            "invitedBy": 2,
+            "status": "accepted"
+        },
+        "status_code": 200
+    },
+    "get_key_empty": {
+        "method": "GET",
+        "endpoint": "/members/1/key",
+        "data": {},
+        "status_code": 204
+    },
+    "get_key_data": {
+        "method": "GET",
+        "endpoint": "/members/1/key",
+        "data": {
+            "type": "em4102",
+            "token": "abcdef12",
+            "state": "active"
+        },
+        "status_code": 200
+    },
+    "get_packages": {
+        "method": "GET",
+        "endpoint": "/members/1/packages",
+        "data": [
+            {
+              "id": 1,
+              "package": 1,
+              "fromDate": "2023-05-24",
+              "untilDate": null,
+              "notes": null,
+              "lockVersion": 1,
+              "createdAt": "2023-05-24T20:06:16.903Z",
+              "updatedAt": "2023-05-24T20:06:16.903Z",
+              "updatedBy": 256549,
+              "customFees": false,
+              "setupFee": "0.00",
+              "recurringFee": "0.00",
+              "recurringFeePeriod": "month",
+              "chargedUntilDate": "2023-06-23",
+              "creditedOnce": true,
+              "creditedDailyUntilDate": "2023-06-23",
+              "creditedWeeklyUntilDate": "2023-06-27",
+              "creditedMonthlyUntilDate": "2023-06-23",
+              "creditedYearlyUntilDate": "2024-05-23"
+            }
+        ]
+    },
+    "get_package_by_id": {
+        "method": "GET",
+        "endpoint": "/members/1/packages/1",
+        "data": {
+            "id": 68948,
+            "package": 6371,
+            "fromDate": "2023-05-24",
+            "untilDate": null,
+            "notes": null,
+            "lockVersion": 1,
+            "createdAt": "2023-05-24T20:06:16.903Z",
+            "updatedAt": "2023-05-24T20:06:16.903Z",
+            "updatedBy": 256549,
+            "customFees": false,
+            "setupFee": "0.00",
+            "recurringFee": "0.00",
+            "recurringFeePeriod": "month",
+            "chargedUntilDate": "2023-06-23",
+            "creditedOnce": true,
+            "creditedDailyUntilDate": "2023-06-23",
+            "creditedWeeklyUntilDate": "2023-06-27",
+            "creditedMonthlyUntilDate": "2023-06-23",
+            "creditedYearlyUntilDate": "2024-05-23"
+        },
+        "status_code": 200
+    },
+    "get_package_by_id_doesnt_hold": {
+        "method": "GET",
+        "endpoint": "/members/1/packages/2",
+        "data": {},
+        "status_code": 404
+    },
+    "get_payment_account": {
+        "method": "GET",
+        "endpoint": "/members/1/payment-account",
+        "data": [],
+        "status_code": 200
+    },
+    "get_payment_method_exists": {
+        "method": "GET",
+        "endpoint": "/members/1/payment-method",
+        "data": {
+            "type": "stripe",
+            "setupIntentId": "ayo",
+            "iban": "1234567",
+            "accountOwnerName": "Joe Shmoe",
+            "mandateReference": "1234567"
+        },
+        "status_code": 200
+    },
+    "get_payment_method_doesnt_exist": {
+        "method": "GET",
+        "endpoint": "/members/1/payment-method",
+        "data": {},
+        "status_code": 204
+    },
+    "get_payment_method_mandate_preview": {
+        "method": "GET",
+        "endpoint": "/members/1/payment-method-mandate-preview",
+        "data": {
+            "mandateReference": "3-2023-06-23"
+        },
+        "status_code": 200
+    },
+    "get_privileges": {
+        "method": "GET",
+        "endpoint": "/members/1/privileges",
+        "data": {
+            "privileges": "admin"
+        },
+        "status_code": 200
+    },
+    "get_trained_resources": {
+        "method": "GET",
+        "endpoint": "/members/1/trained-resources",
+        "data": [],
+        "status_code": 200
+    },
+    "get_trainings": {
+        "method": "GET",
+        "endpoint": "/members/1/trainings",
+        "data": [],
+        "status_code": 200
+    },
+    "get_training_by_id": {
+        "method": "GET",
+        "endpoint": "/members/1/trainings/1",
+        "data": {},
+        "status_code": 200
+    },
+    "get_due_invoices": {
+        "method": "GET",
+        "endpoint": "/members/1/due-invoices",
+        "data": [],
+        "status_code": 200
+    },
+    "get_due_invoice": {
+        "method": "GET",
+        "endpoint": "/members/1/due-invoices/1",
+        "data": {},
+        "status_code": 200
+    }
+}
