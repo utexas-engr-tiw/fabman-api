@@ -96,7 +96,6 @@ class TestFabman(unittest.TestCase):  # pylint: disable=missing-class-docstring
         register_uris({"fabman": ["get_user_me"]}, m)
 
         member = self.fabman.get_user()
-        print(member)
         self.assertIsInstance(member, Member)
         self.assertTrue(hasattr(member, "id"))
         self.assertTrue(hasattr(member, "firstName"))
