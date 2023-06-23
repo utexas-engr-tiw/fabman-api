@@ -1,0 +1,19 @@
+{
+    "get_bridge": {
+        "method": "GET",
+        "endpoint": "/resources/1/bridge",
+        "data": {
+            "serialNumber": "12345678",
+            "offline": true
+        },
+        "status_code": 200
+    },
+    "get_bridge_api_key": {
+        "method": "GET",
+        "endpoint": "/resources/1/bridge/api-key",
+        "data": {
+
+        },
+        "status_code": 200
+    }
+}
