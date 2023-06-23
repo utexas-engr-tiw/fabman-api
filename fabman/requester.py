@@ -4,7 +4,8 @@ made directly through the Fabman class found in fabman/fabman.py
 """
 import logging
 from pprint import pformat
-from typing import Optional
+from typing import Optional, Union
+import warnings
 
 import requests
 
@@ -120,7 +121,7 @@ class Requester(object):
                 headers: Optional[dict] = None, use_auth: Optional[bool] = True,
                 _url: Optional[str] = None, _kwargs: Optional[dict] = None,
                 json: Optional[bool] = False, **kwargs
-                ):
+                ) -> Union[requests.Response, None]:
         """Main method for handling requests to the API. Should never be called directly except for 
         testing or from the Fabman class.
 
@@ -213,23 +214,29 @@ class Requester(object):
         # Raise for status codes
         if response.status_code == 400:
             raise BadRequest(response.text)
-        elif response.status_code == 401:
+        if response.status_code == 204:
+            warnings.warn(
+                "204 No Content returned. This is likely an error, or edge case in"
+                "authorization.",
+                UserWarning
+            )
+            return response
+        if response.status_code == 401:
             if "WWW-Authenticate" in response.headers:
                 raise InvalidAccessToken(response.json())
-            else:
-                raise Unauthorized(response.json())
-        elif response.status_code == 403:
+            raise Unauthorized(response.json())
+        if response.status_code == 403:
             raise ForbiddenError(response.json())
-        elif response.status_code == 404:
+        if response.status_code == 404:
             raise ResourceDoesNotExist("Not found")
-        elif response.status_code == 409:
+        if response.status_code == 409:
             raise Conflict(response.text)
-        elif response.status_code == 422:
+        if response.status_code == 422:
             raise UnprocessableEntity(response.text)
-        elif response.status_code == 429:
+        if response.status_code == 429:
             raise RateLimitExceeded(response.text)
-        elif response.status_code > 400:
-            # catch all for other codes
+        if response.status_code > 400:
+            # catch all for other (bad)codes
             raise FabmanException(
                 f"Encountered an error: status code {response.status_code}"
             )
