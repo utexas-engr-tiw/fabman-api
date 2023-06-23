@@ -67,7 +67,7 @@ class Requester(object):
         Args:
             url (str): url for the request
             headers (dict): dictionary of headers
-            params (dict, optional): dictionary of parameters. Defaults to None.
+            params (List, optional): dictionary of parameters. Defaults to None.
         Returns:
 
             requests.Response
@@ -119,7 +119,7 @@ class Requester(object):
 
     def request(self, method: str, endpoint: Optional[str] = None,
                 headers: Optional[dict] = None, use_auth: Optional[bool] = True,
-                _url: Optional[str] = None, _kwargs: Optional[List] = None,
+                _url: Optional[str] = None, _kwargs: Optional[dict] = None,
                 json: Optional[bool] = False, **kwargs
                 ):
         """Main method for handling requests to the API. Should never be called directly except for 
@@ -161,22 +161,6 @@ class Requester(object):
             auth_header = {"Authorization": f"Bearer {self.__access_token}"}
             headers.update(auth_header)
 
-        # Convert kwargs into list of 2-tuples and combine with _kwargs
-        _kwargs = _kwargs or []
-        _kwargs.extend(kwargs.items())
-
-        # Do any final argument processing before sending to request method
-        for i, kwarg in enumerate(_kwargs):
-            kw, arg = kwarg  # pylint: disable=invalid-name
-
-            # Convert boolean object to lowercase
-            if isinstance(arg, bool):
-                _kwargs[i] = (kw, str(arg).lower())
-
-            # Convert any datetime objects into ISO 8601 formatted strings
-            elif isinstance(arg, datetime):
-                _kwargs[i] = (kw, arg.isoformat())
-
         # Determine the appropriate request method.
         if method == "GET":
             req_method = self._get_request
@@ -203,8 +187,7 @@ class Requester(object):
         )
         logger.debug(
             "Headers: %s",
-            pformat(clean_headers(response.headers)
-                    )
+            pformat(clean_headers(response.headers))
         )
 
         try:
