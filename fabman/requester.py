@@ -3,9 +3,8 @@ or called directly as it is meant to be used internally. All accesses should be
 made directly through the Fabman class found in fabman/fabman.py
 """
 import logging
-from datetime import datetime
 from pprint import pformat
-from typing import Optional, List
+from typing import Optional
 
 import requests
 
@@ -46,7 +45,7 @@ class Requester(object):
         self.__cache = []
 
     def _delete_request(self, url: str, headers: dict,
-                        data: Optional[List] = None, **kwargs) -> requests.Response:
+                        data: Optional[dict] = None, **kwargs) -> requests.Response:
         """Handles a delete request to the API. Should never be called directly
 
         Args:
@@ -61,7 +60,7 @@ class Requester(object):
         return self.__session.delete(url, headers=headers, data=data, **kwargs)
 
     def _get_request(self, url: str, headers: dict,
-                     params: Optional[List] = None, **kwargs) -> requests.Response:
+                     params: Optional[dict] = None, **kwargs) -> requests.Response:
         """Handles a get request to the API. Should never be called directly
 
         Args:
@@ -76,7 +75,7 @@ class Requester(object):
         return self.__session.get(url, headers=headers, params=params, **kwargs)
 
     def _patch_request(self, url: str, headers: dict,
-                       data: Optional[List] = None, **kwargs) -> requests.Response:
+                       data: Optional[dict] = None, **kwargs) -> requests.Response:
         """Handles a patch request to the API. Should never be called directly
 
         Args:
@@ -91,7 +90,7 @@ class Requester(object):
         return self.__session.patch(url, headers=headers, data=data, **kwargs)
 
     def _post_request(self, url: str, headers: dict,
-                      data: Optional[List] = None, **kwargs) -> requests.Response:
+                      data: Optional[dict] = None, **kwargs) -> requests.Response:
         """Handles a post request to the API. Should never be called directly
 
         Args:
@@ -106,7 +105,7 @@ class Requester(object):
         return self.__session.post(url, headers=headers, data=data, **kwargs)
 
     def _put_request(self, url: str, headers: dict,
-                     data: Optional[List] = None, **kwargs) -> requests.Response:
+                     data: Optional[dict] = None, **kwargs) -> requests.Response:
         """Handles a put request to the API. Should never be called directly
 
         Args:
@@ -160,6 +159,12 @@ class Requester(object):
         if use_auth:
             auth_header = {"Authorization": f"Bearer {self.__access_token}"}
             headers.update(auth_header)
+
+        # Add kwargs to _kwargs
+        if _kwargs is None:
+            _kwargs = kwargs
+        else:
+            _kwargs.update(kwargs)
 
         # Determine the appropriate request method.
         if method == "GET":

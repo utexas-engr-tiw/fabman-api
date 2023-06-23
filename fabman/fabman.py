@@ -4,7 +4,6 @@
 
 import warnings
 
-from fabman.util import combine_kwargs
 from fabman.requester import Requester
 from fabman.member import Member
 
@@ -21,7 +20,8 @@ class Fabman(object):
 
         Args:
             access_token (str): The access token to access the API
-            base_url (str, optional): The base url of the API. Defaults to "https://api.fabman.io/v1".
+            base_url (str, optional): The base url of the API. Defaults to 
+            "https://api.fabman.io/v1".
         """
 
         if "https://" not in base_url:
@@ -38,7 +38,7 @@ class Fabman(object):
             )
         if not access_token or access_token == "":
             raise ValueError("No access token provided")
-        
+
         # sanitize access token and base url
         access_token = access_token.strip()
         if base_url[-1] == "/":
@@ -52,7 +52,7 @@ class Fabman(object):
         Documentation: https://fabman.io/api/v1/documentation#/members/postMembers
 
         Returns:
-        
+
         """
         raise NotImplementedError("create_member not implemented yet")
 
@@ -60,7 +60,7 @@ class Fabman(object):
         """Get all of the members in the Fabman database. Can specify filters, 
         search string, result limits, offsets, and sorting. Refer to the Fabman API
         documentation.
-        
+
         calls "GET /members"
         documentation https://fabman.io/api/v1/documentation#/members/getMembers
         """
@@ -75,7 +75,7 @@ class Fabman(object):
             member_id (int): ID of the member to be called
         """
         uri = f"/members/{member_id}"
-        
+
         response = self.__requester.request(
             "GET", uri, _kwargs=kwargs
         )
@@ -83,4 +83,8 @@ class Fabman(object):
         return Member(self.__requester, response.json())
 
     def get_user(self, **kwargs):
+        """Gets authenticated user information from the API.
+        calls "GET /user/me"
+        Documentation: https://fabman.io/api/v1/documentation#/user/getUserMe
+        """
         raise NotImplementedError("get_user not implemented yet")

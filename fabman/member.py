@@ -1,6 +1,5 @@
 """Defines and handles the Member object returned by the API"""
-#pylint: disable=too-many-public-methods, line-too-long
-from typing import Any, Optional
+# pylint: disable=too-many-public-methods, line-too-long
 import requests
 from fabman.fabman_object import FabmanObject
 from fabman.util import combine_kwargs
@@ -10,9 +9,10 @@ class Member(FabmanObject):
     """ 
     Member object returned by the API. Provides access to all API calls that operate on a single member.
     """
+
     def __str__(self):
         return f"{self.id}: {self.firstName} {self.lastName}"
-    
+
     def create_credit(self, **kwargs) -> requests.Response:
         """
         Creates a member credit

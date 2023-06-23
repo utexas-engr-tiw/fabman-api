@@ -44,7 +44,7 @@ def clean_headers(headers: Union[dict, CaseInsensitiveDict]):
 
 
 def combine_kwargs(**kwargs):
-    """Flatten a series of keywwords.
+    """Flatten a series of keywords.
     """
     combined_kwargs = []
 
