@@ -83,8 +83,15 @@ class Fabman(object):
         return Member(self.__requester, response.json())
 
     def get_user(self, **kwargs):
-        """Gets authenticated user information from the API.
+        """Gets authenticated user information from the API as Member object. Does
+        not returns state and superuser information.
         calls "GET /user/me"
         Documentation: https://fabman.io/api/v1/documentation#/user/getUserMe
         """
-        raise NotImplementedError("get_user not implemented yet")
+        uri = "/user/me"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Member(self.__requester, response.json()["members"][0])

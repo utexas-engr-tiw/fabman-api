@@ -91,3 +91,17 @@ class TestFabman(unittest.TestCase):  # pylint: disable=missing-class-docstring
         embeds = member._embedded  # pylint: disable=protected-access
         self.assertTrue("memberPackages" in embeds)
         self.assertTrue("trainings" in embeds)
+
+    def test_get_user_me(self, m):  # pylint: disable=missing-function-docstring
+        register_uris({"fabman": ["get_user_me"]}, m)
+
+        member = self.fabman.get_user()
+        print(member)
+        self.assertIsInstance(member, Member)
+        self.assertTrue(hasattr(member, "id"))
+        self.assertTrue(hasattr(member, "firstName"))
+        self.assertTrue(hasattr(member, "account"))
+
+
+if __name__ == "__main__":
+    unittest.main()

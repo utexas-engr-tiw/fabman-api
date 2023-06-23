@@ -60,23 +60,23 @@
                         "lockVersion": 1,
                         "createdAt": "2023-06-06T18:21:59.819Z",
                         "updatedAt": "2023-06-06T18:21:59.819Z",
-                        "updatedBy": 256881,
-                        "id": 45041,
+                        "updatedBy": 1,
+                        "id": 1,
                         "fromDate": "2023-06-06",
-                        "trainingCourse": 1985,
+                        "trainingCourse": 1,
                         "untilDate": null,
                         "date": "2023-06-06",
                         "_embedded": {
                             "trainingCourse": {
-                                "id": 1985,
-                                "account": 2116,
+                                "id": 1,
+                                "account": 1,
                                 "title": "3D Training",
                                 "notes": null,
                                 "state": "active",
                                 "lockVersion": 2,
                                 "createdAt": "2023-06-06T18:20:24.443Z",
                                 "updatedAt": "2023-06-21T23:31:33.408Z",
-                                "updatedBy": 256881,
+                                "updatedBy": 1,
                                 "defaultDuration": 0,
                                 "defaultDurationUnit": "month"
                             }
@@ -112,8 +112,8 @@
                 "zip": null,
                 "countryCode": null,
                 "region": null,
-                "account": 2084,
-                "space": 2012,
+                "account": 1,
+                "space": 1,
                 "taxExempt": false,
                 "hasBillingAddress": false,
                 "billingFirstName": null,
@@ -165,8 +165,8 @@
                 "zip": null,
                 "countryCode": null,
                 "region": null,
-                "account": 2084,
-                "space": 2012,
+                "account": 1,
+                "space": 1,
                 "taxExempt": true,
                 "hasBillingAddress": false,
                 "billingFirstName": null,
@@ -191,5 +191,65 @@
             }
         ],
     "status_code": 200
+    },
+    "get_user_me": {
+        "method": "GET",
+        "endpoint": "/user/me",
+        "data": {
+            "members": [
+              {
+                "id": 1,
+                "memberNumber": "1",
+                "firstName": "John",
+                "lastName": "Doe",
+                "dateOfBirth": null,
+                "emailAddress": "lol@lolsman.com",
+                "company": "WorkingNimby",
+                "phone": "+1 512-232-5141",
+                "address": null,
+                "notes": null,
+                "state": "active",
+                "lockVersion": 1,
+                "createdAt": "2023-04-28T18:23:12.831Z",
+                "updatedAt": "2023-04-28T18:23:12.831Z",
+                "updatedBy": null,
+                "address2": null,
+                "city": null,
+                "zip": null,
+                "countryCode": null,
+                "region": null,
+                "account": 1,
+                "space": 1,
+                "taxExempt": false,
+                "hasBillingAddress": false,
+                "billingFirstName": null,
+                "billingLastName": null,
+                "billingCompany": null,
+                "billingAddress": null,
+                "billingAddress2": null,
+                "billingCity": null,
+                "billingZip": null,
+                "billingCountryCode": null,
+                "billingRegion": null,
+                "billingInvoiceText": null,
+                "gender": null,
+                "stripeCustomer": null,
+                "requireUpfrontPayment": false,
+                "upfrontMinimumBalance": "0.00",
+                "metadata": null,
+                "allowLogin": true,
+                "paidForBy": null,
+                "language": null,
+                "_embedded": {
+                  "privileges": {
+                    "privileges": "owner"
+                  }
+                }
+              }
+            ],
+            "emailAddress": "lol@lolsman.com",
+            "superuser": null,
+            "state": "active"
+          }
     }
 }
