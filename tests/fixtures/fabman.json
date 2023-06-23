@@ -1,5 +1,5 @@
 {
-    "get_by_id": {
+    "get_member_by_id": {
         "method": "GET",
         "endpoint": "/members/1",
         "data": {
@@ -10,7 +10,7 @@
         "status_code": 200
 
     },
-    "get_by_id_with_embed_str": {
+    "get_member_by_id_with_embed_str": {
         "method": "GET",
         "endpoint": "/members/1?embed=memberPackages",
         "data": {
@@ -34,7 +34,7 @@
         },
         "status_code": 200
     },
-    "get_by_id_with_embed_list_multi": {
+    "get_member_by_id_with_embed_list_multi": {
         "method": "GET",
         "endpoint": "/members/1?embed=memberPackages&embed=trainings",
         "data": {
@@ -252,7 +252,7 @@
             "state": "active"
           }
     },
-    "get_resource_id": {
+    "get_resource_by_id": {
         "method": "GET",
         "endpoint": "/resources/1",
         "data": {
