@@ -121,7 +121,7 @@ class Requester(object):
                 headers: Optional[dict] = None, use_auth: Optional[bool] = True,
                 _url: Optional[str] = None, _kwargs: Optional[dict] = None,
                 json: Optional[bool] = False, **kwargs
-                ) -> Union[requests.Response, None]:
+                ) -> requests.Response:
         """Main method for handling requests to the API. Should never be called directly except for 
         testing or from the Fabman class.
 
