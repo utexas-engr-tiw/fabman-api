@@ -1,6 +1,7 @@
 """General Utility Functions to be used throughout the package"""
 
-from typing import Any
+from typing import Any, Union
+from requests.structures import CaseInsensitiveDict
 
 
 def is_multivalued(value: Any):
@@ -21,7 +22,7 @@ def is_multivalued(value: Any):
         return False
 
 
-def clean_headers(headers: dict):
+def clean_headers(headers: Union[dict, CaseInsensitiveDict]):
     """Cleans the headers to hide sensitive information in logs. 
     Originally defined in canvasapi/util.py: 
     https://github.com/ucfopen/canvasapi/blob/develop/canvasapi/util.py#L228
