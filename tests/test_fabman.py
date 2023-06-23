@@ -54,7 +54,7 @@ class TestFabman(unittest.TestCase):
             )
 
     def test_get_member(self, m):
-        register_uris({"fabman": ["get_by_id"]}, m)
+        register_uris({"fabman": ["get_member_by_id"]}, m)
 
         member = self.fabman.get_member(1)
         self.assertIsInstance(member, Member)
@@ -67,7 +67,7 @@ class TestFabman(unittest.TestCase):
         the functionality of the Requester child object. Embedding does not need 
         to be checked for other resources, as they all use the same Requester.
         """
-        register_uris({"fabman": ["get_by_id_with_embed_str"]}, m)
+        register_uris({"fabman": ["get_member_by_id_with_embed_str"]}, m)
 
         member = self.fabman.get_member(1, embed="memberPackages")
         self.assertIsInstance(member, Member)
@@ -80,7 +80,7 @@ class TestFabman(unittest.TestCase):
         the functionality of the Requester child object. Embedding does not need 
         to be checked for other resources, as they all use the same Requester.
         """
-        register_uris({"fabman": ["get_by_id_with_embed_str"]}, m)
+        register_uris({"fabman": ["get_member_by_id_with_embed_str"]}, m)
 
         member = self.fabman.get_member(1, embed=["memberPackages"])
         self.assertIsInstance(member, Member)
@@ -96,7 +96,7 @@ class TestFabman(unittest.TestCase):
         the functionality of the Requester child object. Embedding does not need 
         to be checked for other resources, as they all use the same Requester.
         """
-        register_uris({"fabman": ["get_by_id_with_embed_list_multi"]}, m)
+        register_uris({"fabman": ["get_member_by_id_with_embed_list_multi"]}, m)
 
         member = self.fabman.get_member(
             1, embed=["memberPackages", "trainings"])
@@ -118,15 +118,12 @@ class TestFabman(unittest.TestCase):
         self.assertTrue(hasattr(member, "account"))
 
     def test_get_resource(self, m):
-        register_uris({"fabman": ["get_resource_id"]}, m)
+        register_uris({"fabman": ["get_resource_by_id"]}, m)
 
         resource = self.fabman.get_resource(1)
         self.assertIsInstance(resource, Resource)
         self.assertTrue(hasattr(resource, "id"))
         self.assertTrue(hasattr(resource, "name"))
-
-    def test_get_resources_embed(self, m):
-        register_uris({"fabman": ["get_resources_embed"]}, m)
 
 
 if __name__ == "__main__":
