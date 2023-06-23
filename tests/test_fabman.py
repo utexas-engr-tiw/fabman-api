@@ -52,7 +52,7 @@ class TestFabman(unittest.TestCase):  #pylint: disable=missing-class-docstring
             )
     
     def test_get_member(self, m):  #pylint: disable=missing-function-docstring
-        register_uris({"member": ["get_by_id"]}, m)
+        register_uris({"fabman": ["get_by_id"]}, m)
         
         member = self.fabman.get_member(1)
         self.assertIsInstance(member, Member);
@@ -60,15 +60,25 @@ class TestFabman(unittest.TestCase):  #pylint: disable=missing-class-docstring
         self.assertTrue(hasattr(member, "firstName"))
         
     def test_get_member_with_embed_str(self, m):  #pylint: disable=missing-function-docstring
-        register_uris({"member": ["get_by_id_with_embed_str"]}, m)
+        register_uris({"fabman": ["get_by_id_with_embed_str"]}, m)
         
         member = self.fabman.get_member(1, embed="memberPackages")
         self.assertIsInstance(member, Member);
         self.assertTrue(hasattr(member, "id"))
         self.assertTrue(hasattr(member, "_embedded"))
         
-    def test_get_member_with_embed_list(self, m):
-        register_uris({"member": ["get_by_id_with_embed_list"]}, m)
+    def test_get_member_with_embed_single_list(self, m):  #pylint: disable=missing-function-docstring
+        register_uris({"fabman": ["get_by_id_with_embed_str"]}, m)
+        
+        member = self.fabman.get_member(1, embed=["memberPackages"])
+        self.assertIsInstance(member, Member);
+        self.assertTrue(hasattr(member, "id"))
+        self.assertTrue(hasattr(member, "_embedded"))
+        
+        self.assertTrue("memberPackages" in member._embedded)
+        
+    def test_get_member_with_embed_multi_list(self, m):
+        register_uris({"fabman": ["get_by_id_with_embed_list_multi"]}, m)
         
         member = self.fabman.get_member(1, embed=["memberPackages", "trainings"])
         self.assertIsInstance(member, Member);
