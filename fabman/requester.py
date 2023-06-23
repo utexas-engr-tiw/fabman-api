@@ -4,7 +4,7 @@ made directly through the Fabman class found in fabman/fabman.py
 """
 import logging
 from pprint import pformat
-from typing import Optional, Union
+from typing import Optional
 import warnings
 
 import requests
@@ -216,8 +216,8 @@ class Requester(object):
             raise BadRequest(response.text)
         if response.status_code == 204:
             warnings.warn(
-                "204 No Content returned. This is likely an error, or edge case in"
-                "authorization.",
+                "204 No Content returned. This likely means there is no information"
+                "at the resource.",
                 UserWarning
             )
             return response
