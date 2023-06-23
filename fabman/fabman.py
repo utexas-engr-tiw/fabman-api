@@ -46,10 +46,24 @@ class Fabman(object):
 
         self.__requester = Requester(base_url, access_token)
 
-    def create_member(self, **kwargs):
+    def create_member(self, **kwargs) -> Member:
+        """Creates a new member in the Fabman database. 
+        Calls "POST /members"
+        Documentation: https://fabman.io/api/v1/documentation#/members/postMembers
+
+        Returns:
+        
+        """
         raise NotImplementedError("create_member not implemented yet")
 
     def get_members(self, **kwargs):
+        """Get all of the members in the Fabman database. Can specify filters, 
+        search string, result limits, offsets, and sorting. Refer to the Fabman API
+        documentation.
+        
+        calls "GET /members"
+        documentation https://fabman.io/api/v1/documentation#/members/getMembers
+        """
         raise NotImplementedError("get_members not implemented yet")
 
     def get_member(self, member_id: int, **kwargs):
@@ -63,7 +77,7 @@ class Fabman(object):
         uri = f"/members/{member_id}"
         
         response = self.__requester.request(
-            "GET", uri, _kwargs=combine_kwargs(**kwargs)
+            "GET", uri, _kwargs=kwargs
         )
 
         return Member(self.__requester, response.json())
