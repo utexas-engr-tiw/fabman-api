@@ -41,7 +41,6 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
         self._requester = requester
         self._first_url = first_url
         self._first_params = kwargs or {}
-        self._first_params["limit"] = kwargs.get("limit", 50)
         self._next_url = first_url
         self._next_params = self._first_params
         self._extra_attribs = extra_attribs or {}
