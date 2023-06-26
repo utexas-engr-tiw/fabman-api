@@ -1,0 +1,7 @@
+arrow==1.2.3
+pytz==2023.3
+requests==2.31.0
+requests-mock==1.11.0
+flake8
+isort
+coverage
