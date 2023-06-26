@@ -12,6 +12,7 @@ from fabman.job import Job
 from fabman.member import Member
 from fabman.package import Package
 from fabman.paginated_list import PaginatedList
+from fabman.payment import Payment
 from fabman.requester import Requester
 from fabman.resources import Resource
 from fabman.training_course import TrainingCourse
@@ -308,6 +309,38 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/packages",
+            kwargs=kwargs
+        )
+
+    def get_payment(self, payment_id, **kwargs) -> Payment:
+        """
+        Retrieves a single payment given a payment_id.
+
+        Calls "GET /payments/{id}"
+        Documentation https://fabman.io/api/v1/documentation#/payments/getPaymentsId
+        """
+
+        uri = f"/payments/{payment_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Payment(self.__requester, response.json())
+
+    def get_payments(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of payments. Can specify filters, search string, etc.
+
+        Calls "GET /payments"
+        Documentation https://fabman.io/api/v1/documentation#/payments/getPayments
+        """
+
+        return PaginatedList(
+            Payment,
+            self.__requester,
+            "GET",
+            "/payments",
             kwargs=kwargs
         )
 
