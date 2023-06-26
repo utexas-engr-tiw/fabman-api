@@ -1,5 +1,5 @@
 """Handles pagination of the api"""
-from typing import Optional
+from typing import Optional, Type
 
 from requests.structures import CaseInsensitiveDict
 
@@ -23,7 +23,7 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
         return self._elements[index]
 
     def __init__(self,  # pylint: disable=too-many-arguments
-                 content_class: type[FabmanObject],
+                 content_class: Type[FabmanObject],
                  requester: Requester,
                  request_method: str,
                  first_url: str,
