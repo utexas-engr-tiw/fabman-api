@@ -23,14 +23,14 @@ pip install git+https://github.com/utexas-engr-tiw/fabman-api
 
 To start interacting with the Fabman API, simply provide your API key:
 
-```
+```python
 from fabman import Fabman
 
 f = Fabman(API_KEY)
 ```
 
 From there, you can begin interacting with api endpoints as described in the official documentation. Most top-level methods return an object which manages that object. For example, to get a single member and update that member's name,
-```
+```python
 member = f.get_member(12345)
 member.update(firstName="Natalie", lastName="Wynn")
 ```
