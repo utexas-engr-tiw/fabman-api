@@ -1,3 +1,4 @@
+"""Defines and handles the TrainingCourse object"""
 import requests
 from fabman.fabman_object import FabmanObject
 
