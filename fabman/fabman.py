@@ -18,7 +18,7 @@ class Fabman(object):
     The main class to be instantiated to provide access to the Fabman api.
     """
 
-    def __init__(self, access_token, base_url="https://fabman.io/api/v1"):
+    def __init__(self, access_token: str, base_url="https://fabman.io/api/v1"):
         """Initializes the Fabman class with the given access token and base url.
         All methods take kwargs as their arguments, please refer to the Fabman API
         for more information

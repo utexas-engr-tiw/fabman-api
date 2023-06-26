@@ -13,7 +13,7 @@ class SanityTest(unittest.TestCase):
 
     def test_fabman_import(self):
         """Quick sanity to check to ensure fabman is imported correctly"""
-        key = 123
+        key = '123'
         fab = fabman.Fabman(key)
         self.assertEqual(fab.__class__.__name__, 'Fabman')
 

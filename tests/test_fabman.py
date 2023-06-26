@@ -23,7 +23,7 @@ class TestFabman(unittest.TestCase):
             ValueError,
             msg="No access token provided"
         ):
-            Fabman(None)
+            Fabman("")
 
     def test_init_empty_api_key(self, m):
         with self.assertRaises(
