@@ -26,6 +26,7 @@ To start interacting with the Fabman API, simply provide your API key:
 ```python
 from fabman import Fabman
 
+API_KEY = 'abcdef-123456789-a1b2c3d4e5f6a7b8'
 f = Fabman(API_KEY)
 ```
 
