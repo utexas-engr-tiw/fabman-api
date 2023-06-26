@@ -152,7 +152,7 @@ class Requester(object):
         Returns:
             _type_: _description_
         """
-        full_url = _url if _url else f"{self.base_url}/{endpoint}"
+        full_url = _url if _url else f"{self.base_url}{endpoint}"
 
         if not headers:
             headers = {}
