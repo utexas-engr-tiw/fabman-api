@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/utexas-engr-tiw/fabman-api/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/utexas-engr-tiw/fabman-api/actions)
+[![Build Status](https://github.com/utexas-engr-tiw/fabman-api/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/utexas-engr-tiw/fabman-api/actions)
 
 # fabman-api
 
