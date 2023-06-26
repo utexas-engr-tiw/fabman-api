@@ -28,6 +28,8 @@ class FabmanObject(object):
 
         self._requester = requester
         self.set_attributes(attributes)
+        if "_embedded" not in self.__dict__:
+            self._embedded = {}
 
     def __repr__(self) -> str:
         classname = self.__class__.__name__
