@@ -6,6 +6,7 @@ import warnings
 
 from fabman.account import Account
 from fabman.booking import Booking
+from fabman.charge import Charge
 from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
@@ -145,6 +146,38 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/bookings",
+            kwargs=kwargs
+        )
+
+    def get_charge(self, charge_id: int, **kwargs) -> Charge:
+        """
+        Retrieves a single Charge given the charge_id.
+
+        Calls "Get /charges/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/charges/getChargesId
+        """
+
+        uri = f"/charges/{charge_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Charge(self.__requester, response.json())
+
+    def get_charges(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves all charges from the API. Can specify filters, search string, etc.
+
+        Calls "GET /charges"
+        Documentation: https://fabman.io/api/v1/documentation#/charges/getCharges
+        """
+
+        return PaginatedList(
+            Charge,
+            self.__requester,
+            "GET",
+            "/charges",
             kwargs=kwargs
         )
 
