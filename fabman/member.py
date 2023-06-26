@@ -1,7 +1,125 @@
 """Defines and handles the Member object returned by the API"""
 # pylint: disable=too-many-public-methods, line-too-long
+from typing import Union
+
 import requests
+
 from fabman.fabman_object import FabmanObject
+from fabman.paginated_list import PaginatedList
+
+
+class MemberCredit(FabmanObject):
+    """
+    Simple Class to handle operations on MemberCredits
+    """
+
+    def __str__(self):
+        return f"{self.id}: {self.scope} - {self.amount}"
+
+    def delete(self, **kwargs) -> requests.Response:
+        """
+        Deletes a credit from a user account. *WARNING: THIS CANNOT BE UNDONE.*
+
+        Calls "DELETE /members/{member_id}/credits/{credit_id}"
+        Documentation https://fabman.io/api/v1/documentation#/members/deleteMembersIdCreditsCreditId
+        """
+        response = self._requester.request(
+            "DELETE" f"/members/{self.member_id}/credits/{self.id}",
+            _kwargs=kwargs
+        )
+
+        return response.json()
+
+    def update(self, **kwargs) -> None:
+        """
+        Updates an existing credit in place
+
+        Calls "PUT /members/{id}/credits/{creditId}"
+        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdCreditsCreditId
+        """
+        response = self._requester.request(
+            "PUT", f"/members/{self.member_id}/credits/{self.id}",
+            _kwargs=kwargs
+        )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
+
+
+class MemberKey(FabmanObject):
+    """
+    Manage a member keycard object
+    """
+
+    def __str__(self):
+        return f"{self.member} - {self.type}"
+
+    def delete(self, **kwargs) -> requests.Response:
+        """
+        Deletes a member key
+
+        Calls "DELETE /members/{self.member}/key"
+        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdKey
+        """
+        response = self._requester.request(
+            "DELETE", f"/members/{self.member}/key",
+            _kwargs=kwargs
+        )
+
+        return response.json()
+
+    def update(self, **kwargs) -> None:
+        """
+        Updates a member key and updates the MemberKey object in place with new 
+        data from the API.
+
+        Calls "PUT /member{self.member}/key"
+        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdKey
+        """
+        response = self._requester.request(
+            "PUT", f"/members/{self.member}/key",
+            _kwargs=kwargs
+        )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
+
+
+class MemberPackage(FabmanObject):
+    """
+    Simple class for managing member packages
+    """
+
+    def __str__(self):
+        return f"{self.id} - {self.package}"
+
+    def delete(self, **kwargs) -> requests.Response:
+        """Removes the package from the current user account. *WARNING: THIS CANNOT BE UNDONE.*
+
+        Calls "DELETE /members/{id}/packages/{memberPackageId}"
+        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdPackagesMemberPackageId
+        """
+
+        response = self._requester.request(
+            "DELETE", f"/members/{self.member_id}/packages/{self.id}",
+            _kwargs=kwargs
+        )
+
+        return response.json()
+
+    def get_package(self) -> None:
+        """
+        Gets information about the package
+
+        Calls "GET /packages/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesId
+        """
+        raise NotImplementedError(
+            "get_package_info not implemented yet. Awaiting Packages implementation")
 
 
 class Member(FabmanObject):
@@ -12,17 +130,40 @@ class Member(FabmanObject):
     def __str__(self):
         return f"{self.id}: {self.firstName} {self.lastName}"
 
-    def create_credit(self, **kwargs) -> requests.Response:
+    def create_credit(self, **kwargs) -> MemberCredit:
         """
         Creates a member credit
         calls "POST /members/{id}/credits"
         Documentation: https://fabman.io/api/v1/documentation#/members/postMembersIdCredits
         """
-        return self._requester.request(
+
+        kwargs.update({"lockVersion": self.lockVersion})
+
+        response = self._requester.request(
             "POST", f"/members/{self.id}/credits",
             _kwargs=kwargs,
-            json=True
         )
+
+        data = response.json()
+        data.update({"member_id": self.id})
+
+        return MemberCredit(self._requester, data)
+
+    def create_key(self, **kwargs) -> MemberKey:
+        """
+        Creates a key for the member if one does not already exist. If member already has 
+        a key, use `update_key()`.
+
+        Calls "POST /members/{id}/key"
+        Documentation: https://fabman.io/api/v1/documentation#/members/postMembersIdKey
+        """
+
+        response = self._requester.request(
+            "POST", f"/members/{self.id}/key",
+            _kwargs=kwargs
+        )
+
+        return MemberKey(self._requester, response.json())
 
     def delete_member(self, **kwargs) -> requests.Response:
         """
@@ -65,28 +206,6 @@ class Member(FabmanObject):
         """
         return self._requester.request(
             "DELETE", f"/members/{self.id}/device/changes/{change_id}",
-            _kwargs=kwargs,
-        )
-
-    def delete_key(self, **kwargs) -> requests.Response:
-        """
-        Deletes a member key
-        calls "DELETE /members/{id}/key"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdKey
-        """
-        return self._requester.request(
-            "DELETE", f"/members/{self.id}/key",
-            _kwargs=kwargs,
-        )
-
-    def delete_package(self, member_package_id: int, **kwargs) -> requests.Response:
-        """
-        Deletes a member package given package ID
-        Calls "DELETE /members/{id}/packages/{memberPackageId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdPackagesMemberPackageId
-        """
-        return self._requester.request(
-            "DELETE", f"/members/{self.id}/packages/{member_package_id}",
             _kwargs=kwargs,
         )
 
@@ -138,20 +257,22 @@ class Member(FabmanObject):
 
         return response.json()
 
-    def get_credits(self, **kwargs) -> requests.Response:
+    def get_credits(self, **kwargs) -> PaginatedList:
         """
         Retrieves the credits of a member
         calls "GET /members/{id}/credits"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdCredits
         """
-        response = self._requester.request(
-            "GET", f"/members/{self.id}/credits",
-            _kwargs=kwargs,
+        return PaginatedList(
+            MemberCredit,
+            self._requester,
+            "GET",
+            f"/members/{self.id}/credits",
+            extra_attribs={"member_id": self.id},
+            kwargs=kwargs,
         )
 
-        return response.json()
-
-    def get_credit_by_id(self, credit_id: int, **kwargs) -> requests.Response:
+    def get_credit_by_id(self, credit_id: int, **kwargs) -> MemberCredit:
         """
         Retrieves a credit of a member
         calls "GET /members/{id}/credits/{creditId}"
@@ -162,7 +283,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
+
+        return MemberCredit(self._requester, response.json())
 
     def get_credit_uses_by_id(self, credit_id: int, **kwargs) -> requests.Response:
         """
@@ -183,6 +307,9 @@ class Member(FabmanObject):
         calls "GET /members/{id}/devices"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdDevice
         """
+        if "device" in self._embedded:
+            return self._embedded["device"]
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/device",
             _kwargs=kwargs,
@@ -243,6 +370,9 @@ class Member(FabmanObject):
         calls "GET /members/{id}/key"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdKey
         """
+        if "key" in self._embedded:
+            return self._embedded["key"]
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/key",
             _kwargs=kwargs,
@@ -250,31 +380,46 @@ class Member(FabmanObject):
 
         return response.json()
 
-    def get_packages(self, **kwargs):
+    def get_packages(self, **kwargs) -> Union[list, PaginatedList]:
         """
         Retrieves the packages of a member
+
         calls "GET /members/{id}/packages"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPackages
         """
-        response = self._requester.request(
-            "GET", f"/members/{self.id}/packages",
-            _kwargs=kwargs,
+        if "memberPackages" in self._embedded:
+            out = []
+            for package in self._embedded["memberPackages"]:
+                package.update({"member_id": self.id})
+                out.append(MemberPackage(self._requester, package))
+            return out
+
+        return PaginatedList(
+            MemberPackage,
+            self._requester,
+            "GET",
+            f"/members/{self.id}/packages",
+            extra_attribs={"member_id": self.id},
+            kwargs=kwargs
         )
 
-        return response.json()
-
-    def get_package(self, member_package_id: int, **kwargs) -> requests.Response:
+    def get_package(self, member_package_id: int, **kwargs) -> MemberPackage:
         """
         Retrieves a package of a member
         calls "GET /members/{id}/packages/{memberPackageId}"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPackagesMemberPackageId
         """
+        if "memberPackages" in self._embedded:
+            for package in self._embedded["memberPackages"]:
+                if package["id"] == member_package_id:
+                    return package
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/packages/{member_package_id}",
             _kwargs=kwargs,
         )
 
-        return response.json()
+        return MemberPackage(self._requester, response.json())
 
     def get_payment_account(self, **kwargs) -> requests.Response:
         """
@@ -321,6 +466,9 @@ class Member(FabmanObject):
         calls "GET /members/{id}/privileges"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPrivileges
         """
+        if "privileges" in self._embedded:
+            return self._embedded["privileges"]
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/privileges",
             _kwargs=kwargs,
@@ -347,6 +495,9 @@ class Member(FabmanObject):
         calls "GET /members/{id}/trainings"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdTrainings
         """
+        if "trainings" in self._embedded:
+            return self._embedded["trainings"]
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/trainings",
             _kwargs=kwargs,
@@ -360,9 +511,53 @@ class Member(FabmanObject):
         calls "GET /members/{id}/trainings/{trainingId}"
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdTrainingsTrainingId
         """
+        if "trainings" in self._embedded:
+            for training in self._embedded["trainings"]:
+                if training["id"] == training_id:
+                    return training
+
         response = self._requester.request(
             "GET", f"/members/{self.id}/trainings/{training_id}",
             _kwargs=kwargs,
         )
 
         return response.json()
+
+    def refresh(self) -> None:
+        """
+        Updates the objects with more recent data from the API. Needs to be called
+        when update() fails for lockVersioning.
+
+        Calls "GET /members/{id}"
+        Documentation https://fabman.io/api/v1/documentation#/members/getMembersId
+        """
+
+        response = self._requester.request(
+            "GET", f"/members/{self.id}"
+        )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
+
+    def update(self, **kwargs) -> None:
+        """
+        Updates the member object and sets the modified attributes based on what
+        is returned by the server.  Member object is updated in place.
+
+        calls "PUT /members/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersId
+        """
+
+        kwargs.update({"lockVersion": self.lockVersion})
+
+        response = self._requester.request(
+            "PUT", f"/members/{self.id}",
+            _kwargs=kwargs,
+        )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
