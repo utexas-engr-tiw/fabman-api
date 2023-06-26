@@ -6,9 +6,6 @@ from requests.structures import CaseInsensitiveDict
 from fabman.fabman_object import FabmanObject
 from fabman.requester import Requester
 
-import logging
-
-logger = logging.getLogger(__name__)
 
 class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
     """
@@ -25,7 +22,7 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
         self._get_up_to_index(index)
         return self._elements[index]
 
-    def __init__(self,  #pylint: disable=too-many-arguments
+    def __init__(self,  # pylint: disable=too-many-arguments
                  content_class: type[FabmanObject],
                  requester: Requester,
                  request_method: str,
