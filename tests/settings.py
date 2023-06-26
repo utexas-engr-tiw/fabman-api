@@ -8,5 +8,4 @@ BASE_URL_AS_INVALID = "fabman.io"
 BASE_URL_WITH_EXTRA_SPACES = " https://fabman.io "
 API_KEY = "123"
 API_KEY_WITH_EXTRA_SPACES = " 123 "
-
 INVALID_ID = 9001
