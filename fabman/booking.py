@@ -29,10 +29,10 @@ class Booking(FabmanObject):
 
         return response.json()
 
-    def update(self, **kwargs):
+    def update(self, **kwargs) -> None:
         """
         Update the booking object on the server. Returns the updated booking object.
-        Updates all information in place and returns a copy of the current object.
+        Updates all information in place.
 
         Calls "PUT /bookings/{id}"
         Documentation: https://fabman.io/api/v1/documentation#/bookings/putBookingsId
@@ -48,5 +48,3 @@ class Booking(FabmanObject):
 
         for attr, val in data.items():
             setattr(self, attr, val)
-
-        return self
