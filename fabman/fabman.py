@@ -5,6 +5,7 @@
 import warnings
 
 from fabman.account import Account
+from fabman.booking import Booking
 from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
@@ -113,6 +114,37 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/accounts",
+            kwargs=kwargs
+        )
+
+    def get_booking(self, booking_id, **kwargs) -> Booking:
+        """
+        Get a single booking by its ID.
+
+        Calls "GET /bookings/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/bookings/getBookingsId
+        """
+        uri = f"/bookings/{booking_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Booking(self.__requester, response.json())
+
+    def get_bookings(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a PaginatedList of bookings from the API. Can specify filters, search 
+        string, etc.
+
+        Calls "GET /bookings"
+        Documentation: https://fabman.io/api/v1/documentation#/bookings/getBookings
+        """
+        return PaginatedList(
+            Booking,
+            self.__requester,
+            "GET",
+            "/bookings",
             kwargs=kwargs
         )
 
