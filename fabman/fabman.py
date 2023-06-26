@@ -7,6 +7,8 @@ import warnings
 from fabman.account import Account
 from fabman.booking import Booking
 from fabman.charge import Charge
+from fabman.invoice import Invoice
+from fabman.job import Job
 from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
@@ -178,6 +180,68 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/charges",
+            kwargs=kwargs
+        )
+
+    def get_invoice(self, invoice_id, **kwargs) -> Invoice:
+        """
+        Retrieve information of a single invoice by its ID.
+
+        Calls "GET /invoices/{id}"
+        Documentation https://fabman.io/api/v1/documentation#/invoices/getInvoicesId
+        """
+
+        uri = f"/invoices/{invoice_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Invoice(self.__requester, response.json())
+
+    def get_invoices(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves list of all invoices. Can specify filters, search string, etc.
+
+        Calls "GET /invoices"
+        Documentation https://fabman.io/api/v1/documentation#/invoices/getInvoices
+        """
+
+        return PaginatedList(
+            Invoice,
+            self.__requester,
+            "GET",
+            "/invoices",
+            kwargs=kwargs
+        )
+
+    def get_job(self, job_id, **kwargs):
+        """
+        Retrieve a single job from the Fabman API given the job_id.
+
+        Calls "GET /jobs/{id}"
+        Documentation https://fabman.io/api/v1/documentation
+        """
+        uri = f"/jobs/{job_id}"
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Job(self.__requester, response.json())
+
+    def get_jobs(self, **kwargs):
+        """
+        Retrieves a list of all jobs. Can specify filters, search string, etc.
+
+        Calls "GET /jobs"
+        Documentation https://fabman.io/api/v1/documentation#/jobs/getJobs
+        """
+
+        return PaginatedList(
+            Job,
+            self.__requester,
+            "GET",
+            "/jobs",
             kwargs=kwargs
         )
 
