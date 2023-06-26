@@ -7,7 +7,8 @@ import requests_mock
 
 from fabman import Fabman
 from fabman.exceptions import ResourceDoesNotExist
-from fabman.member import Member
+from fabman.member import Member, MemberCredit, MemberPackage, MemberKey
+from fabman.paginated_list import PaginatedList
 
 from tests import settings
 from tests.util import register_uris
@@ -45,13 +46,13 @@ class TestMembers(unittest.TestCase):
         register_uris({"member": ["get_credits"]}, m)
 
         _credits = self.member.get_credits()
-        self.assertIsInstance(_credits, list)
+        self.assertIsInstance(_credits, PaginatedList)
 
     def test_get_credit_by_credit_id(self, m):
         register_uris({"member": ["get_credit_by_id"]}, m)
 
         credit = self.member.get_credit_by_id(1)
-        self.assertIsInstance(credit, dict)
+        self.assertIsInstance(credit, MemberCredit)
 
     # note there are no credits on my test account, so this is unverifiable
     def test_get_credit_uses_by_id(self, m):
@@ -109,13 +110,13 @@ class TestMembers(unittest.TestCase):
         register_uris({"member": ["get_packages"]}, m)
         key = self.member.get_packages()
 
-        self.assertIsInstance(key, list)
+        self.assertIsInstance(key, PaginatedList)
 
     def test_get_package_by_id(self, m):
         register_uris({"member": ["get_package_by_id"]}, m)
         key = self.member.get_package(1)
 
-        self.assertIsInstance(key, dict)
+        self.assertIsInstance(key, MemberPackage)
 
     def test_get_package_by_id_doesnt_hold(self, m):
         register_uris({"member": ["get_package_by_id_doesnt_hold"]}, m)
