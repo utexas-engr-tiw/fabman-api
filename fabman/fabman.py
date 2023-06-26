@@ -10,6 +10,7 @@ from fabman.charge import Charge
 from fabman.invoice import Invoice
 from fabman.job import Job
 from fabman.member import Member
+from fabman.package import Package
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
 from fabman.resources import Resource
@@ -277,6 +278,38 @@ class Fabman(object):
         )
 
         return Member(self.__requester, response.json())
+
+    def get_package(self, package_id: int, **kwargs) -> Package:
+        """
+        Retrieves a single Package given a package_id
+
+        Calls "GET /packages/{id}"
+        Documentation https://fabman.io/api/v1/documentation#/packages/getPackagesId
+        """
+
+        uri = f"/packages/{package_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Package(self.__requester, response.json())
+
+    def get_packages(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of packages. Can specify filters, search string, etc.
+
+        Calls "GET /packages"
+        Documentation https://fabman.io/api/v1/documentation#/packages/getPackages
+        """
+
+        return PaginatedList(
+            Package,
+            self.__requester,
+            "GET",
+            "/packages",
+            kwargs=kwargs
+        )
 
     def get_resources(self, **kwargs):
         """
