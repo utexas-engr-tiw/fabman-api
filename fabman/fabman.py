@@ -8,6 +8,7 @@ from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
 from fabman.resources import Resource
+from fabman.training_courses import TrainingCourse
 
 
 class Fabman(object):
@@ -48,7 +49,7 @@ class Fabman(object):
 
         self.__requester = Requester(base_url, access_token)
 
-    def create_member(self, member_data, **kwargs) -> Member:
+    def create_member(self, **kwargs) -> Member:
         """Creates a new member in the Fabman database.
         Calls "POST /members"
         Documentation: https://fabman.io/api/v1/documentation#/members/postMembers
@@ -56,14 +57,29 @@ class Fabman(object):
         Returns:
 
         """
-        uri = f"/members"
-        
+        uri = "/members"
+
         response = self.__requester.request(
-            "POST", uri, _kwargs=member_data
+            "POST", uri, _kwargs=kwargs
         )
-        
+
         return Member(self.__requester, response.json())
-        
+
+    def create_training_course(self, **kwargs) -> TrainingCourse:
+        """
+        Creates a new Training course in the Fabman database.
+
+        Calls "POST /training-courses"
+        Documentation: https://fabman.io/api/v1/documentation#/training-courses/postTrainingcourses
+        """
+
+        uri = "/training-courses"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return TrainingCourse(self.__requester, response.json())
 
     def get_members(self, **kwargs):
         """Get all of the members in the Fabman database. Can specify filters,
@@ -73,12 +89,13 @@ class Fabman(object):
         calls "GET /members"
         documentation https://fabman.io/api/v1/documentation#/members/getMembers
         """
-        
+
         return PaginatedList(
             Member,
             self.__requester,
             "GET",
             "/members",
+            kwargs=kwargs
         )
 
     def get_member(self, member_id: int, **kwargs):
@@ -104,12 +121,13 @@ class Fabman(object):
         calls "GET /resources"
         Documentation: https://fabman.io/api/v1/documentation#/resources/getResources
         """
-        raise NotImplementedError("get_resources not implemented yet. Awaiting Pagination")
+        raise NotImplementedError(
+            "get_resources not implemented yet. Awaiting Pagination")
 
     def get_resource(self, resource_id: int, **kwargs):
         """
         Get a single resource by its ID. Embed information is also available.
-        
+
         Calls "GET /resources/{id}"
         Documentation: https://fabman.io/api/v1/documentation#/resources/getResourcesId
         """
@@ -120,6 +138,35 @@ class Fabman(object):
         )
 
         return Resource(self.__requester, response.json())
+
+    def get_training_course(self, course_id, **kwargs):
+        """
+        Retrieve a single TrainingCourse object from the API.
+
+        Calls "GET /training-courses/{id}"
+        Documentaiton: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcoursesId
+        """
+        uri = f"/training-courses/{course_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return TrainingCourse(self.__requester, response.json())
+
+    def get_training_courses(self, **kwargs):
+        """
+        Retrieves a PaginatedList of Training Courses available on the api.
+
+        Calls "GET /training-courses"
+        Documentation: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcourses
+        """
+        return PaginatedList(
+            TrainingCourse,
+            self.__requester,
+            "GET",
+            "/training-courses",
+        )
 
     def get_user(self, **kwargs):
         """Gets authenticated user information from the API as Member object. Does
