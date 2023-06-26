@@ -4,8 +4,9 @@
 
 import warnings
 
-from fabman.requester import Requester
 from fabman.member import Member
+from fabman.paginated_list import PaginatedList
+from fabman.requester import Requester
 from fabman.resources import Resource
 
 
@@ -47,7 +48,7 @@ class Fabman(object):
 
         self.__requester = Requester(base_url, access_token)
 
-    def create_member(self, **kwargs) -> Member:
+    def create_member(self, member_data, **kwargs) -> Member:
         """Creates a new member in the Fabman database.
         Calls "POST /members"
         Documentation: https://fabman.io/api/v1/documentation#/members/postMembers
@@ -55,7 +56,14 @@ class Fabman(object):
         Returns:
 
         """
-        raise NotImplementedError("create_member not implemented yet")
+        uri = f"/members"
+        
+        response = self.__requester.request(
+            "POST", uri, _kwargs=member_data
+        )
+        
+        return Member(self.__requester, response.json())
+        
 
     def get_members(self, **kwargs):
         """Get all of the members in the Fabman database. Can specify filters,
@@ -65,7 +73,13 @@ class Fabman(object):
         calls "GET /members"
         documentation https://fabman.io/api/v1/documentation#/members/getMembers
         """
-        raise NotImplementedError("get_members not implemented yet. Awaiting Pagination")
+        
+        return PaginatedList(
+            Member,
+            self.__requester,
+            "GET",
+            "/members",
+        )
 
     def get_member(self, member_id: int, **kwargs):
         """Retrieves a member from the API give their id
