@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel>=0.37.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fabman"
+version = "0.1.0"
+authors = [
+    {name = "Davin Lawrence", email="davin.lawrence@utexas.edu"},
+]
+dependencies = [
+    "requests>=2.31.0",
+    "arrow>=1.2.3",
+    "pytz==2023.3"
+]
+description = "Python wrappers for interacting with the Fabman API"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers=[
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/utexas-engr-tiw/fabman-api"
+"Bug Tracker" = "https://github.com/utexas-engr-tiw/fabman-api/issues"
