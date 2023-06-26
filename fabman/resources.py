@@ -11,6 +11,25 @@ class ResourceBridge(FabmanObject):
     def __str__(self):
         return f"Resource #{self.serialNumber}: {self.inUse}, {self.updatedAt}"
 
+    def update(self, **kwargs) -> None:
+        """
+        Update the bridge object on the server. Returns the updated bridge object.
+        Updates all information in place.
+
+        Calls "PUT /resources/{resource_id}/bridge"
+        Documentation: https://fabman.io/api/v1/documentation#/resources/putResourcesIdBridge
+        """
+        uri = f"/resources/{self.resource_id}/bridge"
+
+        response = self._requester.request(
+            "PUT", uri, _kwargs=kwargs
+        )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
+
 
 class Resource(FabmanObject):
     """
@@ -67,7 +86,10 @@ class Resource(FabmanObject):
             "GET", uri, _kwargs=kwargs
         )
 
-        return ResourceBridge(self._requester, response.json())
+        data = response.json()
+        data.update({"resource_id": self.id})
+
+        return ResourceBridge(self._requester, data)
 
     def get_bridge_api_key(self, **kwargs) -> requests.Response:
         """
@@ -102,23 +124,7 @@ class Resource(FabmanObject):
 
         return response.json()
 
-    def update_bridge(self, **kwargs) -> requests.Response:
-        """
-        Update the bridge that is currently connected to this resource. If no bridge
-        is currently connected, this will attach a new bridge to the resource.
-
-        Calls "PUT /resources/{id}/bridge"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/putResourcesIdBridge
-        """
-        uri = f"/resources/{self.id}/bridge"
-
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
-
-        return response.json()
-
-    def update_resource(self, **kwargs) -> requests.Response:
+    def update(self, **kwargs) -> None:
         """
         Update the resource.
 
@@ -131,4 +137,7 @@ class Resource(FabmanObject):
             "PUT", uri, _kwargs=kwargs
         )
 
-        return response.json()
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
