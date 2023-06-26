@@ -3,25 +3,18 @@ or called directly as it is meant to be used internally. All accesses should be
 made directly through the Fabman class found in fabman/fabman.py
 """
 import logging
-from pprint import pformat
-from typing import Optional
 import warnings
+from pprint import pformat
+from time import sleep
+from typing import Optional
 
 import requests
 
+from fabman.exceptions import (BadRequest, Conflict, FabmanException,
+                               ForbiddenError, InvalidAccessToken,
+                               ResourceDoesNotExist, Unauthorized,
+                               UnprocessableEntity)
 from fabman.util import clean_headers
-from fabman.exceptions import (
-    BadRequest,
-    InvalidAccessToken,
-    Unauthorized,
-    ResourceDoesNotExist,
-    FabmanException,
-    ForbiddenError,
-    Conflict,
-    UnprocessableEntity,
-    RateLimitExceeded,
-)
-
 
 logger = logging.getLogger(__name__)
 
@@ -233,8 +226,16 @@ class Requester(object):
             raise Conflict(response.text)
         if response.status_code == 422:
             raise UnprocessableEntity(response.text)
+        # rate limit is number of request/second at time of writing. Unable to hit the
+        # rate limit on home connection to verify this handling works. May break in the future.
         if response.status_code == 429:
-            raise RateLimitExceeded(response.text)
+            logger.warning(
+                "Rate limit exceeded. Waiting before trying again."
+            )
+            sleep(5)
+            self.request(method, endpoint, headers, use_auth,
+                         _url, _kwargs, json, **kwargs)
+
         if response.status_code > 400:
             # catch all for other (bad)codes
             raise FabmanException(
