@@ -13,7 +13,7 @@ class Account(FabmanObject):
     def __str__(self):
         return f"Account #{self.id}: {self.name}"
 
-    def update_account(self, **kwargs) -> requests.Response:
+    def update(self, **kwargs) -> None:
         """
         Update information on the account. Note that many fields may be unalterable
         by the API key holder.
@@ -23,11 +23,16 @@ class Account(FabmanObject):
         """
         uri = f"/accounts/{self.id}"
 
+        kwargs.update({"lockVersion": self.lockVersion})
+
         response = self._requester.request(
             "PUT", uri, _kwargs=kwargs
         )
 
-        return response.json()
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
 
     def get_payment_info(self, **kwargs) -> requests.Response:
         """
