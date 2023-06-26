@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/utexas-engr-tiw/fabman-api/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/utexas-engr-tiw/fabman-api/actions)
+
 # fabman-api
 
 Library for interfacing with te Fabman API. Created for Texas Inventionworks as part of the Cockrell School of Engineering at the University of Texas at Austin.
