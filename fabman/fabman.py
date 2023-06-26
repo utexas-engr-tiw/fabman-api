@@ -4,6 +4,7 @@
 
 import warnings
 
+from fabman.account import Account
 from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
@@ -81,6 +82,40 @@ class Fabman(object):
 
         return TrainingCourse(self.__requester, response.json())
 
+    def get_account(self, account_id, **kwargs) -> Account:
+        """
+        Get a single account by its ID. Note: for most users, the only account
+        retrievable is the account of the API key holder. Majority of endpoints
+        are not implemented as they require superuser privileges.
+
+        Calls "GET /accounts/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/accounts/getAccountsId
+        """
+
+        uri = f"/accounts/{account_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Account(self.__requester, response.json())
+
+    def get_accounts(self, **kwargs) -> PaginatedList:
+        """
+        Get a list of accounts. Note, for most users this will only return the account
+        of the API key holder. Most documented endpoints are unimplemented as a result.
+
+        Calls "GET /accounts"
+        Documentation: https://fabman.io/api/v1/documentation#/accounts/getAccounts
+        """
+        return PaginatedList(
+            Account,
+            self.__requester,
+            "GET",
+            "/accounts",
+            kwargs=kwargs
+        )
+
     def get_members(self, **kwargs):
         """Get all of the members in the Fabman database. Can specify filters,
         search string, result limits, offsets, and sorting. Refer to the Fabman API
@@ -144,7 +179,7 @@ class Fabman(object):
         Retrieve a single TrainingCourse object from the API.
 
         Calls "GET /training-courses/{id}"
-        Documentaiton: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcoursesId
+        Documentation: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcoursesId
         """
         uri = f"/training-courses/{course_id}"
 
@@ -166,6 +201,7 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/training-courses",
+            kwargs=kwargs
         )
 
     def get_user(self, **kwargs):
