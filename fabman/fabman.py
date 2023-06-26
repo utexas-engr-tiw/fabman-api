@@ -8,7 +8,7 @@ from fabman.member import Member
 from fabman.paginated_list import PaginatedList
 from fabman.requester import Requester
 from fabman.resources import Resource
-from fabman.training_courses import TrainingCourse
+from fabman.training_course import TrainingCourse
 
 
 class Fabman(object):
