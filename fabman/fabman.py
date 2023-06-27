@@ -17,6 +17,7 @@ from fabman.requester import Requester
 from fabman.resource import Resource
 from fabman.resource_log import ResourceLog
 from fabman.resource_type import ResourceType
+from fabman.space import Space
 from fabman.training_course import TrainingCourse
 
 
@@ -432,6 +433,38 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/resource-types",
+            kwargs=kwargs
+        )
+
+    def get_space(self, space_id, **kwargs) -> Space:
+        """
+        Retrieves a single space given a space_id.
+
+        calls "GET /spaces/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/spaces/getSpacesId
+        """
+
+        uri = f"/spaces/{space_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Space(self.__requester, response.json())
+
+    def get_spaces(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of Spaces. Can specify filters, search string, etc.
+
+        Calls "GET /spaces"
+        Documentation: https://fabman.io/api/v1/documentation#/spaces/getSpaces
+        """
+
+        return PaginatedList(
+            Space,
+            self.__requester,
+            "GET",
+            "/spaces",
             kwargs=kwargs
         )
 
