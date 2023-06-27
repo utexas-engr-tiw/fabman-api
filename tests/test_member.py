@@ -3,20 +3,19 @@
 
 import unittest
 import warnings
+
 import requests_mock
 
 from fabman import Fabman
 from fabman.exceptions import ResourceDoesNotExist
-from fabman.member import Member, MemberCredit, MemberPackage, MemberKey
+from fabman.member import Member, MemberCredit, MemberKey, MemberPackage
 from fabman.paginated_list import PaginatedList
-
 from tests import settings
 from tests.util import register_uris
 
 
 @requests_mock.Mocker()
 class TestMembers(unittest.TestCase):
-
     def setUp(self):
         self.fabman = Fabman(settings.API_KEY)
 
@@ -66,7 +65,7 @@ class TestMembers(unittest.TestCase):
 
         device = self.member.get_device()
         self.assertIsInstance(device, dict)
-        self.assertEqual(device['name'], "Apple iPhone")
+        self.assertEqual(device["name"], "Apple iPhone")
 
     def test_get_device_changes(self, m):
         register_uris({"member": ["get_device_changes"]}, m)
@@ -97,7 +96,7 @@ class TestMembers(unittest.TestCase):
                 msg=(
                     "204 No Content returned. This likely means there is no information"
                     "at the resource."
-                )
+                ),
             )
 
     def test_get_key(self, m):
@@ -121,11 +120,7 @@ class TestMembers(unittest.TestCase):
     def test_get_package_by_id_doesnt_hold(self, m):
         register_uris({"member": ["get_package_by_id_doesnt_hold"]}, m)
 
-        self.assertRaises(
-            ResourceDoesNotExist,
-            self.member.get_package,
-            2
-        )
+        self.assertRaises(ResourceDoesNotExist, self.member.get_package, 2)
 
     def test_get_payment_account(self, m):
         register_uris({"member": ["get_payment_account"]}, m)
@@ -148,7 +143,7 @@ class TestMembers(unittest.TestCase):
                 msg=(
                     "204 No Content returned. This likely means there is no information"
                     "at the resource."
-                )
+                ),
             )
 
     def test_get_payment_method_mandate_preview(self, m):
@@ -162,7 +157,7 @@ class TestMembers(unittest.TestCase):
 
         priv = self.member.get_privileges()
         self.assertIsInstance(priv, dict)
-        self.assertEqual(priv['privileges'], "admin")
+        self.assertEqual(priv["privileges"], "admin")
 
     def test_get_trained_resources(self, m):
         register_uris({"member": ["get_trained_resources"]}, m)

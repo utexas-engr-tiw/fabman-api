@@ -19,17 +19,11 @@ class TestFabman(unittest.TestCase):
 
     # Test initializing the Fabman instance
     def test_init_no_api_key(self, m):
-        with self.assertRaises(
-            ValueError,
-            msg="No access token provided"
-        ):
+        with self.assertRaises(ValueError, msg="No access token provided"):
             Fabman("")
 
     def test_init_empty_api_key(self, m):
-        with self.assertRaises(
-            ValueError,
-            msg="No access token provided"
-        ):
+        with self.assertRaises(ValueError, msg="No access token provided"):
             Fabman("")
 
     def test_init_warnings_for_http(self, m):
@@ -40,7 +34,7 @@ class TestFabman(unittest.TestCase):
                 msg=(
                     "Please use HTTPS when possible. Fabman API may not respond as intended and"
                     "user data will not be secure",
-                )
+                ),
             )
 
     def test_init_warnings_for_bad_url(self, m):
@@ -50,7 +44,7 @@ class TestFabman(unittest.TestCase):
                 UserWarning,
                 msg=(
                     "An invalid `bad_url` provided. Will likely not work as intended."
-                )
+                ),
             )
 
     def test_get_member(self, m):
@@ -63,8 +57,8 @@ class TestFabman(unittest.TestCase):
 
     def test_get_member_with_embed_str(self, m):
         """
-        Tests the ability to embed a single resource as a string. Primarily tests 
-        the functionality of the Requester child object. Embedding does not need 
+        Tests the ability to embed a single resource as a string. Primarily tests
+        the functionality of the Requester child object. Embedding does not need
         to be checked for other resources, as they all use the same Requester.
         """
         register_uris({"fabman": ["get_member_by_id_with_embed_str"]}, m)
@@ -76,8 +70,8 @@ class TestFabman(unittest.TestCase):
 
     def test_get_member_with_embed_single_list(self, m):
         """
-        Tests the ability to embed a single resource in a list. Primarily tests 
-        the functionality of the Requester child object. Embedding does not need 
+        Tests the ability to embed a single resource in a list. Primarily tests
+        the functionality of the Requester child object. Embedding does not need
         to be checked for other resources, as they all use the same Requester.
         """
         register_uris({"fabman": ["get_member_by_id_with_embed_str"]}, m)
@@ -88,18 +82,18 @@ class TestFabman(unittest.TestCase):
         self.assertTrue(hasattr(member, "_embedded"))
 
         self.assertTrue(
-            "memberPackages" in member._embedded)  # pylint: disable=protected-access
+            "memberPackages" in member._embedded
+        )  # pylint: disable=protected-access
 
     def test_get_member_with_embed_multi_list(self, m):
         """
-        Tests the ability to embed multiple resource in a list. Primarily tests 
-        the functionality of the Requester child object. Embedding does not need 
+        Tests the ability to embed multiple resource in a list. Primarily tests
+        the functionality of the Requester child object. Embedding does not need
         to be checked for other resources, as they all use the same Requester.
         """
         register_uris({"fabman": ["get_member_by_id_with_embed_list_multi"]}, m)
 
-        member = self.fabman.get_member(
-            1, embed=["memberPackages", "trainings"])
+        member = self.fabman.get_member(1, embed=["memberPackages", "trainings"])
         self.assertIsInstance(member, Member)
         self.assertTrue(hasattr(member, "id"))
         self.assertTrue(hasattr(member, "_embedded"))

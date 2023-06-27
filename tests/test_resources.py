@@ -2,12 +2,11 @@
 # pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name, unused-argument
 
 import unittest
+
 import requests_mock
 
 from fabman import Fabman
-from fabman.resource import Resource
-from fabman.resource import ResourceBridge
-
+from fabman.resource import Resource, ResourceBridge
 from tests import settings
 from tests.util import register_uris
 
@@ -27,7 +26,7 @@ class TestResources(unittest.TestCase):
         bridge = self.resource.get_bridge()
 
         self.assertIsInstance(bridge, ResourceBridge)
-        self.assertTrue(hasattr(bridge, 'serialNumber'))
+        self.assertTrue(hasattr(bridge, "serialNumber"))
 
     def test_get_bridge_api_key(self, m):
         register_uris({"resources": ["get_bridge_api_key"]}, m)
