@@ -498,15 +498,20 @@ class Fabman(object):
 
         return Resource(self.__requester, response.json())
 
-    def get_resources(self, **kwargs):
+    def get_resources(self, **kwargs) -> PaginatedList:
         """
         Get list of available resources (e.g. doors, printers, etc.) Limit, offset,
         and a number of filters are available. Refer to the appropriate documentation.
+
         calls "GET /resources"
         Documentation: https://fabman.io/api/v1/documentation#/resources/getResources
         """
-        raise NotImplementedError(
-            "get_resources not implemented yet. Awaiting Pagination"
+        return PaginatedList(
+            Resource,
+            self.__requester,
+            "GET",
+            "/resources",
+            kwargs=kwargs,
         )
 
     def get_resource_log(self, resource_log_id, **kwargs) -> ResourceLog:
