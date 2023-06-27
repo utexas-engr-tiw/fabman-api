@@ -40,6 +40,14 @@ class TestMembers(unittest.TestCase):
         self.assertTrue(hasattr(credit, "amount"))
         self.assertTrue(credit.amount == 12.34)
 
+    def test_create_key(self, m):
+        register_uris({"member": ["create_key"]}, m)
+
+        key = self.member.create_key(type="em4102", token="12345678")
+        self.assertIsInstance(key, MemberKey)
+        self.assertTrue(hasattr(key, "type"))
+        self.assertTrue(key.type == "em4102")
+
     def test_delete(self, m):
         register_uris({"member": ["delete"]}, m)
 
@@ -68,15 +76,8 @@ class TestMembers(unittest.TestCase):
     def test_get_credit_by_credit_id(self, m):
         register_uris({"member": ["get_credit_by_id"]}, m)
 
-        credit = self.member.get_credit_by_id(1)
+        credit = self.member.get_credit(1)
         self.assertIsInstance(credit, MemberCredit)
-
-    # note there are no credits on my test account, so this is unverifiable
-    def test_get_credit_uses_by_id(self, m):
-        register_uris({"member": ["get_credit_uses_by_id"]}, m)
-
-        credit = self.member.get_credit_uses_by_id(1)
-        self.assertIsInstance(credit, list)
 
     def test_get_device(self, m):
         register_uris({"member": ["get_device"]}, m)
@@ -204,4 +205,42 @@ class TestMembers(unittest.TestCase):
         )
 
         self.member.update(firstName="John", lastName="Doe")
+        self.assertTrue(m.called)
+
+
+@requests_mock.Mocker()
+class TestMemberCredit(unittest.TestCase):
+    def setUp(self):
+        self.fabman = Fabman(settings.API_KEY)
+
+        with requests_mock.Mocker() as m:
+            register_uris({"fabman": ["get_member_by_id"]}, m)
+            register_uris({"member": ["get_credit_by_id"]}, m)
+
+            self.member: Member = self.fabman.get_member(1)
+            self.credit: MemberCredit = self.member.get_credit(1)
+
+    def test_member_id(self, m):
+        self.assertTrue(hasattr(self.credit, "member_id"))
+
+    def test_to_str(self, m):
+        string = str(self.credit)
+        self.assertIsInstance(string, str)
+        self.assertTrue("1: global - 12.34" == string)
+
+    def test_delete(self, m):
+        register_uris({"member": ["delete_credit"]}, m)
+
+        self.credit.delete()
+        self.assertTrue(m.called)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            "https://fabman.io/api/v1/members/1/credits/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.credit.update(amount=12.34)
         self.assertTrue(m.called)

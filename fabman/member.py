@@ -24,7 +24,20 @@ class MemberCredit(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/members/deleteMembersIdCreditsCreditId
         """
         response = self._requester.request(
-            "DELETE" f"/members/{self.member_id}/credits/{self.id}", _kwargs=kwargs
+            "DELETE", f"/members/{self.member_id}/credits/{self.id}", _kwargs=kwargs
+        )
+
+        return response.json()
+
+    def get_uses(self, **kwargs) -> requests.Response:
+        """
+        Retrieves a list of uses of the credit.
+
+        Calls "GET /members/{member_id}/credits/{credit_id}/uses"
+        Documentation https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditidUses
+        """
+        response = self._requester.request(
+            "GET", f"/members/{self.member_id}/credits/{self.id}/uses", _kwargs=kwargs
         )
 
         return response.json()
@@ -36,6 +49,7 @@ class MemberCredit(FabmanObject):
         Calls "PUT /members/{id}/credits/{creditId}"
         Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdCreditsCreditId
         """
+        kwargs.update({"lockVersion": self.lockVersion})
         response = self._requester.request(
             "PUT", f"/members/{self.member_id}/credits/{self.id}", _kwargs=kwargs
         )
@@ -264,7 +278,7 @@ class Member(FabmanObject):
             kwargs=kwargs,
         )
 
-    def get_credit_by_id(self, credit_id: int, **kwargs) -> MemberCredit:
+    def get_credit(self, credit_id: int, **kwargs) -> MemberCredit:
         """
         Retrieves a credit of a member
         calls "GET /members/{id}/credits/{creditId}"
@@ -279,21 +293,7 @@ class Member(FabmanObject):
         data = response.json()
         data.update({"member_id": self.id})
 
-        return MemberCredit(self._requester, response.json())
-
-    def get_credit_uses_by_id(self, credit_id: int, **kwargs) -> requests.Response:
-        """
-        Retrieves the credit uses of a member
-        calls "GET /members/{id}/credits/{creditId}/uses"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditIdUses
-        """
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/credits/{credit_id}/uses",
-            _kwargs=kwargs,
-        )
-
-        return response.json()
+        return MemberCredit(self._requester, data)
 
     def get_device(self, **kwargs) -> requests.Response:
         """

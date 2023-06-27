@@ -8,9 +8,24 @@
         },
         "status_code": 201
     },
+    "create_key": {
+        "method": "POST",
+        "endpoint": "/members/1/key",
+        "data": {
+            "type": "em4102",
+            "token": "12345678",
+            "status": "active"
+        }
+    },
     "delete": {
         "method": "DELETE",
         "endpoint": "/members/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_credit": {
+        "method": "DELETE",
+        "endpoint": "/members/1/credits/1",
         "data": {},
         "status_code": 204
     },
@@ -34,13 +49,30 @@
     "get_credits": {
         "method": "GET",
         "endpoint": "/members/1/credits",
-        "data": [],
+        "data": [
+            {
+                "id": 1,
+                "amount": 12.34,
+                "scope": "global",
+                "lockVersion": 1
+            },
+            {
+                "id": 2,
+                "amount": 15.67,
+                "lockVersion": 3
+            }
+        ],
         "status_code": 200
     },
     "get_credit_by_id": {
         "method": "GET",
         "endpoint": "/members/1/credits/1",
-        "data": {},
+        "data": {
+            "id": 1,
+            "amount": 12.34,
+            "scope": "global",
+            "lockVersion": 1
+        },
         "status_code": 200
     },
     "get_credit_uses_by_id": {
