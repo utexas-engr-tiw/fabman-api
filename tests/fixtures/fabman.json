@@ -277,7 +277,8 @@
         "data": {
             "id": 1,
             "firstName": "John",
-            "lastName": "Doe"
+            "lastName": "Doe",
+            "lockVersion": 1
         },
         "status_code": 200
 
