@@ -1,4 +1,19 @@
 {
+    "create_credit": {
+        "method": "POST",
+        "endpoint": "/members/1/credits",
+        "data": {
+            "id": 1,
+            "amount": 12.34
+        },
+        "status_code": 201
+    },
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/members/1",
+        "data": {},
+        "status_code": 204
+    },
     "get_balance_items": {
         "method": "GET",
         "endpoint": "/members/1/balance-items",
