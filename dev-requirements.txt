@@ -1,0 +1,5 @@
+pre-commit
+autopep8
+pylint
+isort
+black
