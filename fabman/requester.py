@@ -76,22 +76,6 @@ class Requester(object):
 
         return self.__session.get(url, headers=headers, params=params, **kwargs)
 
-    def _patch_request(
-        self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
-    ) -> requests.Response:
-        """Handles a patch request to the API. Should never be called directly
-
-        Args:
-            url (str): url for the request
-            headers (dict): dictionary of headers
-            data (dict, optional): dictionary of data. Defaults to None.
-
-        Returns:
-            requests.Response
-        """
-
-        return self.__session.patch(url, headers=headers, data=data, **kwargs)
-
     def _post_request(
         self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
     ) -> requests.Response:
@@ -186,8 +170,6 @@ class Requester(object):
             req_method = self._delete_request
         elif method == "PUT":
             req_method = self._put_request
-        elif method == "PATCH":
-            req_method = self._patch_request
         else:
             raise ValueError(f"Invalid method {method}")
 
