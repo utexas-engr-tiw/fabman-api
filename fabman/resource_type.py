@@ -45,3 +45,4 @@ class ResourceType(FabmanObject):
         data = response.json()
 
         for attr, val in data.items():
+            setattr(self, attr, val)
