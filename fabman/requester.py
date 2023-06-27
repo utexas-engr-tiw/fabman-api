@@ -218,11 +218,12 @@ class Requester(object):
         if response.status_code == 400:
             raise BadRequest(response.text)
         if response.status_code == 204:
-            warnings.warn(
-                "204 No Content returned. This likely means there is no information"
-                "at the resource.",
-                UserWarning,
-            )
+            if method != "DELETE":
+                warnings.warn(
+                    "204 No Content returned. This likely means there is no information"
+                    "at the resource.",
+                    UserWarning,
+                )
             return response
         if response.status_code == 401:
             if "WWW-Authenticate" in response.headers:
