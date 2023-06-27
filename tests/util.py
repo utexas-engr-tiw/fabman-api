@@ -72,7 +72,8 @@ def validate_update(request, context):
     """Used for validating update requests have the lockVersion parameter."""
     data = dict(parse_qsl(request.body))
     if "lockVersion" in data:
+        data["lockVersion"] = int(data["lockVersion"]) + 1
         context.status_code = 200
     else:
         context.status_code = 400
-    return json.dumps({"name": "Test Name"})
+    return json.dumps(data)
