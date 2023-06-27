@@ -1,8 +1,15 @@
+import re
+from os import path
+
 from distutils.core import setup
+
+# get version number from fabman/__init__.py
+with open("fabman/__init__.py") as f:
+    version = re.search(r"__version__ = (.*)", f.read()).group(1)
 
 setup(
     name='Fabman API',
-    version='1.0',
+    version=version,
     description='Library for interfacing with the Fabman API',
     author='Davin Lawrence',
     author_email='fabman-api@tinycact.us',
