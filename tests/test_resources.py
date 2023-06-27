@@ -5,8 +5,8 @@ import unittest
 import requests_mock
 
 from fabman import Fabman
-from fabman.resources import Resource
-from fabman.resources import ResourceBridge
+from fabman.resource import Resource
+from fabman.resource import ResourceBridge
 
 from tests import settings
 from tests.util import register_uris

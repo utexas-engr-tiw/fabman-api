@@ -7,7 +7,7 @@ import requests_mock
 
 from fabman import Fabman
 from fabman.member import Member
-from fabman.resources import Resource
+from fabman.resource import Resource
 from tests import settings
 from tests.util import register_uris
 
