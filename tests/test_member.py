@@ -11,7 +11,7 @@ from fabman.exceptions import ResourceDoesNotExist
 from fabman.member import Member, MemberCredit, MemberKey, MemberPackage
 from fabman.paginated_list import PaginatedList
 from tests import settings
-from tests.util import register_uris
+from tests.util import register_uris, validate_update
 
 
 @requests_mock.Mocker()
@@ -38,7 +38,6 @@ class TestMembers(unittest.TestCase):
         register_uris({"member": ["get_changes"]}, m)
 
         changes = self.member.get_changes()
-        print(type(changes))
         self.assertIsInstance(changes, list)
 
     def test_get_credits(self, m):
@@ -176,3 +175,14 @@ class TestMembers(unittest.TestCase):
 
         training = self.member.get_training(1)
         self.assertIsInstance(training, dict)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            "https://fabman.io/api/v1/members/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.member.update(firstName="John", lastName="Doe")
+        self.assertTrue(m.called)

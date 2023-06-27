@@ -3,7 +3,9 @@ https://github.com/ucfopen/canvasapi/blob/develop/tests/util.py"""
 
 import json
 import os
+from urllib.parse import parse_qsl
 
+import requests
 import requests_mock
 
 from tests import settings
@@ -64,3 +66,13 @@ def cleanup_file(filename):
         os.remove(filename)
     except OSError:
         pass
+
+
+def validate_update(request, context):
+    """Used for validating update requests have the lockVersion parameter."""
+    data = dict(parse_qsl(request.body))
+    if "lockVersion" in data:
+        context.status_code = 200
+    else:
+        context.status_code = 400
+    return json.dumps({"name": "Test Name"})
