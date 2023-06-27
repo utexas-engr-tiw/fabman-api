@@ -7,6 +7,7 @@ from fabman.fabman_object import FabmanObject
 
 class Charge(FabmanObject):
     """Charge object handles management of charges in fabman"""
+
     def __str__(self):
         return f"Charge #{self.id}: {self.amount} {self.description}"
 
@@ -35,9 +36,7 @@ class Charge(FabmanObject):
 
         kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request(
-            "PUT", f"/charges/{self.id}", _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", f"/charges/{self.id}", _kwargs=kwargs)
 
         data = response.json()
 

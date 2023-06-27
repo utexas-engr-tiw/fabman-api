@@ -1,6 +1,7 @@
 """Defines the Account object"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -25,9 +26,7 @@ class Account(FabmanObject):
 
         kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -42,8 +41,6 @@ class Account(FabmanObject):
         """
         uri = f"/accounts/{self.id}/payment-info"
 
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         return response.json()

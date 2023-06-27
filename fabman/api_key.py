@@ -1,6 +1,7 @@
 """Defines the ApiKey class"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -50,9 +51,7 @@ class ApiKey(FabmanObject):
         uri = f"/api-keys/{self.id}"
 
         kwargs.update({"lockVersion": self.lockVersion})
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

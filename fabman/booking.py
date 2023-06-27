@@ -1,12 +1,13 @@
 """Defines the Booking object"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
 class Booking(FabmanObject):
     """
-    Booking object as described in the Fabman API: 
+    Booking object as described in the Fabman API:
     https://fabman.io/api/v1/documentation#/bookings
     """
 
@@ -15,7 +16,7 @@ class Booking(FabmanObject):
 
     def delete(self, **kwargs) -> requests.Response:
         """
-        Deletes the booking. *WARNING: THIS CANNOT BE UNDONE.* 
+        Deletes the booking. *WARNING: THIS CANNOT BE UNDONE.*
 
         Calls "DELETE /bookings/{id}"
         Documentation: https://fabman.io/api/v1/documentation#/bookings/deleteBookingsId
@@ -23,9 +24,7 @@ class Booking(FabmanObject):
 
         uri = f"/bookings/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -40,9 +39,7 @@ class Booking(FabmanObject):
 
         uri = f"/bookings/{self.id}"
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

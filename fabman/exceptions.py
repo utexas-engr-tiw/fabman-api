@@ -6,7 +6,6 @@ class FabmanException(Exception):
 
     def __init__(self, message):
         if isinstance(message, dict):
-
             errors = message.get("errors", None)
 
             if errors:
@@ -41,7 +40,7 @@ class ForbiddenError(FabmanException):
 
 
 class Conflict(FabmanException):
-    """The request could not be completed due to a conflict with the current 
+    """The request could not be completed due to a conflict with the current
     state of the resource"""
 
 
@@ -50,5 +49,5 @@ class UnprocessableEntity(FabmanException):
 
 
 class RateLimitExceeded(FabmanException):
-    """The request was valid, but too may requests have been issued from this access token. 
+    """The request was valid, but too may requests have been issued from this access token.
     Please try again later"""
