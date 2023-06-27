@@ -1,6 +1,7 @@
 """Defines the Payment object"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -16,9 +17,7 @@ class Payment(FabmanObject):
         """
         uri = f"/payments/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -31,9 +30,7 @@ class Payment(FabmanObject):
         """
         uri = f"/payments/{self.id}/request-payment"
 
-        response = self._requester.request(
-            "POST", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -50,9 +47,7 @@ class Payment(FabmanObject):
 
         kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

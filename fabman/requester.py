@@ -10,10 +10,16 @@ from typing import Optional
 
 import requests
 
-from fabman.exceptions import (BadRequest, Conflict, FabmanException,
-                               ForbiddenError, InvalidAccessToken,
-                               ResourceDoesNotExist, Unauthorized,
-                               UnprocessableEntity)
+from fabman.exceptions import (
+    BadRequest,
+    Conflict,
+    FabmanException,
+    ForbiddenError,
+    InvalidAccessToken,
+    ResourceDoesNotExist,
+    Unauthorized,
+    UnprocessableEntity,
+)
 from fabman.util import clean_headers
 
 logger = logging.getLogger(__name__)
@@ -21,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 class Requester(object):
     """Main class responsible for handling all http requests to the API.
-    Based on canvasapi.requester.Requester found at 
+    Based on canvasapi.requester.Requester found at
     https://github.com/ucfopen/canvasapi/blob/develop/canvasapi/requester.py
     """
 
@@ -38,8 +44,9 @@ class Requester(object):
         self.__session = requests.Session()
         self.__cache = []
 
-    def _delete_request(self, url: str, headers: dict,
-                        data: Optional[dict] = None, **kwargs) -> requests.Response:
+    def _delete_request(
+        self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
+    ) -> requests.Response:
         """Handles a delete request to the API. Should never be called directly
 
         Args:
@@ -53,8 +60,9 @@ class Requester(object):
 
         return self.__session.delete(url, headers=headers, data=data, **kwargs)
 
-    def _get_request(self, url: str, headers: dict,
-                     params: Optional[dict] = None, **kwargs) -> requests.Response:
+    def _get_request(
+        self, url: str, headers: dict, params: Optional[dict] = None, **kwargs
+    ) -> requests.Response:
         """Handles a get request to the API. Should never be called directly
 
         Args:
@@ -68,8 +76,9 @@ class Requester(object):
 
         return self.__session.get(url, headers=headers, params=params, **kwargs)
 
-    def _patch_request(self, url: str, headers: dict,
-                       data: Optional[dict] = None, **kwargs) -> requests.Response:
+    def _patch_request(
+        self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
+    ) -> requests.Response:
         """Handles a patch request to the API. Should never be called directly
 
         Args:
@@ -83,8 +92,9 @@ class Requester(object):
 
         return self.__session.patch(url, headers=headers, data=data, **kwargs)
 
-    def _post_request(self, url: str, headers: dict,
-                      data: Optional[dict] = None, **kwargs) -> requests.Response:
+    def _post_request(
+        self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
+    ) -> requests.Response:
         """Handles a post request to the API. Should never be called directly
 
         Args:
@@ -98,8 +108,9 @@ class Requester(object):
 
         return self.__session.post(url, headers=headers, data=data, **kwargs)
 
-    def _put_request(self, url: str, headers: dict,
-                     data: Optional[dict] = None, **kwargs) -> requests.Response:
+    def _put_request(
+        self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
+    ) -> requests.Response:
         """Handles a put request to the API. Should never be called directly
 
         Args:
@@ -110,24 +121,30 @@ class Requester(object):
 
         return self.__session.put(url, headers=headers, data=data, **kwargs)
 
-    def request(self, method: str, endpoint: Optional[str] = None,
-                headers: Optional[dict] = None, use_auth: Optional[bool] = True,
-                _url: Optional[str] = None, _kwargs: Optional[dict] = None,
-                json: Optional[bool] = False, **kwargs
-                ) -> requests.Response:
-        """Main method for handling requests to the API. Should never be called directly except for 
+    def request(
+        self,
+        method: str,
+        endpoint: Optional[str] = None,
+        headers: Optional[dict] = None,
+        use_auth: Optional[bool] = True,
+        _url: Optional[str] = None,
+        _kwargs: Optional[dict] = None,
+        json: Optional[bool] = False,
+        **kwargs,
+    ) -> requests.Response:
+        """Main method for handling requests to the API. Should never be called directly except for
         testing or from the Fabman class.
 
         Args:
             method (str): Method to be declared. Should be one of GET, POST, PUT, PATCH, DELETE
             endpoint (Optional[str], optional): Endpoint of the api to call. Defaults to None.
-            headers (Optional[dict], optional): Any special headers to be added to the request. 
+            headers (Optional[dict], optional): Any special headers to be added to the request.
             Authorization headers are automatically handled. Defaults to None.
-            use_auth (Optional[bool], optional): Should the api call use authorization? Should be 
+            use_auth (Optional[bool], optional): Should the api call use authorization? Should be
             true in almost any case. Defaults to True.
-            _url (Optional[str], optional): URL to call, should be None in most cases. Defaults 
+            _url (Optional[str], optional): URL to call, should be None in most cases. Defaults
             to None.
-            _kwargs (Optional[List], optional): Any special kwargs to use inside of the call. 
+            _kwargs (Optional[List], optional): Any special kwargs to use inside of the call.
             Defaults to None.
             json (Optional[bool], optional): Sending dict or json? Defaults to False.
 
@@ -176,23 +193,16 @@ class Requester(object):
 
         logger.info("Request: %s %s", method, full_url)
         logger.debug(
-            "Headers %s", pformat(clean_headers(headers),
-                                  indent=2, width=80, compact=True)
+            "Headers %s",
+            pformat(clean_headers(headers), indent=2, width=80, compact=True),
         )
 
         response = req_method(full_url, headers, _kwargs, json=json)
-        logger.info(
-            "Response: %s %s %s", method, full_url, response.status_code
-        )
-        logger.debug(
-            "Headers: %s",
-            pformat(clean_headers(response.headers))
-        )
+        logger.info("Response: %s %s %s", method, full_url, response.status_code)
+        logger.debug("Headers: %s", pformat(clean_headers(response.headers)))
 
         try:
-            logger.debug(
-                "Data: %s", pformat(response.content.decode("utf-8"))
-            )
+            logger.debug("Data: %s", pformat(response.content.decode("utf-8")))
         except UnicodeDecodeError:
             logger.debug("Data: %s", pformat(response.content))
         except AttributeError:
@@ -211,7 +221,7 @@ class Requester(object):
             warnings.warn(
                 "204 No Content returned. This likely means there is no information"
                 "at the resource.",
-                UserWarning
+                UserWarning,
             )
             return response
         if response.status_code == 401:
@@ -229,12 +239,11 @@ class Requester(object):
         # rate limit is number of request/second at time of writing. Unable to hit the
         # rate limit on home connection to verify this handling works. May break in the future.
         if response.status_code == 429:
-            logger.warning(
-                "Rate limit exceeded. Waiting before trying again."
-            )
+            logger.warning("Rate limit exceeded. Waiting before trying again.")
             sleep(5)
-            self.request(method, endpoint, headers, use_auth,
-                         _url, _kwargs, json, **kwargs)
+            self.request(
+                method, endpoint, headers, use_auth, _url, _kwargs, json, **kwargs
+            )
 
         if response.status_code > 400:
             # catch all for other (bad)codes

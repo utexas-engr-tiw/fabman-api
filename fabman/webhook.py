@@ -1,6 +1,7 @@
 """Defines the Webhook class"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -65,10 +66,10 @@ class Webhook(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/webhooks/putWebhooksId
         """
 
-        uri = f'/webhooks/{self.id}'
+        uri = f"/webhooks/{self.id}"
 
-        kwargs.update({'lockVersion': self.lockVersion})
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        kwargs.update({"lockVersion": self.lockVersion})
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

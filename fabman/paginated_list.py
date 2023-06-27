@@ -14,23 +14,26 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
     """
 
     def __getitem__(self, index):
-        assert isinstance(index, int), "Index must be an integer, slicing and keys are \
+        assert isinstance(
+            index, int
+        ), "Index must be an integer, slicing and keys are \
             not supported"
         if index < 0:
-            raise IndexError(
-                "Cannot use negative indexing on PaginatedList")
+            raise IndexError("Cannot use negative indexing on PaginatedList")
         self._get_up_to_index(index)
         return self._elements[index]
 
-    def __init__(self,  # pylint: disable=too-many-arguments
-                 content_class: Type[FabmanObject],
-                 requester: Requester,
-                 request_method: str,
-                 first_url: str,
-                 extra_attribs: Optional[dict] = None,
-                 _root=None,
-                 url_override=None,
-                 **kwargs) -> None:
+    def __init__(
+        self,  # pylint: disable=too-many-arguments
+        content_class: Type[FabmanObject],
+        requester: Requester,
+        request_method: str,
+        first_url: str,
+        extra_attribs: Optional[dict] = None,
+        _root=None,
+        url_override=None,
+        **kwargs,
+    ) -> None:
         """Initializes the PaginatedList class with the given parameters."""
         self._elements = []
 
@@ -59,7 +62,7 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
     @staticmethod
     def __format_link(headers: CaseInsensitiveDict):
         if "link" in headers.keys():
-            link = headers['link']
+            link = headers["link"]
             return link.split(";")[0].strip("<>").split("/api/v1")[1]
 
         return None

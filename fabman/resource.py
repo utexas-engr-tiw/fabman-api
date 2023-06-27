@@ -1,10 +1,11 @@
 """Defines and handles the Resource object returned by the API."""
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
 class ResourceBridge(FabmanObject):
-    """Simple class to hold Bridge information for a Bridge connected to a resource. 
+    """Simple class to hold Bridge information for a Bridge connected to a resource.
     Further used to issue commands to the bridge
     """
 
@@ -21,9 +22,7 @@ class ResourceBridge(FabmanObject):
         """
         uri = f"/resources/{self.resource_id}/bridge"
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -33,7 +32,7 @@ class ResourceBridge(FabmanObject):
 
 class Resource(FabmanObject):
     """
-    Resource object returned by the API. Provides access to all API calls that 
+    Resource object returned by the API. Provides access to all API calls that
     operate on a single Resource.
     """
 
@@ -50,9 +49,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}/bridge"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -66,9 +63,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -82,9 +77,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}/bridge"
 
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
         data.update({"resource_id": self.id})
@@ -94,7 +87,7 @@ class Resource(FabmanObject):
     def get_bridge_api_key(self, **kwargs) -> requests.Response:
         """
         Get the API key for the bridge that is currently connected to this resource.
-        For most users, this will return a 204 code with an empty body. Only superusers 
+        For most users, this will return a 204 code with an empty body. Only superusers
         or users who have created a custom bridge should be able to access this endpoint.
 
         Calls "GET /resources/{id}/bridge/api-key"
@@ -102,9 +95,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}/bridge/api-key"
 
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -118,9 +109,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}/switch-on"
 
-        response = self._requester.request(
-            "POST", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -133,9 +122,7 @@ class Resource(FabmanObject):
         """
         uri = f"/resources/{self.id}"
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

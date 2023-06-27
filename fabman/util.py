@@ -1,12 +1,13 @@
 """General Utility Functions to be used throughout the package"""
 
 from typing import Any, Union
+
 from requests.structures import CaseInsensitiveDict
 
 
 def is_multivalued(value: Any):
     """
-    Determines if the given value is a list or tuple when used as a request 
+    Determines if the given value is a list or tuple when used as a request
     parameter. In general, anything that is multivalued will be considered here.
     The one special case would be strings and byte strings, which are iterable
     but not multi-valued.
@@ -23,8 +24,8 @@ def is_multivalued(value: Any):
 
 
 def clean_headers(headers: Union[dict, CaseInsensitiveDict]):
-    """Cleans the headers to hide sensitive information in logs. 
-    Originally defined in canvasapi/util.py: 
+    """Cleans the headers to hide sensitive information in logs.
+    Originally defined in canvasapi/util.py:
     https://github.com/ucfopen/canvasapi/blob/develop/canvasapi/util.py#L228
 
     Args:
@@ -44,8 +45,7 @@ def clean_headers(headers: Union[dict, CaseInsensitiveDict]):
 
 
 def combine_kwargs(**kwargs):
-    """Flatten a series of keywords.
-    """
+    """Flatten a series of keywords."""
     combined_kwargs = []
 
     for kw, arg in kwargs.items():  # pylint: disable=invalid-name
@@ -70,8 +70,8 @@ def flatten_kwarg(key: Any, obj: Any):
         key (Any): The partial keyword to add to the full keyword
         obj (Any): The object to translate into a kwarg. If the type
         is `dict`, the key parameter will be added to the keyword between
-        square brackets and recursively call this function. If the type is 
-        `list` or `tuple`, a set of empty brackets will be appended to the 
+        square brackets and recursively call this function. If the type is
+        `list` or `tuple`, a set of empty brackets will be appended to the
         keyword and recursively call this function. Otherwise, the function
         returns with the final keyword and value
 

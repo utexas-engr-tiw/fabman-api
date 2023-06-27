@@ -1,7 +1,8 @@
 """Defines the Space class and other Space-related classes"""
 
-import requests
 from typing import Union
+
+import requests
 
 from fabman.fabman_object import FabmanObject
 from fabman.paginated_list import PaginatedList
@@ -18,13 +19,12 @@ class SpaceBillingSettings(FabmanObject):
         Deletes Stripe information from a space. *WARNING: This is irreversible.*
 
         Calls "DELETE /space/{id]/billing-settings/stripe"
-        #/spaces/deleteSpacesIdBillingsettingsStripe
-        Documentation https://fabman.io/api/v1/documentation
+        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdBillingsettingsStripe
         """
 
-        uri = f'/space/{self.space_id}/billing-settings/stripe'
+        uri = f"/space/{self.space_id}/billing-settings/stripe"
 
-        response = self._requester.request('DELETE', uri, _kwargs=kwargs)
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -34,15 +34,14 @@ class SpaceBillingSettings(FabmanObject):
         retrieved from the API.
 
         Calls "PUT /space-billing-settings/{spaceBillingSettingsId}"
-        #/space-billing-settings/putSpaceBillingSettingsSpaceBillingSettingsId
-        Documentation https://fabman.io/api/v1/documentation
+        Documentation https://fabman.io/api/v1/documentation#/space-billing-settings/putSpaceBillingSettingsSpaceBillingSettingsId
         """
 
-        uri = f'/space-billing-settings/{self.id}'
+        uri = f"/space-billing-settings/{self.id}"
 
-        kwargs.update({'lockVersion': self.lockVersion})
+        kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -72,13 +71,12 @@ class SpaceHoliday(FabmanObject):
         Deletes a space holiday. *WARNING: This is irreversible.*
 
         Calls "DELETE /space/{spaceId}/holidays/{holidayId}"
-        #/spaces/deleteSpacesIdHolidaysHolidayid
-        Documentation https://fabman.io/api/v1/documentation
+        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdHolidaysHolidayid
         """
 
-        uri = f'/space/{self.space_id}/holidays/{self.id}'
+        uri = f"/space/{self.space_id}/holidays/{self.id}"
 
-        response = self._requester.request('DELETE', uri, _kwargs=kwargs)
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -92,11 +90,11 @@ class SpaceHoliday(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation
         """
 
-        uri = f'/space/{self.space_id}/holidays/{self.id}'
+        uri = f"/space/{self.space_id}/holidays/{self.id}"
 
-        kwargs.update({'lockVersion': self.lockVersion})
+        kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -118,9 +116,9 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/postSpacesIdHolidays
         """
 
-        uri = f'/spaces/{self.id}/holidays'
+        uri = f"/spaces/{self.id}/holidays"
 
-        response = self._requester.request('POST', uri, _kwargs=kwargs)
+        response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         return SpaceHoliday(self._requester, response.json())
 
@@ -132,9 +130,9 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesId
         """
 
-        uri = f'/spaces/{self.id}'
+        uri = f"/spaces/{self.id}"
 
-        response = self._requester.request('DELETE', uri, _kwargs=kwargs)
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -146,9 +144,9 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdCalendartoken
         """
 
-        uri = f'/spaces/{self.id}/calendar-token'
+        uri = f"/spaces/{self.id}/calendar-token"
 
-        response = self._requester.request('DELETE', uri, _kwargs=kwargs)
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -159,17 +157,17 @@ class Space(FabmanObject):
         Calls "GET /spaces/{spaceId}/billing-settings"
         Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdBillingsettings
         """
-        if 'billingSettings' in self._embedded:
-            settings = self._embedded['billingSettings']
-            settings.update({'space_id': self.id})
+        if "billingSettings" in self._embedded:
+            settings = self._embedded["billingSettings"]
+            settings.update({"space_id": self.id})
             return SpaceBillingSettings(self._requester, settings)
 
-        uri = f'/spaces/{self.id}/billing-settings'
+        uri = f"/spaces/{self.id}/billing-settings"
 
-        response = self._requester.request('GET', uri, _kwargs=kwargs)
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
-        data.update({'space_id': self.id})
+        data.update({"space_id": self.id})
 
         return SpaceBillingSettings(self._requester, data)
 
@@ -181,12 +179,12 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidaysHolidayid
         """
 
-        uri = f'/spaces/{self.id}/holidays/{holiday_id}'
+        uri = f"/spaces/{self.id}/holidays/{holiday_id}"
 
-        response = self._requester.request('GET', uri, _kwargs=kwargs)
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
-        data.update({'space_id': self.id})
+        data.update({"space_id": self.id})
 
         return SpaceHoliday(self._requester, data)
 
@@ -197,19 +195,19 @@ class Space(FabmanObject):
         Calls "GET /spaces/{spaceId}/holidays"
         Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidays
         """
-        if 'holidays' in self._embedded:
+        if "holidays" in self._embedded:
             out = []
-            for holiday in self._embedded['holiday']:
-                setattr(holiday, 'space_id', self.id)
+            for holiday in self._embedded["holiday"]:
+                setattr(holiday, "space_id", self.id)
                 out.append(SpaceHoliday(self._requester, holiday))
 
         return PaginatedList(
             SpaceHoliday,
             self._requester,
             "GET",
-            f'/spaces/{self.id}/holidays',
-            extra_attribs={'space_id': self.id},
-            kwargs=kwargs
+            f"/spaces/{self.id}/holidays",
+            extra_attribs={"space_id": self.id},
+            kwargs=kwargs,
         )
 
     def get_opening_hours(self, **kwargs) -> requests.Response:
@@ -220,12 +218,12 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdOpeninghours
         """
 
-        if 'openingHours' in self._embedded:
-            return self._embedded['openingHours']
+        if "openingHours" in self._embedded:
+            return self._embedded["openingHours"]
 
-        uri = f'/spaces/{self.id}/opening-hours'
+        uri = f"/spaces/{self.id}/opening-hours"
 
-        response = self._requester.request('GET', uri, _kwargs=kwargs)
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -238,23 +236,23 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesIdCalendartoken
         """
 
-        uri = f'/spaces/{self.id}/calendar-token'
+        uri = f"/spaces/{self.id}/calendar-token"
 
-        kwargs.update({'lockVersion': self.lockVersion})
+        kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
-        token = data['calendarUrl'].split('/')[-1].split('.')[0]
-        setattr(self, 'calendarToken', token)
-        setattr(self, 'calendarUrl', data['calendarUrl'])
+        token = data["calendarUrl"].split("/")[-1].split(".")[0]
+        setattr(self, "calendarToken", token)
+        setattr(self, "calendarUrl", data["calendarUrl"])
 
         return response.json()
 
     def update_opening_hours(self, **kwargs) -> requests.Response:
         """
-        Updates the opening hours of a space. If the the openingHours key is 
+        Updates the opening hours of a space. If the the openingHours key is
         present in the _embedded attribute, the opening hours are updated in
         place with information returned by the api.
 
@@ -262,11 +260,11 @@ class Space(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesIdOpeninghours
         """
 
-        uri = f'/spaces/{self.id}/opening-hours'
+        uri = f"/spaces/{self.id}/opening-hours"
 
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
-        if 'openingHours' in self._embedded:
-            self._embedded['openingHours'] = self.get_opening_hours()
+        if "openingHours" in self._embedded:
+            self._embedded["openingHours"] = self.get_opening_hours()
 
         return response.json()

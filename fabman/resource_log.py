@@ -1,6 +1,7 @@
 """Defines the ResourceLog class"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -18,9 +19,9 @@ class ResourceLog(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/resource-logs/deleteResourceLogsResourceLogId
         """
 
-        uri = f'/resource-logs/{self.id}'
+        uri = f"/resource-logs/{self.id}"
 
-        response = self._requester.request('DELETE', uri, _kwargs=kwargs)
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -33,11 +34,11 @@ class ResourceLog(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/resource-logs/putResourceLogsResourceLogId
         """
 
-        uri = f'/resource-logs/{self.id}'
+        uri = f"/resource-logs/{self.id}"
 
-        kwargs.update({'lockVersion': self.lockVersion})
+        kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request('PUT', uri, _kwargs=kwargs)
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

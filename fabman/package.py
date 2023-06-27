@@ -1,6 +1,7 @@
 """Defines the Package class"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 from fabman.paginated_list import PaginatedList
 
@@ -21,9 +22,7 @@ class PackageCredit(FabmanObject):
 
         uri = f"/packages/{self.packageId}/credits/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -38,9 +37,7 @@ class PackageCredit(FabmanObject):
         uri = f"/packages/{self.package_id}/credits/{self.id}"
 
         kwargs.update({"lockVersion": self.lockVersion})
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -64,9 +61,7 @@ class PackagePermission(FabmanObject):
 
         uri = f"/packages/{self.packageId}/permissions/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -81,9 +76,7 @@ class PackagePermission(FabmanObject):
         uri = f"/packages/{self.package_id}/permissions/{self.id}"
 
         kwargs.update({"lockVersion": self.lockVersion})
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 
@@ -106,9 +99,7 @@ class Package(FabmanObject):
         """
 
         uri = f"/packages/{self.id}/credits"
-        response = self._requester.request(
-            "POST", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         data = response.json()
         data.update({"packageId": self.id})
@@ -125,9 +116,7 @@ class Package(FabmanObject):
 
         uri = f"/packages/{self.id}/permissions"
 
-        response = self._requester.request(
-            "POST", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         data = response.json()
         data.update({"packageId": self.id})
@@ -143,9 +132,7 @@ class Package(FabmanObject):
         """
 
         uri = f"/packages/{self.id}/credits/{credit_id}"
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
         data.update({"packageId": self.id})
@@ -166,7 +153,7 @@ class Package(FabmanObject):
             "GET",
             f"/packages/{self.id}/credits",
             extra_attribs={"package_id": self.id},
-            kwargs=kwargs
+            kwargs=kwargs,
         )
 
     def get_permission(self, permission_id, **kwargs) -> PackagePermission:
@@ -177,9 +164,7 @@ class Package(FabmanObject):
         Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesIdPermissionsPermissionId
         """
         uri = f"/packages/{self.id}/permissions/{permission_id}"
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
         data.update({"package_id": self.id})
@@ -200,7 +185,7 @@ class Package(FabmanObject):
             "GET",
             f"/packages/{self.id}/permissions",
             extra_attribs={"packageId": self.id},
-            kwargs=kwargs
+            kwargs=kwargs,
         )
 
     def delete(self, **kwargs) -> requests.Response:
@@ -213,9 +198,7 @@ class Package(FabmanObject):
 
         uri = f"/packages/{self.id}"
 
-        response = self._requester.request(
-            "DELETE", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
         return response.json()
 
@@ -232,9 +215,7 @@ class Package(FabmanObject):
 
         kwargs.update({"lockVersion": self.lockVersion})
 
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
 

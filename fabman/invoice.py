@@ -1,6 +1,7 @@
 """Define the Invoice Object"""
 
 import requests
+
 from fabman.fabman_object import FabmanObject
 
 
@@ -21,9 +22,7 @@ class Invoice(FabmanObject):
         data = {"lockVersion": self.lockVersion}
 
         uri = f"/invoices/{self.id}/cancel"
-        response = self._requester.request(
-            "POST", uri, _kwargs=data
-        )
+        response = self._requester.request("POST", uri, _kwargs=data)
 
         return response.json()
 
@@ -38,11 +37,9 @@ class Invoice(FabmanObject):
         if "details" in self._embedded:
             return self._embedded["details"]
 
-        uri = f'/invoices/{self.id}/details'
+        uri = f"/invoices/{self.id}/details"
 
-        response = self._requester.request(
-            "GET", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         self._embedded["details"] = response.json()
 
@@ -60,9 +57,7 @@ class Invoice(FabmanObject):
         kwargs.update({"lockVersion": self.lockVersion})
 
         uri = f"/invoices/{self.id}"
-        response = self._requester.request(
-            "PUT", uri, _kwargs=kwargs
-        )
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
         for attr, val in data.items():

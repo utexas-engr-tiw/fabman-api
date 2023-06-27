@@ -22,11 +22,10 @@ def register_uris(requirements, requests_mocker, base_url=None):
         base_url = settings.BASE_URL_WITH_VERSION
     for fixture, objects in requirements.items():
         try:
-            with open(f"tests/fixtures/{fixture}.json", encoding='utf-8') as file:
+            with open(f"tests/fixtures/{fixture}.json", encoding="utf-8") as file:
                 data = json.loads(file.read())
         except (IOError, ValueError) as exc:
-            raise ValueError(
-                f"Fixture {fixture}.json contains invalid JSON.") from exc
+            raise ValueError(f"Fixture {fixture}.json contains invalid JSON.") from exc
 
         if not isinstance(objects, list):
             raise TypeError(f"{objects} is not a list.")
@@ -35,9 +34,7 @@ def register_uris(requirements, requests_mocker, base_url=None):
             obj = data.get(obj_name)
 
             if obj is None:
-                raise ValueError(
-                    f"{repr(obj_name)} does not exist in {fixture}.json"
-                )
+                raise ValueError(f"{repr(obj_name)} does not exist in {fixture}.json")
 
             method = requests_mock.ANY if obj["method"] == "ANY" else obj["method"]
             if obj["endpoint"] == "ANY":
