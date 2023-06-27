@@ -1,4 +1,276 @@
 {
+    "get_account_by_id": {
+        "method": "GET",
+        "endpoint": "/accounts/1",
+        "data" : {
+            "id": 1,
+            "lockVersion": 2,
+            "createdAt": "2023-06-06T18:19:10.054Z",
+            "updatedAt": "2023-06-06T18:19:10.074Z",
+            "updatedBy": 1,
+            "inviteMembers": false,
+            "name": "Tarok Nor",
+            "locale": "en",
+            "trialEndDate": "2023-07-06",
+            "billingEmailAddress": "gul_dukat@ccc.mil",
+            "billingCompany": "Cardassian Central Command"
+          },
+          "status_code": 200
+    },
+    "get_accounts": {
+        "method": "GET",
+        "endpoint": "/accounts",
+        "data": [
+            {
+                "id": 1,
+                "lockVersion": 2,
+                "createdAt": "2023-06-06T18:19:10.054Z",
+                "updatedAt": "2023-06-06T18:19:10.074Z",
+                "updatedBy": 1,
+                "inviteMembers": false,
+                "name": "Tarok Nor",
+                "locale": "en",
+                "trialEndDate": "2023-07-06",
+                "billingEmailAddress": "gul_dukat@ccc.mil",
+                "billingCompany": "Cardassian Central Command"
+              }
+        ],
+        "status_code": 200
+    },
+    "get_api_key_by_id": {
+        "method": "GET",
+        "endpoint": "/api-keys/1",
+        "data": {
+            "id": 1,
+            "account": 1,
+            "label": "New API Key",
+            "member": 1,
+            "lockVersion": 1,
+            "createdAt": "2023-06-27T16:51:45.955Z",
+            "updatedAt": "2023-06-27T16:51:45.955Z",
+            "updatedBy": 1
+        },
+        "status_code": 200
+    },
+    "get_api_keys": {
+        "method": "GET",
+        "endpoint": "/api-keys",
+        "data": [
+            {
+                "id": 1,
+                "account": 1,
+                "label": "New API Key",
+                "member": 1,
+                "lockVersion": 1,
+                "createdAt": "2023-06-27T16:51:45.955Z",
+                "updatedAt": "2023-06-27T16:51:45.955Z",
+                "updatedBy": 1
+            }
+        ],
+        "status_code": 200
+    },
+    "get_booking_by_id": {
+        "method": "GET",
+        "endpoint": "/bookings/1",
+        "data": {
+            "id": 1,
+            "resource": 1,
+            "member": 1,
+            "fromDateTime": "2023-06-27T14:00",
+            "untilDateTime": "2023-06-27T15:00",
+            "state": "confirmed",
+            "lockVersion": 2,
+            "createdAt": "2023-06-26T18:51:09.303Z",
+            "updatedAt": "2023-06-27T20:00:08.372Z",
+            "updatedBy": 1,
+            "account": 1,
+            "charged": true
+        },
+        "status_code": 200
+    },
+    "get_bookings": {
+        "method": "GET",
+        "endpoint": "/bookings",
+        "data": [
+            {
+                "id": 1,
+                "resource": 1,
+                "member": 1,
+                "fromDateTime": "2023-06-27T14:00",
+                "untilDateTime": "2023-06-27T15:00",
+                "state": "confirmed",
+                "lockVersion": 2,
+                "createdAt": "2023-06-26T18:51:09.303Z",
+                "updatedAt": "2023-06-27T20:00:08.372Z",
+                "updatedBy": 1,
+                "account": 1,
+                "charged": true
+              }
+        ],
+        "status_code": 200
+    },
+    "get_charge_by_id": {
+        "method": "GET", 
+        "endpoint": "/charges/1",
+        "data": {
+            "id": 1,
+            "account": 1,
+            "member": 1,
+            "description": "Test Charge",
+            "price": "12.34",
+            "taxPercent": "1.23",
+            "invoice": null,
+            "lockVersion": 1,
+            "createdAt": "2023-06-27T20:44:02.067Z",
+            "updatedAt": "2023-06-27T20:44:02.067Z",
+            "updatedBy": 1,
+            "booking": null,
+            "resourceLog": null,
+            "memberPackage": null,
+            "dateTime": "2023-06-27T15:43:38",
+            "calculated": false,
+            "onBehalfOf": null,
+            "details": "<div>Batton Down ye hatches</div>",
+            "date": "2023-06-27"
+        },
+        "status_code": 200
+    },
+    "get_charges": {
+        "method": "GET",
+        "endpoint": "/charges",
+        "data": [
+            {
+                "id": 1,
+                "account": 1,
+                "member": 1,
+                "description": "Test Charge",
+                "price": "12.34",
+                "taxPercent": "1.23",
+                "invoice": null,
+                "lockVersion": 1,
+                "createdAt": "2023-06-27T20:44:02.067Z",
+                "updatedAt": "2023-06-27T20:44:02.067Z",
+                "updatedBy": 1,
+                "booking": null,
+                "resourceLog": null,
+                "memberPackage": null,
+                "dateTime": "2023-06-27T15:43:38",
+                "calculated": false,
+                "onBehalfOf": null,
+                "details": "<div>Batton Down ye hatches</div>",
+                "date": "2023-06-27"
+              }
+        ],
+        "status_code": 200
+    },
+    "get_invoice_by_id": {
+        "method": "GET",
+        "endpoint": "/invoices/1",
+        "data": {
+            "id": 1,
+            "account": 1,
+            "space": 1,
+            "member": 1,
+            "date": "2023-06-26",
+            "number": "31336",
+            "state": "unpaid",
+            "header": null,
+            "footer": null,
+            "recipientFirstName": "Gul",
+            "recipientLastName": "Dukat",
+            "recipientCompany": null,
+            "recipientAddress": null,
+            "recipientAddress2": null,
+            "recipientCity": null,
+            "recipientZip": null,
+            "recipientCountryCode": null,
+            "recipientRegion": null,
+            "text": null,
+            "currency": "EUR",
+            "total": "12.34",
+            "notes": null,
+            "lockVersion": 1,
+            "createdAt": "2023-06-26T22:51:10.147Z",
+            "updatedAt": "2023-06-26T22:51:10.147Z",
+            "updatedBy": 1,
+            "dueDate": "2023-06-26",
+            "dunnedDate": null,
+            "dunningFee": "0.00",
+            "discount": "0.00",
+            "totalWithFees": "12.34",
+            "paid": "0.00",
+            "cancelledInvoice": null,
+            "totalPayable": "12.34",
+            "payments": []
+          },
+        "status_code": 200
+    },
+    "get_invoices": {
+        "method": "GET",
+        "endpoint": "/invoices",
+        "data": [
+            {
+                "id": 1,
+                "account": 1,
+                "space": 1,
+                "member": 1,
+                "date": "2023-06-26",
+                "number": "31336",
+                "state": "unpaid",
+                "header": null,
+                "footer": null,
+                "recipientFirstName": "Gul",
+                "recipientLastName": "Dukat",
+                "recipientCompany": null,
+                "recipientAddress": null,
+                "recipientAddress2": null,
+                "recipientCity": null,
+                "recipientZip": null,
+                "recipientCountryCode": null,
+                "recipientRegion": null,
+                "text": null,
+                "currency": "EUR",
+                "total": "12.34",
+                "notes": null,
+                "lockVersion": 1,
+                "createdAt": "2023-06-26T22:51:10.147Z",
+                "updatedAt": "2023-06-26T22:51:10.147Z",
+                "updatedBy": 1,
+                "dueDate": "2023-06-26",
+                "dunnedDate": null,
+                "dunningFee": "0.00",
+                "discount": "0.00",
+                "totalWithFees": "12.34",
+                "paid": "0.00",
+                "cancelledInvoice": null,
+                "totalPayable": "12.34",
+                "payments": []
+              }
+        ],
+        "status_code": 200
+
+    },
+    "get_job_by_id": {
+        "method": "GET",
+        "endpoint": "/jobs/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_jobs": {
+        "method": "GET",
+        "endpoint": "/jobs",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
+        "status_code": 200
+    },
     "get_member_by_id": {
         "method": "GET",
         "endpoint": "/members/1",
@@ -192,65 +464,47 @@
         ],
     "status_code": 200
     },
-    "get_user_me": {
+    "get_package_by_id": {
         "method": "GET",
-        "endpoint": "/user/me",
-        "data": {
-            "members": [
-              {
+        "endpoint": "/packages/1",
+        "data" : {
+            "id": 1,
+            "name": "Package 1",
+            "description": "Package 1 description"
+        },
+        "status_code": 200
+    },
+    "get_packages": {
+        "method": "GET",
+        "endpoint": "/packages",
+        "data": [
+            {
                 "id": 1,
-                "memberNumber": "1",
-                "firstName": "John",
-                "lastName": "Doe",
-                "dateOfBirth": null,
-                "emailAddress": "lol@lolsman.com",
-                "company": "WorkingNimby",
-                "phone": "+1 512-232-5141",
-                "address": null,
-                "notes": null,
-                "state": "active",
-                "lockVersion": 1,
-                "createdAt": "2023-04-28T18:23:12.831Z",
-                "updatedAt": "2023-04-28T18:23:12.831Z",
-                "updatedBy": null,
-                "address2": null,
-                "city": null,
-                "zip": null,
-                "countryCode": null,
-                "region": null,
-                "account": 1,
-                "space": 1,
-                "taxExempt": false,
-                "hasBillingAddress": false,
-                "billingFirstName": null,
-                "billingLastName": null,
-                "billingCompany": null,
-                "billingAddress": null,
-                "billingAddress2": null,
-                "billingCity": null,
-                "billingZip": null,
-                "billingCountryCode": null,
-                "billingRegion": null,
-                "billingInvoiceText": null,
-                "gender": null,
-                "stripeCustomer": null,
-                "requireUpfrontPayment": false,
-                "upfrontMinimumBalance": "0.00",
-                "metadata": null,
-                "allowLogin": true,
-                "paidForBy": null,
-                "language": null,
-                "_embedded": {
-                  "privileges": {
-                    "privileges": "owner"
-                  }
-                }
-              }
-            ],
-            "emailAddress": "lol@lolsman.com",
-            "superuser": null,
-            "state": "active"
-          }
+                "name": "Package 1",
+                "description": "Package 1 description"
+            }
+        ],
+        "status_code": 200
+    },
+    "get_payment_by_id": {
+        "method": "GET",
+        "endpoint": "/payments/1",
+        "data": {
+            "id": 1,
+            "amount": 12.34
+        },
+        "status_code": 200
+    },
+    "get_payments": {
+        "method": "GET",
+        "endpoint": "/payments",
+        "data": [
+            {
+                "id": 1,
+                "amount": 12.34
+            }
+        ],
+        "status_code": 200
     },
     "get_resource_by_id": {
         "method": "GET",
@@ -316,6 +570,183 @@
               }
             }
           },
+        "status_code": 200
+    },
+    "get_resources": {
+        "method": "GET",
+        "endpoint": "/resources",
+        "data": [
+            { 
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
+        "status_code": 200
+    },
+    "get_resource_log_by_id": {
+        "method": "GET",
+        "endpoint": "/resource-logs/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_resource_logs": {
+        "method": "GET",
+        "endpoint": "/resource-logs",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ]
+    },
+    "get_resource_type_by_id": {
+        "method": "GET",
+        "endpoint": "/resource-types/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_resource_types": {
+        "method": "GET",
+        "endpoint": "/resource-types",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
+        "status_code": 200
+    },
+    "get_space_by_id": {
+        "method": "GET",
+        "endpoint": "/spaces/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_spaces": {
+        "method": "GET",
+        "endpoint": "/spaces",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
+        "status_code": 200
+    },
+    "get_training_course_by_id": {
+        "method": "GET",
+        "endpoint": "/training-courses/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_training_courses": {
+        "method": "GET",
+        "endpoint": "/training-courses",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
+        "status_code": 200
+    },
+    "get_user_me": {
+        "method": "GET",
+        "endpoint": "/user/me",
+        "data": {
+            "members": [
+              {
+                "id": 1,
+                "memberNumber": "1",
+                "firstName": "John",
+                "lastName": "Doe",
+                "dateOfBirth": null,
+                "emailAddress": "lol@lolsman.com",
+                "company": "WorkingNimby",
+                "phone": "+1 512-232-5141",
+                "address": null,
+                "notes": null,
+                "state": "active",
+                "lockVersion": 1,
+                "createdAt": "2023-04-28T18:23:12.831Z",
+                "updatedAt": "2023-04-28T18:23:12.831Z",
+                "updatedBy": null,
+                "address2": null,
+                "city": null,
+                "zip": null,
+                "countryCode": null,
+                "region": null,
+                "account": 1,
+                "space": 1,
+                "taxExempt": false,
+                "hasBillingAddress": false,
+                "billingFirstName": null,
+                "billingLastName": null,
+                "billingCompany": null,
+                "billingAddress": null,
+                "billingAddress2": null,
+                "billingCity": null,
+                "billingZip": null,
+                "billingCountryCode": null,
+                "billingRegion": null,
+                "billingInvoiceText": null,
+                "gender": null,
+                "stripeCustomer": null,
+                "requireUpfrontPayment": false,
+                "upfrontMinimumBalance": "0.00",
+                "metadata": null,
+                "allowLogin": true,
+                "paidForBy": null,
+                "language": null,
+                "_embedded": {
+                  "privileges": {
+                    "privileges": "owner"
+                  }
+                }
+              }
+            ],
+            "emailAddress": "lol@lolsman.com",
+            "superuser": null,
+            "state": "active"
+          }
+    },
+    "get_webhook_by_id": {
+        "method": "GET",
+        "endpoint": "/webhooks/1",
+        "data": {
+            "id": 1
+        },
+        "status_code": 200
+    },
+    "get_webhooks": {
+        "method": "GET",
+        "endpoint": "/webhooks",
+        "data": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            }
+        ],
         "status_code": 200
     }
 }
