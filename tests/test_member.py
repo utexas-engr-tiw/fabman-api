@@ -27,6 +27,25 @@ class TestMembers(unittest.TestCase):
     def test_sanity(self, m):
         self.assertEqual(1, 1)
 
+    def test_to_str(self, m):
+        string = str(self.member)
+        self.assertIsInstance(string, str)
+        self.assertTrue("1: John Doe" == string)
+
+    def test_create_credit(self, m):
+        register_uris({"member": ["create_credit"]}, m)
+
+        credit = self.member.create_credit(amount=12.34)
+        self.assertIsInstance(credit, MemberCredit)
+        self.assertTrue(hasattr(credit, "amount"))
+        self.assertTrue(credit.amount == 12.34)
+
+    def test_delete(self, m):
+        register_uris({"member": ["delete"]}, m)
+
+        self.member.delete()
+        self.assertTrue(m.called)
+
     def test_get_balance_items(self, m):
         register_uris({"member": ["get_balance_items"]}, m)
 
