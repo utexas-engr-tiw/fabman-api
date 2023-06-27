@@ -17,7 +17,7 @@ class TestPaginatedList(unittest.TestCase):
         self.fabman = Fabman(settings.API_KEY)
 
         with requests_mock.Mocker() as m:
-            register_uris({"fabman": ["get_members_list"]}, m)
+            register_uris({"fabman": ["get_members"]}, m)
 
             self.paginated_list: PaginatedList = self.fabman.get_members()
 

@@ -21,5 +21,5 @@ class TestPayment(unittest.TestCase):
 
             self.payment: Payment = self.fabman.get_payment(1)
 
-    def test_sanity(self):
+    def test_sanity(self, m):
         self.assertEqual(1, 1)
