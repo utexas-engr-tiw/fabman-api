@@ -161,7 +161,7 @@ class Member(FabmanObject):
 
         return MemberKey(self._requester, response.json())
 
-    def delete_member(self, **kwargs) -> requests.Response:
+    def delete(self, **kwargs) -> requests.Response:
         """
         Deletes a member
         calls "DELETE /members/{id}"
@@ -182,18 +182,6 @@ class Member(FabmanObject):
         return self._requester.request(
             "DELETE",
             f"/members/{self.id}/changes/{change_id}",
-            _kwargs=kwargs,
-        )
-
-    def delete_credit(self, credit_id: int, **kwargs) -> requests.Response:
-        """
-        Deletes a member credit given credit ID
-        calls "DELETE /members/{id}/credits/{creditId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdCreditsCreditId
-        """
-        return self._requester.request(
-            "DELETE",
-            f"/members/{self.id}/credits/{credit_id}",
             _kwargs=kwargs,
         )
 
