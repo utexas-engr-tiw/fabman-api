@@ -127,7 +127,9 @@ class Fabman(object):
 
     def create_key_assignment(self, **kwargs) -> requests.Response:
         """
-        Creates a new keycard assignment in the Fabman Database.
+        Creates a new keycard assignment in the Fabman Database. Note: A better
+        method to work with key assignments is to use the Member class and the 
+        associated MemberKey class that works with the key assignments endpoint.
 
         Calls "POST /key-assignments"
         Documentation https://fabman.io/api/v1/documentation#/key-assignments/postKeyassignments
