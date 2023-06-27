@@ -2,9 +2,11 @@
 """Main file for the Fabman API library.
 """
 
+import requests
 import warnings
 
 from fabman.account import Account
+from fabman.api_key import ApiKey
 from fabman.booking import Booking
 from fabman.charge import Charge
 from fabman.invoice import Invoice
@@ -59,6 +61,21 @@ class Fabman(object):
             base_url = base_url[:-1]
 
         self.__requester = Requester(base_url, access_token)
+
+    def create_api_key(self, **kwargs) -> ApiKey:
+        """
+        Creates a new API key for a member.
+
+        Calls "POST /api-keys"
+        Documentation https://fabman.io/api/v1/documentation#/api-keys/postApikeys
+        """
+
+        uri = "/api-keys"
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return ApiKey(self.__requester, response.json())
 
     def create_member(self, **kwargs) -> Member:
         """Creates a new member in the Fabman database.
@@ -123,6 +140,38 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/accounts",
+            kwargs=kwargs
+        )
+
+    def get_api_key(self, key_id, **kwargs) -> ApiKey:
+        """
+        Get information about a single API key by its ID.
+
+        Calls "GET /api-keys/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/api-keys/getApikeysId
+        """
+
+        uri = f"/api-keys/{key_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return ApiKey(self.__requester, response.json())
+
+    def get_api_keys(self, **kwargs) -> PaginatedList:
+        """
+        Get a list of API keys. Can specify filters, search string, etc.
+
+        Calls "GET /api-keys"
+        Documentation: https://fabman.io/api/v1/documentation#/api-keys/getApikeys
+        """
+
+        return PaginatedList(
+            ApiKey,
+            self.__requester,
+            "GET",
+            "/api-keys",
             kwargs=kwargs
         )
 
