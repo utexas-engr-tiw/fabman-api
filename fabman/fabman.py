@@ -16,6 +16,7 @@ from fabman.payment import Payment
 from fabman.requester import Requester
 from fabman.resource import Resource
 from fabman.resource_log import ResourceLog
+from fabman.resource_type import ResourceType
 from fabman.training_course import TrainingCourse
 
 
@@ -399,6 +400,38 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/resource-logs",
+            kwargs=kwargs
+        )
+
+    def get_resource_type(self, resource_type_id, **kwargs) -> ResourceType:
+        """
+        Retrieves a single resource type given a resource_type_id.
+
+        Calls "GET /resource-types/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/resource-types/getResourceTypesId
+        """
+
+        uri = f"/resource-types/{resource_type_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return ResourceType(self.__requester, response.json())
+
+    def get_resource_types(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of resource types. Can specify filters, search string, etc.
+
+        Calls "GET /resource-types"
+        Documentation: https://fabman.io/api/v1/documentation#/resource-types/getResourceTypes
+        """
+
+        return PaginatedList(
+            ResourceType,
+            self.__requester,
+            "GET",
+            "/resource-types",
             kwargs=kwargs
         )
 
