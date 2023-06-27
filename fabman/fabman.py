@@ -19,6 +19,7 @@ from fabman.resource_log import ResourceLog
 from fabman.resource_type import ResourceType
 from fabman.space import Space
 from fabman.training_course import TrainingCourse
+from fabman.webhook import Webhook
 
 
 class Fabman(object):
@@ -511,3 +512,35 @@ class Fabman(object):
         )
 
         return Member(self.__requester, response.json()["members"][0])
+
+    def get_webhook(self, webhook_id, **kwargs) -> Webhook:
+        """
+        Retrieves a single webhook given a webhook_id.
+
+        Calls "GET /webhooks/{id}"
+        Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooksId
+        """
+
+        uri = f"/webhooks/{webhook_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return Webhook(self.__requester, response.json())
+
+    def get_webhooks(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of webhooks. Can specify filters, search string, etc.
+
+        Calls "GET /webhooks"
+        Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooks
+        """
+
+        return PaginatedList(
+            Webhook,
+            self.__requester,
+            "GET",
+            "/webhooks",
+            kwargs=kwargs
+        )
