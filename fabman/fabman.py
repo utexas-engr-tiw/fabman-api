@@ -14,7 +14,8 @@ from fabman.package import Package
 from fabman.paginated_list import PaginatedList
 from fabman.payment import Payment
 from fabman.requester import Requester
-from fabman.resources import Resource
+from fabman.resource import Resource
+from fabman.resource_log import ResourceLog
 from fabman.training_course import TrainingCourse
 
 
@@ -344,16 +345,6 @@ class Fabman(object):
             kwargs=kwargs
         )
 
-    def get_resources(self, **kwargs):
-        """
-        Get list of available resources (e.g. doors, printers, etc.) Limit, offset,
-        and a number of filters are available. Refer to the appropriate documentation.
-        calls "GET /resources"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/getResources
-        """
-        raise NotImplementedError(
-            "get_resources not implemented yet. Awaiting Pagination")
-
     def get_resource(self, resource_id: int, **kwargs):
         """
         Get a single resource by its ID. Embed information is also available.
@@ -368,6 +359,48 @@ class Fabman(object):
         )
 
         return Resource(self.__requester, response.json())
+
+    def get_resources(self, **kwargs):
+        """
+        Get list of available resources (e.g. doors, printers, etc.) Limit, offset,
+        and a number of filters are available. Refer to the appropriate documentation.
+        calls "GET /resources"
+        Documentation: https://fabman.io/api/v1/documentation#/resources/getResources
+        """
+        raise NotImplementedError(
+            "get_resources not implemented yet. Awaiting Pagination")
+
+    def get_resource_log(self, resource_log_id, **kwargs) -> ResourceLog:
+        """
+        Retrieves a single Resource Log from the API.
+
+        Calls "GET /resource-logs/{id}"
+        Documentation: https://fabman.io/api/v1/documentation#/resource-logs/getResourceLogsId
+        """
+
+        uri = f"/resource-logs/{resource_log_id}"
+
+        response = self.__requester.request(
+            "GET", uri, _kwargs=kwargs
+        )
+
+        return ResourceLog(self.__requester, response.json())
+
+    def get_resource_logs(self, **kwargs) -> PaginatedList:
+        """
+        Retrieves a list of resource logs. Can specify filters, search string, etc.
+
+        Calls "GET /resource-logs"
+        Documentation: https://fabman.io/api/v1/documentation#/resource-logs/getResourceLogs
+        """
+
+        return PaginatedList(
+            ResourceLog,
+            self.__requester,
+            "GET",
+            "/resource-logs",
+            kwargs=kwargs
+        )
 
     def get_training_course(self, course_id, **kwargs):
         """
