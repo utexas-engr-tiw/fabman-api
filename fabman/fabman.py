@@ -77,6 +77,70 @@ class Fabman(object):
 
         return ApiKey(self.__requester, response.json())
 
+    def create_booking(self, **kwargs) -> Booking:
+        """
+        Creates a new booking in the Fabman database.
+
+        Calls "POST /bookings"
+        Documentation https://fabman.io/api/v1/documentation#/bookings/postBookings
+        """
+
+        uri = "/bookings"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Booking(self.__requester, response.json())
+
+    def create_charge(self, **kwargs) -> Charge:
+        """
+        Creates a new charge in the Fabman database.
+
+        Calls "POST /charges"
+        Documentation https://fabman.io/api/v1/documentation#/charges/postCharges
+        """
+
+        uri = "/charges"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Charge(self.__requester, response.json())
+
+    def create_invoice(self, **kwargs) -> Invoice:
+        """
+        Creates a new invoice in the Fabman database.
+
+        Calls "POST /invoices"
+        Documentation https://fabman.io/api/v1/documentation#/invoices/postInvoices
+        """
+
+        uri = "/invoices"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Invoice(self.__requester, response.json())
+
+    def create_key_assignment(self, **kwargs) -> requests.Response:
+        """
+        Creates a new keycard assignment in the Fabman Database.
+
+        Calls "POST /key-assignments"
+        Documentation https://fabman.io/api/v1/documentation#/key-assignments/postKeyassignments
+        """
+
+        uri = "/key-assignments"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return response.json()
+
     def create_member(self, **kwargs) -> Member:
         """Creates a new member in the Fabman database.
         Calls "POST /members"
@@ -93,6 +157,99 @@ class Fabman(object):
 
         return Member(self.__requester, response.json())
 
+    def create_package(self, **kwargs) -> Package:
+        """
+        Creates a new package in the Fabman database.
+
+        Calls "POST /packages"
+        Documentation: https://fabman.io/api/v1/documentation#/packages/postPackages
+        """
+
+        uri = "/packages"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Package(self.__requester, response.json())
+
+    def create_payment(self, **kwargs) -> Payment:
+        """
+        Creates a new payment in the Fabman database.
+
+        Calls "POST /payments"
+        Documentation https://fabman.io/api/v1/documentation#/payments/postPayments
+        """
+
+        uri = "/payments"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Payment(self.__requester, response.json())
+
+    def create_resource(self, **kwargs) -> Resource:
+        """
+        Creates a new resource in the Fabman database.
+
+        Calls "POST /resources"
+        Documentation https://fabman.io/api/v1/documentation#/resources/postResources
+        """
+
+        uri = "/resources"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Resource(self.__requester, response.json())
+
+    def create_resource_log(self, **kwargs) -> ResourceLog:
+        """
+        Creates a new resource log in the Fabman database. Use with caution.
+
+        Calls "POST /resource-logs"
+        Documentation https://fabman.io/api/v1/documentation#/resource-logs/postResourceLogs
+        """
+        uri = f"/resource-logs"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return ResourceLog(self.__requester, response.json())
+
+    def create_resource_type(self, **kwargs) -> ResourceType:
+        """
+        Creates a new resource type in the Fabman database.
+
+        Calls "POST /resource-types"
+        Documentation https://fabman.io/api/v1/documentation#/resource-types/postResourceTypes
+        """
+        uri = "/resource-types"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return ResourceType(self.__requester, response.json())
+
+    def create_space(self, **kwargs) -> Space:
+        """
+        Creates a new space in the Fabman database.
+
+        Calls "POST /spaces"
+        Documentation https://fabman.io/api/v1/documentation#/spaces/postSpaces
+        """
+        uri = "/spaces"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Space(self.__requester, response.json())
+
     def create_training_course(self, **kwargs) -> TrainingCourse:
         """
         Creates a new Training course in the Fabman database.
@@ -108,6 +265,22 @@ class Fabman(object):
         )
 
         return TrainingCourse(self.__requester, response.json())
+
+    def create_webhook(self, **kwargs) -> Webhook:
+        """
+        Creates a new webhook in the Fabman database.
+
+        Calls "POST /webhooks"
+        Documentation: https://fabman.io/api/v1/documentation#/webhooks/postWebhooks
+        """
+
+        uri = "/webhooks"
+
+        response = self.__requester.request(
+            "POST", uri, _kwargs=kwargs
+        )
+
+        return Webhook(self.__requester, response.json())
 
     def get_account(self, account_id, **kwargs) -> Account:
         """
