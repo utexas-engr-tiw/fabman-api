@@ -12,6 +12,7 @@ from fabman.exceptions import (
     FabmanException,
     ForbiddenError,
     InvalidAccessToken,
+    RateLimitExceeded,
     Unauthorized,
     UnprocessableEntity,
 )
@@ -98,6 +99,8 @@ class TestRequester(unittest.TestCase):
         with self.assertRaises(BadRequest, msg="Bad Request"):
             self.requester.request("GET", "/test_400")
 
+            self.assertTrue(m.called)
+
     def test_401(self, m):
         m.register_uri(
             "GET",
@@ -108,6 +111,8 @@ class TestRequester(unittest.TestCase):
 
         with self.assertRaises(InvalidAccessToken, msg="Invalid access token"):
             self.requester.request("GET", "/test_401_invalid")
+
+            self.assertTrue(m.called)
 
     def test_401_unauthorized(self, m):
         m.register_uri(
@@ -120,6 +125,8 @@ class TestRequester(unittest.TestCase):
         with self.assertRaises(Unauthorized, msg="Unauthorized"):
             self.requester.request("GET", "/test_401_unauthorized")
 
+            self.assertTrue(m.called)
+
     def test_403(self, m):
         m.register_uri(
             "GET",
@@ -130,6 +137,8 @@ class TestRequester(unittest.TestCase):
 
         with self.assertRaises(ForbiddenError, msg="Forbidden"):
             self.requester.request("GET", "/test_403")
+
+            self.assertTrue(m.called)
 
     def test_404(self, m):
         m.register_uri(
@@ -142,6 +151,8 @@ class TestRequester(unittest.TestCase):
         with self.assertRaises(FabmanException, msg="Not Found"):
             self.requester.request("GET", "/test_404")
 
+            self.assertTrue(m.called)
+
     def test_409(self, m):
         m.register_uri(
             "GET",
@@ -152,6 +163,8 @@ class TestRequester(unittest.TestCase):
 
         with self.assertRaises(Conflict, msg="Conflict"):
             self.requester.request("GET", "/test_409")
+
+            self.assertTrue(m.called)
 
     def test_422(self, m):
         m.register_uri(
@@ -164,6 +177,21 @@ class TestRequester(unittest.TestCase):
         with self.assertRaises(UnprocessableEntity, msg="Unprocessable Entity"):
             self.requester.request("GET", "/test_422")
 
+            self.assertTrue(m.called)
+
+    def test_429(self, m):
+        m.register_uri(
+            "GET",
+            f"{settings.BASE_URL_WITH_VERSION}/test_429",
+            text=test_exceptions,
+            status_code=429,
+        )
+
+        with self.assertRaises(RateLimitExceeded, msg="Rate Limit Exceeded"):
+            self.requester.request("GET", "/test_429")
+
+            self.assertTrue(m.called)
+
     def test_4xx(self, m):
         m.register_uri(
             "GET",
@@ -174,3 +202,5 @@ class TestRequester(unittest.TestCase):
 
         with self.assertRaises(FabmanException, msg="Unknown 420"):
             self.requester.request("GET", "/test_420")
+
+            self.assertTrue(m.called)
