@@ -43,7 +43,5 @@ All parameters except for IDs are taken in as kwargs and should follow the camel
 
 We would love contributions! We are a small development team. To contribute, familiarize yourself with the code, the layout, make your edits and a pull request. We currently need help with
 
-* Writing Mock Tests
-* Coverage of API endpoints
 * Real life testing of the API
 * Documentation
