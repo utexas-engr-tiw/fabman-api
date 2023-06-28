@@ -50,11 +50,11 @@ class TestPackage(unittest.TestCase):
     def test_get_credits(self, m):
         register_uris({"package": ["get_credits"]}, m)
 
-        credits = self.package.get_credits()
-        self.assertIsInstance(credits, PaginatedList)
-        self.assertIsInstance(credits[0], PackageCredit)
-        self.assertTrue(hasattr(credits[0], "id"))
-        self.assertTrue(credits[0].id == 1)
+        _credits = self.package.get_credits()
+        self.assertIsInstance(_credits, PaginatedList)
+        self.assertIsInstance(_credits[0], PackageCredit)
+        self.assertTrue(hasattr(_credits[0], "id"))
+        self.assertTrue(_credits[0].id == 1)
 
     def test_get_permission(self, m):
         register_uris({"package": ["get_permission"]}, m)
