@@ -1,0 +1,142 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/packages/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_credit": {
+        "method": "DELETE",
+        "endpoint": "/packages/1/credits/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_permission":{ 
+        "method": "DELETE",
+        "endpoint": "/packages/1/permissions/1",
+        "data": {},
+        "status_code": 204
+    },
+    "get_credit": {
+        "method": "GET",
+        "endpoint": "/packages/1/credits/1",
+        "data": {
+            "id": 1,
+            "package": 1,
+            "scope": "booking",
+            "amount": "10.00",
+            "period": "month",
+            "lockVersion": 1,
+            "createdAt": "2023-06-28T18:49:15.983Z",
+            "updatedAt": "2023-06-28T18:49:15.983Z",
+            "updatedBy": 1,
+            "resources": [
+              {
+                "type": "resource",
+                "resourceType": null,
+                "resource": 1
+              }
+            ]
+        },
+        "status_code": 200
+    },
+    "get_credits": {
+        "method": "GET",
+        "endpoint": "/packages/1/credits",
+        "data": [
+            {
+                "id": 1,
+                "package": 1,
+                "scope": "booking",
+                "amount": "10.00",
+                "period": "month",
+                "lockVersion": 1,
+                "createdAt": "2023-06-28T18:49:15.983Z",
+                "updatedAt": "2023-06-28T18:49:15.983Z",
+                "updatedBy": 1,
+                "resources": [
+                  {
+                    "type": "resource",
+                    "resourceType": null,
+                    "resource": 1
+                  }
+                ]
+            },
+            {
+                "id": 1,
+                "package": 1,
+                "scope": "booking",
+                "amount": "10.00",
+                "period": "month",
+                "lockVersion": 1,
+                "createdAt": "2023-06-28T18:49:15.983Z",
+                "updatedAt": "2023-06-28T18:49:15.983Z",
+                "updatedBy": 1,
+                "resources": [
+                  {
+                    "type": "resource",
+                    "resourceType": null,
+                    "resource": 1
+                  }
+                ]
+            }
+        ],
+        "status_code": 200
+    },
+    "get_permission": {
+        "method": "GET",
+        "endpoint": "/packages/1/permissions/1",
+        "data":   {
+            "id": 1,
+            "package": 1,
+            "timeType": "always",
+            "type": "everything",
+            "resourceType": null,
+            "resource": null,
+            "usageFeeDiscountPercent": "0.00",
+            "bookingFeeDiscountPercent": "0.00",
+            "lockVersion": 1,
+            "createdAt": "2023-06-06T18:19:10.051Z",
+            "updatedAt": "2023-06-06T18:19:10.051Z",
+            "updatedBy": null,
+            "times": []
+        },
+        "status_code": 200
+    },
+    "get_permissions": {
+        "method": "GET",
+        "endpoint": "/packages/1/permissions",
+        "data": [
+            {
+                "id": 1,
+                "package": 1,
+                "timeType": "always",
+                "type": "everything",
+                "resourceType": null,
+                "resource": null,
+                "usageFeeDiscountPercent": "0.00",
+                "bookingFeeDiscountPercent": "0.00",
+                "lockVersion": 1,
+                "createdAt": "2023-06-06T18:19:10.051Z",
+                "updatedAt": "2023-06-06T18:19:10.051Z",
+                "updatedBy": null,
+                "times": []
+            },
+            {
+                "id": 2,
+                "package": 1,
+                "timeType": "always",
+                "type": "everything",
+                "resourceType": null,
+                "resource": null,
+                "usageFeeDiscountPercent": "0.00",
+                "bookingFeeDiscountPercent": "0.00",
+                "lockVersion": 1,
+                "createdAt": "2023-06-06T18:19:10.051Z",
+                "updatedAt": "2023-06-06T18:19:10.051Z",
+                "updatedBy": null,
+                "times": []
+            }
+        ]
+    }
+}

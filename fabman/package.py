@@ -10,7 +10,7 @@ class PackageCredit(FabmanObject):
     """Simple Class to handle PackageCredits"""
 
     def __str__(self):
-        return f"PackageCredit #{self.id}: {self.package_id}"
+        return f"PackageCredit #{self.id}, Package #{self.package_id}: {self.scope}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -20,11 +20,11 @@ class PackageCredit(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/packages/deletePackagesPackageIdCreditsCreditId
         """
 
-        uri = f"/packages/{self.packageId}/credits/{self.id}"
+        uri = f"/packages/{self.package_id}/credits/{self.id}"
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -49,7 +49,7 @@ class PackagePermission(FabmanObject):
     """Simple Class to handle PackagePermissions"""
 
     def __str__(self):
-        return f"PackagePermission #{self.id}: {self.package_id}"
+        return f"PackagePermission #{self.id}, Package #{self.package_id}: {self.type}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -59,11 +59,11 @@ class PackagePermission(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/packages/deletePackagesPackageIdPermissionsPermissionId
         """
 
-        uri = f"/packages/{self.packageId}/permissions/{self.id}"
+        uri = f"/packages/{self.package_id}/permissions/{self.id}"
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -102,7 +102,7 @@ class Package(FabmanObject):
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         data = response.json()
-        data.update({"packageId": self.id})
+        data.update({"package_id": self.id})
 
         return PackageCredit(self._requester, data)
 
@@ -135,7 +135,7 @@ class Package(FabmanObject):
         response = self._requester.request("GET", uri, _kwargs=kwargs)
 
         data = response.json()
-        data.update({"packageId": self.id})
+        data.update({"package_id": self.id})
 
         return PackageCredit(self._requester, data)
 
@@ -200,7 +200,7 @@ class Package(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
