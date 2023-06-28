@@ -23,7 +23,7 @@ class ApiKey(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def get_token(self, **kwargs) -> requests.Response:
         """
