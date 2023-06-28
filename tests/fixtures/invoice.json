@@ -1,0 +1,36 @@
+{
+    "details": {
+        "method": "GET",
+        "endpoint": "/invoices/1/details",
+        "data": {
+            "id": 1,
+            "totalExcludingTax": "12.34",
+            "charges": [
+              {
+                "id": 1,
+                "account": 1,
+                "member": 1,
+                "description": "Test Charge",
+                "price": "12.34",
+                "taxPercent": "0.00",
+                "invoice": 1,
+                "lockVersion": 3,
+                "createdAt": "2023-06-26T22:10:16.752Z",
+                "updatedAt": "2023-06-26T22:51:10.158Z",
+                "updatedBy": 1,
+                "booking": null,
+                "resourceLog": null,
+                "memberPackage": null,
+                "dateTime": "2023-06-26T17:09:48",
+                "calculated": false,
+                "onBehalfOf": null,
+                "details": "Test Update Charge",
+                "netPrice": "12.34",
+                "date": "2023-06-26"
+              }
+            ],
+            "taxCategories": []
+          }
+          
+    }
+}
