@@ -28,6 +28,7 @@ from fabman import Fabman
 
 API_KEY = 'abcdef-123456789-a1b2c3d4e5f6a7b8'
 f = Fabman(API_KEY)
+members = f.get_members()
 ```
 
 From there, you can begin interacting with api endpoints as described in the official documentation. Most top-level methods return an object which manages that object. For example, to get a single member and update that member's name,
