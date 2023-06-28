@@ -304,7 +304,7 @@ class Member(FabmanObject):
             "GET",
             f"/members/{self.id}/credits",
             extra_attribs={"member_id": self.id},
-            kwargs=kwargs,
+            **kwargs,
         )
 
     def get_credit(self, credit_id: int, **kwargs) -> MemberCredit:
@@ -428,7 +428,7 @@ class Member(FabmanObject):
             "GET",
             f"/members/{self.id}/packages",
             extra_attribs={"member_id": self.id},
-            kwargs=kwargs,
+            **kwargs,
         )
 
     def get_package(self, member_package_id: int, **kwargs) -> MemberPackage:

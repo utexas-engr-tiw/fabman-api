@@ -281,9 +281,7 @@ class Fabman(object):
         Calls "GET /accounts"
         Documentation: https://fabman.io/api/v1/documentation#/accounts/getAccounts
         """
-        return PaginatedList(
-            Account, self.__requester, "GET", "/accounts", kwargs=kwargs
-        )
+        return PaginatedList(Account, self.__requester, "GET", "/accounts", **kwargs)
 
     def get_api_key(self, key_id, **kwargs) -> ApiKey:
         """
@@ -307,9 +305,7 @@ class Fabman(object):
         Documentation: https://fabman.io/api/v1/documentation#/api-keys/getApikeys
         """
 
-        return PaginatedList(
-            ApiKey, self.__requester, "GET", "/api-keys", kwargs=kwargs
-        )
+        return PaginatedList(ApiKey, self.__requester, "GET", "/api-keys", **kwargs)
 
     def get_booking(self, booking_id, **kwargs) -> Booking:
         """
@@ -332,9 +328,7 @@ class Fabman(object):
         Calls "GET /bookings"
         Documentation: https://fabman.io/api/v1/documentation#/bookings/getBookings
         """
-        return PaginatedList(
-            Booking, self.__requester, "GET", "/bookings", kwargs=kwargs
-        )
+        return PaginatedList(Booking, self.__requester, "GET", "/bookings", **kwargs)
 
     def get_charge(self, charge_id: int, **kwargs) -> Charge:
         """
@@ -358,7 +352,7 @@ class Fabman(object):
         Documentation: https://fabman.io/api/v1/documentation#/charges/getCharges
         """
 
-        return PaginatedList(Charge, self.__requester, "GET", "/charges", kwargs=kwargs)
+        return PaginatedList(Charge, self.__requester, "GET", "/charges", **kwargs)
 
     def get_invoice(self, invoice_id, **kwargs) -> Invoice:
         """
@@ -382,9 +376,7 @@ class Fabman(object):
         Documentation https://fabman.io/api/v1/documentation#/invoices/getInvoices
         """
 
-        return PaginatedList(
-            Invoice, self.__requester, "GET", "/invoices", kwargs=kwargs
-        )
+        return PaginatedList(Invoice, self.__requester, "GET", "/invoices", **kwargs)
 
     def get_job(self, job_id, **kwargs):
         """
@@ -406,7 +398,7 @@ class Fabman(object):
         Documentation https://fabman.io/api/v1/documentation#/jobs/getJobs
         """
 
-        return PaginatedList(Job, self.__requester, "GET", "/jobs", kwargs=kwargs)
+        return PaginatedList(Job, self.__requester, "GET", "/jobs", **kwargs)
 
     def get_members(self, **kwargs):
         """Get all of the members in the Fabman database. Can specify filters,
@@ -417,7 +409,7 @@ class Fabman(object):
         documentation https://fabman.io/api/v1/documentation#/members/getMembers
         """
 
-        return PaginatedList(Member, self.__requester, "GET", "/members", kwargs=kwargs)
+        return PaginatedList(Member, self.__requester, "GET", "/members", **kwargs)
 
     def get_member(self, member_id: int, **kwargs):
         """Retrieves a member from the API give their id
@@ -455,9 +447,7 @@ class Fabman(object):
         Documentation https://fabman.io/api/v1/documentation#/packages/getPackages
         """
 
-        return PaginatedList(
-            Package, self.__requester, "GET", "/packages", kwargs=kwargs
-        )
+        return PaginatedList(Package, self.__requester, "GET", "/packages", **kwargs)
 
     def get_payment(self, payment_id, **kwargs) -> Payment:
         """
@@ -481,9 +471,7 @@ class Fabman(object):
         Documentation https://fabman.io/api/v1/documentation#/payments/getPayments
         """
 
-        return PaginatedList(
-            Payment, self.__requester, "GET", "/payments", kwargs=kwargs
-        )
+        return PaginatedList(Payment, self.__requester, "GET", "/payments", **kwargs)
 
     def get_resource(self, resource_id: int, **kwargs):
         """
@@ -511,7 +499,7 @@ class Fabman(object):
             self.__requester,
             "GET",
             "/resources",
-            kwargs=kwargs,
+            **kwargs,
         )
 
     def get_resource_log(self, resource_log_id, **kwargs) -> ResourceLog:
@@ -537,7 +525,7 @@ class Fabman(object):
         """
 
         return PaginatedList(
-            ResourceLog, self.__requester, "GET", "/resource-logs", kwargs=kwargs
+            ResourceLog, self.__requester, "GET", "/resource-logs", **kwargs
         )
 
     def get_resource_type(self, resource_type_id, **kwargs) -> ResourceType:
@@ -563,7 +551,7 @@ class Fabman(object):
         """
 
         return PaginatedList(
-            ResourceType, self.__requester, "GET", "/resource-types", kwargs=kwargs
+            ResourceType, self.__requester, "GET", "/resource-types", **kwargs
         )
 
     def get_space(self, space_id, **kwargs) -> Space:
@@ -588,7 +576,7 @@ class Fabman(object):
         Documentation: https://fabman.io/api/v1/documentation#/spaces/getSpaces
         """
 
-        return PaginatedList(Space, self.__requester, "GET", "/spaces", kwargs=kwargs)
+        return PaginatedList(Space, self.__requester, "GET", "/spaces", **kwargs)
 
     def get_training_course(self, course_id, **kwargs):
         """
@@ -611,7 +599,7 @@ class Fabman(object):
         Documentation: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcourses
         """
         return PaginatedList(
-            TrainingCourse, self.__requester, "GET", "/training-courses", kwargs=kwargs
+            TrainingCourse, self.__requester, "GET", "/training-courses", **kwargs
         )
 
     def get_user(self, **kwargs):
@@ -648,6 +636,4 @@ class Fabman(object):
         Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooks
         """
 
-        return PaginatedList(
-            Webhook, self.__requester, "GET", "/webhooks", kwargs=kwargs
-        )
+        return PaginatedList(Webhook, self.__requester, "GET", "/webhooks", **kwargs)
