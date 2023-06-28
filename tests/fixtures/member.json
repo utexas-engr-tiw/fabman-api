@@ -29,6 +29,18 @@
         "data": {},
         "status_code": 204
     },
+    "delete_key": {
+        "method": "DELETE",
+        "endpoint": "/members/1/key",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_package": {
+        "method": "DELETE",
+        "endpoint": "/members/1/packages/1",
+        "data": {},
+        "status_code": 204
+    },
     "get_balance_items": {
         "method": "GET",
         "endpoint": "/members/1/balance-items",
@@ -75,10 +87,12 @@
         },
         "status_code": 200
     },
-    "get_credit_uses_by_id": {
+    "get_credit_uses": {
         "method": "GET",
         "endpoint": "/members/1/credits/1/uses",
-        "data": [],
+        "data": [{
+            "id": 1
+        }],
         "status_code": 200
     },
     "get_device": {
@@ -149,10 +163,15 @@
         "method": "GET",
         "endpoint": "/members/1/key",
         "data": {
-            "type": "em4102",
-            "token": "abcdef12",
-            "state": "active"
-        },
+            "member": 1,
+            "state": "active",
+            "lockVersion": 1,
+            "createdAt": "2023-06-26T22:23:22.414Z",
+            "updatedAt": "2023-06-26T22:23:22.414Z",
+            "updatedBy": 1,
+            "account": 1,
+            "type": "em4102"
+          },
         "status_code": 200
     },
     "get_packages": {
@@ -186,15 +205,15 @@
         "method": "GET",
         "endpoint": "/members/1/packages/1",
         "data": {
-            "id": 68948,
-            "package": 6371,
+            "id": 1,
+            "package": 1,
             "fromDate": "2023-05-24",
             "untilDate": null,
             "notes": null,
             "lockVersion": 1,
             "createdAt": "2023-05-24T20:06:16.903Z",
             "updatedAt": "2023-05-24T20:06:16.903Z",
-            "updatedBy": 256549,
+            "updatedBy": 1,
             "customFees": false,
             "setupFee": "0.00",
             "recurringFee": "0.00",
