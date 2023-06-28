@@ -52,8 +52,37 @@ class TestMembers(unittest.TestCase):
     def test_delete(self, m):
         register_uris({"member": ["delete"]}, m)
 
-        self.member.delete()
+        resp = self.member.delete()
         self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_delete_change(self, m):
+        register_uris({"member": ["delete_change"]}, m)
+
+        resp = self.member.delete_change(1)
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_delete_device_change(self, m):
+        register_uris({"member": ["delete_device_change"]}, m)
+
+        resp = self.member.delete_device_change(1)
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_delete_payment_method(self, m):
+        register_uris({"member": ["delete_payment_method"]}, m)
+
+        resp = self.member.delete_payment_method()
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_delete_training(self, m):
+        register_uris({"member": ["delete_training"]}, m)
+
+        resp = self.member.delete_training(1)
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
 
     def test_get_balance_items(self, m):
         register_uris({"member": ["get_balance_items"]}, m)
@@ -86,6 +115,15 @@ class TestMembers(unittest.TestCase):
         device = self.member.get_device()
         self.assertIsInstance(device, dict)
         self.assertEqual(device["name"], "Apple iPhone")
+
+    def test_get_device_embeded(self, m):
+        register_uris({"fabman": ["get_member_by_id_device_embed"]}, m)
+
+        member = self.fabman.get_member(1, embed=["device"])
+
+        self.assertIsInstance(member, Member)
+        device = member.get_device()
+        self.assertTrue(device["name"] == "Device 1")
 
     def test_get_device_changes(self, m):
         register_uris({"member": ["get_device_changes"]}, m)
@@ -197,6 +235,14 @@ class TestMembers(unittest.TestCase):
 
         training = self.member.get_training(1)
         self.assertIsInstance(training, dict)
+
+    def test_refresh(self, m):
+        register_uris({"fabman": ["get_member_by_id"]}, m)
+
+        before = self.member.id
+        self.member.refresh()
+        self.assertTrue(m.called)
+        self.assertTrue(before == self.member.id)
 
     def test_update(self, m):
         m.register_uri(
@@ -318,11 +364,29 @@ class TestMemberPackage(unittest.TestCase):
         self.assertTrue(resp.status_code == 204)
 
     def test_get_package(self, m):
-        register_uris({"member": ["get_package_by_id"]}, m)
-        register_uris({"fabman": ["get_package_by_id"]}, m)
+        register_uris(
+            {"member": ["get_package_by_id"], "fabman": ["get_package_by_id"]}, m
+        )
 
         package = self.package.get_package()
         self.assertIsInstance(package, Package)
+
+    def test_get_package_embedded(self, m):
+        register_uris(
+            {
+                "member": ["get_packages_embedded"],
+            },
+            m,
+        )
+
+        memberPackage = self.member.get_packages(embed=["package"])
+        self.assertIsInstance(memberPackage, PaginatedList)
+        self.assertIsInstance(memberPackage[0], MemberPackage)
+
+        package = memberPackage[0].get_package()
+        self.assertIsInstance(package, Package)
+        self.assertTrue(hasattr(package, "name"))
+        self.assertTrue(package.name == "Test Package")
 
     def test_update(self, m):
         m.register_uri(
