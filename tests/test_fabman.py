@@ -1,5 +1,5 @@
 """Tests for the fabman module."""
-# pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name, unused-argument
+# pylint: disable=missing-docstring, invalid-name, unused-argument, protected-access
 import unittest
 import warnings
 

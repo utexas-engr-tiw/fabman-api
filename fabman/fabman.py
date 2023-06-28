@@ -197,7 +197,7 @@ class Fabman(object):
         Calls "POST /resource-logs"
         Documentation https://fabman.io/api/v1/documentation#/resource-logs/postResourceLogs
         """
-        uri = f"/resource-logs"
+        uri = "/resource-logs"
 
         response = self.__requester.request("POST", uri, _kwargs=kwargs)
 

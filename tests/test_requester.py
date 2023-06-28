@@ -1,7 +1,5 @@
 """Tests for the Requester Class"""
 # pylint: disable=missing-docstring, invalid-name, unused-argument, protected-access
-
-import json
 import unittest
 
 import requests_mock
