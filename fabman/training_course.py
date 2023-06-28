@@ -8,9 +8,9 @@ class TrainingCourse(FabmanObject):
     """TrainingCourse Object handles all API calls that operate on a single TrainingCourse."""
 
     def __str__(self):
-        return f"TrainingCourse #{self.id}: {self.name}"
+        return f"TrainingCourse #{self.id}: {self.title}"
 
-    def update_course(self, **kwargs) -> requests.Response:
+    def update(self, **kwargs) -> None:
         """
         Update the training course with the given data. Will create the data
         if the training course does not exist.
@@ -20,11 +20,15 @@ class TrainingCourse(FabmanObject):
         """
         uri = f"/training-courses/{self.id}"
 
+        kwargs.update({"lockVersion": self.lockVersion})
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
-        return response.json()
+        data = response.json()
 
-    def delete_course(self, **kwargs) -> requests.Response:
+        for attr, val in data.items():
+            setattr(self, attr, val)
+
+    def delete(self, **kwargs) -> requests.Response:
         """
         Delete the training course. *WARNING: THIS CANNOT BE UNDONE.*
 
@@ -35,4 +39,4 @@ class TrainingCourse(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
