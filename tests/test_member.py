@@ -9,6 +9,7 @@ import requests_mock
 from fabman import Fabman
 from fabman.exceptions import ResourceDoesNotExist
 from fabman.member import Member, MemberCredit, MemberKey, MemberPackage
+from fabman.package import Package
 from fabman.paginated_list import PaginatedList
 from tests import settings
 from tests.util import register_uris, validate_update
@@ -122,7 +123,8 @@ class TestMembers(unittest.TestCase):
         register_uris({"member": ["get_key_data"]}, m)
         key = self.member.get_key()
 
-        self.assertIsInstance(key, dict)
+        self.assertIsInstance(key, MemberKey)
+        self.assertTrue(key.type == "em4102")
 
     def test_get_packages(self, m):
         register_uris({"member": ["get_packages"]}, m)
@@ -231,8 +233,16 @@ class TestMemberCredit(unittest.TestCase):
     def test_delete(self, m):
         register_uris({"member": ["delete_credit"]}, m)
 
-        self.credit.delete()
+        resp = self.credit.delete()
         self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_get_uses(self, m):
+        register_uris({"member": ["get_credit_uses"]}, m)
+
+        uses = self.credit.get_uses()
+        self.assertIsInstance(uses, list)
+        self.assertTrue(uses[0]["id"] == 1)
 
     def test_update(self, m):
         m.register_uri(
@@ -243,4 +253,84 @@ class TestMemberCredit(unittest.TestCase):
         )
 
         self.credit.update(amount=12.34)
+        self.assertTrue(m.called)
+
+
+@requests_mock.Mocker()
+class TestMemberKey(unittest.TestCase):
+    def setUp(self):
+        self.fabman: Fabman = Fabman(settings.API_KEY)
+
+        with requests_mock.Mocker() as m:
+            register_uris(
+                {"member": ["get_key_data"], "fabman": ["get_member_by_id"]}, m
+            )
+            self.key: MemberKey = self.fabman.get_member(1).get_key()
+
+    def test_to_str(self, m):
+        string = str(self.key)
+        self.assertIsInstance(string, str)
+        print(str(self.key))
+        self.assertTrue("1 - em4102" == string)
+
+    def test_delete(self, m):
+        register_uris({"member": ["delete_key"]}, m)
+
+        resp = self.key.delete()
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            f"{settings.BASE_URL_WITH_VERSION}/members/1/key",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.key.update(type="blowfish")  # the reallest key
+        self.assertTrue(m.called)
+
+
+@requests_mock.Mocker()
+class TestMemberPackage(unittest.TestCase):
+    def setUp(self):
+        self.fabman = Fabman(settings.API_KEY)
+
+        with requests_mock.Mocker() as m:
+            register_uris(
+                {"fabman": ["get_member_by_id"], "member": ["get_package_by_id"]}, m
+            )
+
+            self.member = self.fabman.get_member(1)
+            self.package = self.member.get_package(1)
+
+    def test_str(self, m):
+        string = str(self.package)
+        self.assertIsInstance(string, str)
+        self.assertTrue("1 - 1" == string)
+
+    def test_delete(self, m):
+        register_uris({"member": ["delete_package"]}, m)
+
+        resp = self.package.delete()
+        self.assertTrue(m.called)
+        self.assertTrue(resp.status_code == 204)
+
+    def test_get_package(self, m):
+        register_uris({"member": ["get_package_by_id"]}, m)
+        register_uris({"fabman": ["get_package_by_id"]}, m)
+
+        package = self.package.get_package()
+        self.assertIsInstance(package, Package)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            "https://fabman.io/api/v1/members/1/packages/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.package.update()
         self.assertTrue(m.called)
