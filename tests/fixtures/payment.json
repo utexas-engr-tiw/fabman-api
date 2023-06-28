@@ -1,0 +1,17 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/payments/1",
+        "data": {},
+        "status_code": 204
+    },
+    "request_payment": {
+        "method": "POST",
+        "endpoint": "/payments/1/request-payment",
+        "data": {
+            "total": 100,
+            "notes": "Test payment"
+        },
+        "status_code": 201
+    }
+}

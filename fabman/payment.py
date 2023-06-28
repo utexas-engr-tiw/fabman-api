@@ -8,6 +8,9 @@ from fabman.fabman_object import FabmanObject
 class Payment(FabmanObject):
     """Defines the Payment object for interacting with payments on the Fabman API"""
 
+    def __str__(self) -> str:
+        return f"Payment #{self.id}: {self.notes}"
+
     def delete(self, **kwargs) -> requests.Response:
         """
         Deletes a payment. *WARNING: This is irreversible.*
@@ -19,7 +22,7 @@ class Payment(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def request_payment(self, **kwargs) -> requests.Response:
         """
@@ -32,7 +35,7 @@ class Payment(FabmanObject):
 
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
