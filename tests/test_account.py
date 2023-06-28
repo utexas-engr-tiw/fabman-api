@@ -21,8 +21,12 @@ class TestAccount(unittest.TestCase):
 
             self.account: Account = self.fabman.get_account(1)
 
-    def test_sanity(self, m) -> None:
-        self.assertEqual(1, 1)
+    def test_instance(self, m):
+        self.assertIsInstance(self.account, Account)
+
+    def test_str(self, m):
+        string = str(self.account)
+        self.assertTrue(string == "Account #1: Tarok Nor")
 
     def test_get_payment_info(self, m):
         register_uris({"accounts": ["get_payment_info"]}, m)
