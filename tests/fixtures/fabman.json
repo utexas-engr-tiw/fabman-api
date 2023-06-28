@@ -841,7 +841,12 @@
         "method": "GET",
         "endpoint": "/resource-types/1",
         "data": {
-            "id": 1
+            "id": 1,
+            "name": "Starship",
+            "account": 1,
+            "createdAt": "2023-06-08T12:49:26.903Z",
+            "updatedAt": "2023-06-08T12:49:26.903Z",
+            "updatedBy": 1
         },
         "status_code": 200
     },
@@ -850,10 +855,20 @@
         "endpoint": "/resource-types",
         "data": [
             {
-                "id": 1
+                "id": 1,
+                "name": "Starship",
+                "account": 1,
+                "createdAt": "2023-06-08T12:49:26.903Z",
+                "updatedAt": "2023-06-08T12:49:26.903Z",
+                "updatedBy": 1
             },
             {
-                "id": 2
+                "id": 2,
+                "name": "Small Vehicle",
+                "account": 1,
+                "createdAt": "2023-06-08T12:49:26.903Z",
+                "updatedAt": "2023-06-08T12:49:26.903Z",
+                "updatedBy": 1
             }
         ],
         "status_code": 200

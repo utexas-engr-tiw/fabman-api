@@ -26,7 +26,7 @@ class ResourceType(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -38,8 +38,6 @@ class ResourceType(FabmanObject):
         """
 
         uri = f"/resource-types/{self.id}"
-
-        kwargs.update({"lockVersion": self.lockVersion})
 
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 

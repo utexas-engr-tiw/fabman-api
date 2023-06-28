@@ -1,0 +1,16 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/resource-types/1",
+        "data": {},
+        "status_code": 204
+    },
+    "update": {
+        "method": "PUT",
+        "endpoint": "/resource-types/1",
+        "data": {
+            "name": "Victory Class Starship"
+        },
+        "status_code": 200
+    }
+}
