@@ -12,7 +12,7 @@ class Booking(FabmanObject):
     """
 
     def __str__(self):
-        return f"Booking #{self.id}: {self.fromDateTime} - {self.toDateTime}"
+        return f"Booking #{self.id}: {self.fromDateTime} - {self.untilDateTime}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
