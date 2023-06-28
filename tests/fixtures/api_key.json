@@ -1,0 +1,15 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/api-keys/1",
+        "data": {},
+        "status_code": 204
+    },
+    "get_token": {
+        "method": "GET",
+        "endpoint": "/api-keys/1/token",
+        "data": {
+            "token": "123"
+        }
+    }
+}
