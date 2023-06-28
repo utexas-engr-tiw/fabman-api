@@ -6,7 +6,7 @@
 
 # Fabman API 
 
-Library for interfacing with te Fabman API. Created for Texas Inventionworks as part of the Cockrell School of Engineering at the University of Texas at Austin.
+Library for interfacing with the Fabman API. Created for Texas Inventionworks as part of the Cockrell School of Engineering at the University of Texas at Austin.
 
 Official documentation for the Fabman API can be found [here](https://github.com/FabmanHQ/fabman-api). Live interaction and description of all endpoints can further be found [here](https://fabman.io/api/v1/documentation#/). This library is currently targeting version 2.3.1 of the Fabman API.
 
@@ -28,7 +28,7 @@ from fabman import Fabman
 
 API_KEY = 'abcdef-123456789-a1b2c3d4e5f6a7b8'
 f = Fabman(API_KEY)
-members = f.get_members()
+...
 ```
 
 From there, you can begin interacting with api endpoints as described in the official documentation. Most top-level methods return an object which manages that object. For example, to get a single member and update that member's name,
