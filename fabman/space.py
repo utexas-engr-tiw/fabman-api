@@ -12,7 +12,7 @@ class SpaceBillingSettings(FabmanObject):
     """Class for interacting with the space-billing-settings endpoint on the Fabman API"""
 
     def __str__(self):
-        return f"SpaceBillingSettings #{self.id}: {self.space}"
+        return f"SpaceBillingSettings for space #{self.space}"
 
     def delete_stripe(self, **kwargs) -> requests.Response:
         """
@@ -22,11 +22,11 @@ class SpaceBillingSettings(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdBillingsettingsStripe
         """
 
-        uri = f"/space/{self.space_id}/billing-settings/stripe"
+        uri = f"/spaces/{self.space_id}/billing-settings/stripe"
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -37,7 +37,7 @@ class SpaceBillingSettings(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/space-billing-settings/putSpaceBillingSettingsSpaceBillingSettingsId
         """
 
-        uri = f"/space-billing-settings/{self.id}"
+        uri = f"/spaces/{self.space_id}/billing-settings"
 
         kwargs.update({"lockVersion": self.lockVersion})
 
@@ -64,7 +64,7 @@ class SpaceHoliday(FabmanObject):
     """Class for interacting with the space/{id}/holidays endpoints on the Fabman API"""
 
     def __str__(self):
-        return f"SpaceHoliday #{self.id}: {self.space}"
+        return f"SpaceHoliday #{self.id}: {self.title}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -74,11 +74,11 @@ class SpaceHoliday(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdHolidaysHolidayid
         """
 
-        uri = f"/space/{self.space_id}/holidays/{self.id}"
+        uri = f"/spaces/{self.space_id}/holidays/{self.id}"
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -90,7 +90,7 @@ class SpaceHoliday(FabmanObject):
         Documentation https://fabman.io/api/v1/documentation
         """
 
-        uri = f"/space/{self.space_id}/holidays/{self.id}"
+        uri = f"/spaces/{self.space_id}/holidays/{self.id}"
 
         kwargs.update({"lockVersion": self.lockVersion})
 
@@ -134,7 +134,7 @@ class Space(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def delete_calendar_token(self, **kwargs) -> requests.Response:
         """
@@ -148,7 +148,7 @@ class Space(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def get_billing_settings(self, **kwargs) -> SpaceBillingSettings:
         """
@@ -225,7 +225,27 @@ class Space(FabmanObject):
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
+
+    def update(self, **kwargs) -> None:
+        """
+        Updates the space. Attributes are updated in place with new information
+        from the API.
+
+        Calls "PUT /spaces/{spaceId}"
+        Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesId
+        """
+
+        uri = f"/spaces/{self.id}"
+
+        kwargs.update({"lockVersion": self.lockVersion})
+
+        response = self._requester.request("PUT", uri, _kwargs=kwargs)
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
 
     def update_calendar_token(self, **kwargs) -> requests.Response:
         """
@@ -238,8 +258,6 @@ class Space(FabmanObject):
 
         uri = f"/spaces/{self.id}/calendar-token"
 
-        kwargs.update({"lockVersion": self.lockVersion})
-
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
         data = response.json()
@@ -248,7 +266,7 @@ class Space(FabmanObject):
         setattr(self, "calendarToken", token)
         setattr(self, "calendarUrl", data["calendarUrl"])
 
-        return response.json()
+        return response
 
     def update_opening_hours(self, **kwargs) -> requests.Response:
         """
@@ -267,4 +285,4 @@ class Space(FabmanObject):
         if "openingHours" in self._embedded:
             self._embedded["openingHours"] = self.get_opening_hours()
 
-        return response.json()
+        return response

@@ -1,0 +1,142 @@
+{
+    "create_holiday": {
+        "method": "POST",
+        "endpoint": "/spaces/1/holidays",
+        "data": {
+            "id": 1,
+            "title": "Emissary's Day",
+            "fromDateTime": "2023-06-28T00:00",
+            "untilDateTime": "2023-06-28T23:59",
+            "affects": "all",
+            "lockVersion": 1,
+            "createdAt": "2023-06-28T20:44:05.863Z",
+            "updatedAt": "2023-06-28T20:44:05.863Z",
+            "updatedBy": 1
+        },
+        "status_code": 200
+    },
+    "delete": {
+        "method": "DELETE",
+        "endpoint":"/spaces/1",
+        "data": {},
+        "status_code": 204
+    },
+    "get_billing_settings": {
+        "method": "GET",
+        "endpoint": "/spaces/1/billing-settings",
+        "data": {
+            "space": 1,
+            "account": 1,
+            "taxPercent": "0.00",
+            "invoiceNumberPrefix": "",
+            "nextInvoiceNumber": 1001,
+            "invoiceHeader": null,
+            "invoiceFooter": null,
+            "lockVersion": 1,
+            "createdAt": "2023-06-06T18:19:10.059Z",
+            "updatedAt": "2023-06-06T18:19:10.059Z",
+            "updatedBy": null,
+            "defaultInvoiceDeadline": 0,
+            "defaultInvoiceDeadlineUnit": "day",
+            "statementName": null,
+            "stripeUser": null,
+            "stripePublicKey": null,
+            "stripeName": null,
+            "stripeLivemode": null,
+            "enableSepa": false,
+            "sepaCreditorId": null,
+            "sepaIban": null,
+            "sepaAccountOwnerName": null,
+            "sepaMandateText": null
+        },
+        "status_code": 200
+    },
+    "delete_calendar_token": {
+        "method": "DELETE",
+        "endpoint": "/spaces/1/calendar-token",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_holiday":{ 
+        "method": "DELETE",
+        "endpoint": "/spaces/1/holidays/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_stripe": {
+        "method": "DELETE",
+        "endpoint": "/spaces/1/billing-settings/stripe",
+        "data": {},
+        "status_code": 204
+    },
+    "get_holiday": {
+        "method": "GET",
+        "endpoint": "/spaces/1/holidays/1",
+        "data": {
+            "id": 1,
+            "title": "Emissary's Day",
+            "fromDateTime": "2023-06-28T00:00",
+            "untilDateTime": "2023-06-28T23:59",
+            "affects": "all",
+            "lockVersion": 1,
+            "createdAt": "2023-06-28T20:44:05.863Z",
+            "updatedAt": "2023-06-28T20:44:05.863Z",
+            "updatedBy": 1
+        },
+        "status_code": 200
+    },
+    "get_holidays": {
+        "method": "GET",
+        "endpoint": "/spaces/1/holidays",
+        "data": [
+            {
+                "id": 1,
+                "title": "Emissary's Day",
+                "fromDateTime": "2023-06-28T00:00",
+                "untilDateTime": "2023-06-28T23:59",
+                "affects": "all",
+                "lockVersion": 1,
+                "createdAt": "2023-06-28T20:44:05.863Z",
+                "updatedAt": "2023-06-28T20:44:05.863Z",
+                "updatedBy": 1
+              },
+              {
+                "id": 2,
+                "title": "Bajoran Grattiude Festival",
+                "fromDateTime": "2023-07-28T00:00",
+                "untilDateTime": "2023-07-28T23:59",
+                "affects": "all",
+                "lockVersion": 1,
+                "createdAt": "2023-06-28T20:44:05.863Z",
+                "updatedAt": "2023-06-28T20:44:05.863Z",
+                "updatedBy": 1
+              }
+        ]
+    },
+    "get_opening_hours": {
+        "method": "GET",
+        "endpoint": "/spaces/1/opening-hours",
+        "data": [
+            {
+              "dayOfWeek": 7,
+              "fromTime": "10:00",
+              "untilTime": "23:00"
+            }
+        ],
+        "status_code": 200
+    },
+    "update_calendar_token": {
+        "method": "PUT",
+        "endpoint": "/spaces/1/calendar-token",
+        "data": {
+            "calendarUrl": "https://fabman.io/calendars/spaces/1/abcdef-1234-5678.ics"
+        },
+        "status_code": 200
+    },
+    "update_opening_hours": {
+        "method": "PUT",
+        "endpoint": "/spaces/1/opening-hours",
+        "data": {},
+        "status_code": 200
+    }
+}
