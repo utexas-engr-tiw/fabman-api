@@ -1007,7 +1007,19 @@
         "method": "GET",
         "endpoint": "/webhooks/1",
         "data": {
-            "id": 1
+            "id": 1,
+            "account": 1,
+            "url": "https://example.com/julians_door_cam",
+            "label": "Garak's Test Webhook",
+            "state": "success",
+            "lockVersion": 2,
+            "createdAt": "2023-06-27T16:41:14.244Z",
+            "updatedAt": "2023-06-28T20:20:47.649Z",
+            "updatedBy": 256881,
+            "notes": "<div>I wonder what Julian is doing.</div>",
+            "categories": [
+              "booking"
+            ]
         },
         "status_code": 200
     },

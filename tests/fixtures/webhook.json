@@ -1,0 +1,31 @@
+{   
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/webhooks/1",
+        "data": {},
+        "status_code": 204
+    },
+    "get_events": {
+        "method": "GET",
+        "endpoint": "/webhooks/1/events",
+        "data": [
+            {
+                "id": 1,
+                "webhook": 1
+            },
+            {
+                "id": 2,
+                "webhook": 1
+            }
+        ],
+        "status_code": 200
+    },
+    "send_test_event": {
+        "method": "POST",
+        "endpoint": "/webhooks/1/test",
+        "data": {
+            "event": "test"
+        },
+        "status_code": 201
+    }
+}

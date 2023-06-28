@@ -11,7 +11,7 @@ class Webhook(FabmanObject):
     """
 
     def __str__(self):
-        return f"Webhook #{self.id}: {self.label} ({self.url})"
+        return f"Webhook #{self.id}: {self.label}"
 
     def delete(self, **kwargs):
         """
@@ -25,7 +25,7 @@ class Webhook(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def get_events(self, **kwargs) -> requests.Response:
         """
@@ -42,7 +42,7 @@ class Webhook(FabmanObject):
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def send_test_event(self, **kwargs) -> requests.Response:
         """
@@ -56,7 +56,7 @@ class Webhook(FabmanObject):
 
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -73,5 +73,5 @@ class Webhook(FabmanObject):
 
         data = response.json()
 
-        for attr, val in data:
+        for attr, val in data.items():
             setattr(self, attr, val)
