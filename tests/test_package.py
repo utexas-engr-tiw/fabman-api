@@ -103,7 +103,6 @@ class TestMemberCredit(unittest.TestCase):
 
     def test_str(self, m):
         string = str(self.credit)
-        print(string)
         self.assertTrue(string == "PackageCredit #1, Package #1: booking")
 
     def test_delete(self, m):
