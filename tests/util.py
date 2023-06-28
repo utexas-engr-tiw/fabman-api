@@ -82,6 +82,9 @@ def validate_update(request, context):
 def test_exceptions(request, context):
     """Used for testing exception handling."""
     req = str(request)
+    if "200" in req:
+        context.status_code = 200
+        return json.dumps({"success": True})
     if "400" in req:
         context.status_code = 400
         return json.dumps({"errors": "Bad Request"})
@@ -107,3 +110,7 @@ def test_exceptions(request, context):
     if "420" in req:
         context.status_code = 420
         return json.dumps({"errors": "Enhance Your Calm"})
+    if "429" in req:
+        request.url = "https://fabman.io/api/v1/test_200"
+        context.status_code = 429
+        return json.dumps({"errors": "Too Many Requests"})
