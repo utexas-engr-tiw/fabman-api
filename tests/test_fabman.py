@@ -61,6 +61,13 @@ class TestFabman(unittest.TestCase):
                 ),
             )
 
+    def test_init_trailing_slash(self, m):
+        register_uris({"fabman": ["get_member_by_id"]}, m)
+        fabman = Fabman(settings.API_KEY, settings.BASE_URL_WITH_TRAILING_SLASH)
+        member = fabman.get_member(1)
+        self.assertTrue(m.called)
+        self.assertIsInstance(member, Member)
+
     def test_get_account(self, m):
         register_uris({"fabman": ["get_account_by_id"]}, m)
 
