@@ -316,7 +316,6 @@ class TestMemberKey(unittest.TestCase):
     def test_to_str(self, m):
         string = str(self.key)
         self.assertIsInstance(string, str)
-        print(str(self.key))
         self.assertTrue("1 - em4102" == string)
 
     def test_delete(self, m):
