@@ -132,7 +132,7 @@ class Fabman(object):
 
         response = self.__requester.request("POST", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def create_member(self, **kwargs) -> Member:
         """Creates a new member in the Fabman database.

@@ -26,8 +26,10 @@ class TestTrainingCourse(unittest.TestCase):
 
     def test_instance(self, m):
         self.assertIsInstance(self.training_course, TrainingCourse)
+
+    def test_str(self, m):
         string = str(self.training_course)
-        self.assertTrue(string == "TrainingCourse #1: Bajoran Worker Training")
+        self.assertTrue(string == "TrainingCourse #1: Keiko's Botany Class")
 
     def test_delete(self, m):
         register_uris({"training_course": ["delete"]}, m)

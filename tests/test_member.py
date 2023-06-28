@@ -31,7 +31,7 @@ class TestMembers(unittest.TestCase):
     def test_to_str(self, m):
         string = str(self.member)
         self.assertIsInstance(string, str)
-        self.assertTrue("1: John Doe" == string)
+        self.assertTrue("1: Julian Bashear" == string)
 
     def test_create_credit(self, m):
         register_uris({"member": ["create_credit"]}, m)

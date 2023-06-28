@@ -3,6 +3,7 @@
 import unittest
 import warnings
 
+import requests
 import requests_mock
 
 from fabman import Fabman
@@ -67,6 +68,106 @@ class TestFabman(unittest.TestCase):
         member = fabman.get_member(1)
         self.assertTrue(m.called)
         self.assertIsInstance(member, Member)
+
+    def test_create_api_key(self, m):
+        register_uris({"fabman": ["create_api_key"]}, m)
+
+        api_key = self.fabman.create_api_key(member=1, label="Quark's Bar Key")
+        self.assertIsInstance(api_key, ApiKey)
+
+    def test_create_booking(self, m):
+        register_uris({"fabman": ["create_booking"]}, m)
+
+        booking = self.fabman.create_booking(
+            resource=1,
+            fromDateTime="2021-01-01T12:00:00",
+            toDateTime="2021-01-01T13:00:00",
+            member=1,
+        )
+        self.assertIsInstance(booking, Booking)
+
+    def test_create_charge(self, m):
+        register_uris({"fabman": ["create_charge"]}, m)
+
+        charge = self.fabman.create_charge(member=1, price=12.34)
+        self.assertIsInstance(charge, Charge)
+
+    def test_create_invoice(self, m):
+        register_uris({"fabman": ["create_invoice"]}, m)
+
+        invoice = self.fabman.create_invoice(member=1, date="2023-06-30")
+        self.assertIsInstance(invoice, Invoice)
+
+    def test_create_key_assignment(self, m):
+        register_uris({"fabman": ["create_key_assignment"]}, m)
+
+        resp = self.fabman.create_key_assignment(member=1)
+        self.assertTrue(m.called)
+        self.assertIsInstance(resp, requests.Response)
+        self.assertTrue(resp.status_code == 201)
+
+    def test_create_member(self, m):
+        register_uris({"fabman": ["create_member"]}, m)
+
+        member = self.fabman.create_member(
+            account=1,
+            firstName="Julian",
+            lastName="Bashear",
+            email="bashear@ds9.starfleet",
+        )
+        self.assertIsInstance(member, Member)
+
+    def test_create_package(self, m):
+        register_uris({"fabman": ["create_package"]}, m)
+
+        package = self.fabman.create_package(account=1, name="Test Package")
+        self.assertIsInstance(package, Package)
+
+    def test_create_payment(self, m):
+        register_uris({"fabman": ["create_payment"]}, m)
+
+        payment = self.fabman.create_payment(member=1, total=12.34)
+        self.assertIsInstance(payment, Payment)
+
+    def test_create_resource(self, m):
+        register_uris({"fabman": ["create_resource"]}, m)
+
+        resource = self.fabman.create_resource(space=1, name="USS Defiant", type=1)
+        self.assertIsInstance(resource, Resource)
+
+    def test_create_resource_log(self, m):
+        register_uris({"fabman": ["create_resource_log"]}, m)
+
+        resource_log = self.fabman.create_resource_log(resource=1, member=1)
+        self.assertIsInstance(resource_log, ResourceLog)
+
+    def test_create_resource_type(self, m):
+        register_uris({"fabman": ["create_resource_type"]}, m)
+
+        resource_type = self.fabman.create_resource_type(account=1, name="Starship")
+        self.assertIsInstance(resource_type, ResourceType)
+
+    def test_create_space(self, m):
+        register_uris({"fabman": ["create_space"]}, m)
+
+        space = self.fabman.create_space(account=1, name="Operations Center")
+        self.assertIsInstance(space, Space)
+
+    def test_create_training_course(self, m):
+        register_uris({"fabman": ["create_training_course"]}, m)
+
+        course = self.fabman.create_training_course(account=1, name="Keiko's School")
+        self.assertIsInstance(course, TrainingCourse)
+
+    def test_create_webhook(self, m):
+        register_uris({"fabman": ["create_webhook"]}, m)
+
+        webhook = self.fabman.create_webhook(
+            account=1,
+            url="https://example.com/julians_door_cam",
+            label="Garak's Test Webhook",
+        )
+        self.assertIsInstance(webhook, Webhook)
 
     def test_get_account(self, m):
         register_uris({"fabman": ["get_account_by_id"]}, m)
