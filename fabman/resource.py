@@ -10,7 +10,7 @@ class ResourceBridge(FabmanObject):
     """
 
     def __str__(self):
-        return f"Resource #{self.serialNumber}: {self.inUse}, {self.updatedAt}"
+        return f"Resource #{self.resource_id}: {self.serialNumber}"
 
     def update(self, **kwargs) -> None:
         """
@@ -51,9 +51,9 @@ class Resource(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
-    def delete_resource(self, **kwargs) -> requests.Response:
+    def delete(self, **kwargs) -> requests.Response:
         """
         Deletes the resource. *WARNING: THIS CANNOT BE UNDONE.* All future API
         calls from this resource will fail.
@@ -65,7 +65,7 @@ class Resource(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def get_bridge(self, **kwargs) -> ResourceBridge:
         """
