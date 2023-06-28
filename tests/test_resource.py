@@ -60,6 +60,25 @@ class TestResource(unittest.TestCase):
 
         self.assertIsInstance(api_key, dict)
 
+    def test_switch_on(self, m):
+        register_uris({"resource": ["switch_on"]}, m)
+
+        resp = self.resource.switch_on()
+        self.assertTrue(m.called)
+        self.assertIsInstance(resp, requests.Response)
+        self.assertTrue(resp.status_code == 201)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            f"{settings.BASE_URL_WITH_VERSION}/resources/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.resource.update(title="USS Voyager")
+        self.assertTrue(m.called)
+
 
 @requests_mock.Mocker()
 class TestResourceBridge(unittest.TestCase):

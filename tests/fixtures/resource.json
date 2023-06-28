@@ -35,6 +35,12 @@
         },
         "status_code": 200
     },
+    "switch_on": {
+        "method": "POST",
+        "endpoint": "/resources/1/switch-on",
+        "data": {},
+        "status_code": 201
+    },
     "update_bridge": {
         "method": "PUT",
         "endpoint": "/resources/1/bridge",

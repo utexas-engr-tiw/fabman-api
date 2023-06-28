@@ -11,12 +11,14 @@ from fabman.account import Account
 from fabman.api_key import ApiKey
 from fabman.booking import Booking
 from fabman.charge import Charge
+from fabman.fabman_object import FabmanObject
 from fabman.invoice import Invoice
 from fabman.job import Job
 from fabman.member import Member
 from fabman.package import Package
 from fabman.paginated_list import PaginatedList
 from fabman.payment import Payment
+from fabman.requester import Requester
 from fabman.resource import Resource
 from fabman.resource_log import ResourceLog
 from fabman.resource_type import ResourceType
@@ -480,6 +482,13 @@ class TestFabman(unittest.TestCase):
         self.assertIsInstance(webhooks[0], Webhook)
         self.assertTrue(hasattr(webhooks[0], "id"))
         self.assertTrue(webhooks[0].id == 1)
+
+
+class TestFabmanObject(unittest.TestCase):
+    def test_repr(self):
+        requester = Requester(settings.BASE_URL_WITH_VERSION, settings.API_KEY)
+        obj = FabmanObject(requester, {"id": 1})
+        self.assertEqual(repr(obj), "<FabmanObject id=1>")
 
 
 if __name__ == "__main__":

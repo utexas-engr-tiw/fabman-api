@@ -111,7 +111,7 @@ class Resource(FabmanObject):
 
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -121,6 +121,8 @@ class Resource(FabmanObject):
         Documentation: https://fabman.io/api/v1/documentation#/resources/putResourcesId
         """
         uri = f"/resources/{self.id}"
+
+        kwargs.update({"lockVersion": self.lockVersion})
 
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
