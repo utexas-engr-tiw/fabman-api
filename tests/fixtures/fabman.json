@@ -570,7 +570,12 @@
         "endpoint": "/payments/1",
         "data": {
             "id": 1,
-            "amount": 12.34
+            "total": 12.34,
+            "member": 1,
+            "date": "2023-06-06",
+            "invoices": [],
+            "notes": "Test Payment",
+            "lockVersion": 1
         },
         "status_code": 200
     },
@@ -580,7 +585,20 @@
         "data": [
             {
                 "id": 1,
-                "amount": 12.34
+                "total": 12.34,
+                "member": 1,
+                "date": "2023-06-06",
+                "invoices": [],
+                "notes": "Test Payment",
+                "lockVersion": 1
+            },
+            {
+                "id": 2,
+                "total": 56.78,
+                "member": 1,
+                "date": "2023-06-06",
+                "invoices": [],
+                "notes": "Another Test Payment"
             }
         ],
         "status_code": 200
