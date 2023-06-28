@@ -100,6 +100,3 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
 
     def _has_next(self):
         return self._next_url is not None
-
-    def _is_larger_than(self, index):
-        return len(self._elements) > index or self._has_next()
