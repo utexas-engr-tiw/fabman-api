@@ -77,3 +77,33 @@ def validate_update(request, context):
     else:
         context.status_code = 400
     return json.dumps(data)
+
+
+def test_exceptions(request, context):
+    """Used for testing exception handling."""
+    req = str(request)
+    if "400" in req:
+        context.status_code = 400
+        return json.dumps({"errors": "Bad Request"})
+    if "401_invalid" in req:
+        context.headers["WWW-Authenticate"] = "Bearer"
+        context.status_code = 401
+        return json.dumps({"errors": "Unauthorized"})
+    if "401_unauthorized" in req:
+        context.status_code = 401
+        return json.dumps({"errors": "Unauthorized"})
+    if "403" in req:
+        context.status_code = 403
+        return json.dumps({"errors": "Forbidden"})
+    if "404" in req:
+        context.status_code = 404
+        return json.dumps({"errors": "Not found"})
+    if "409" in req:
+        context.status_code = 409
+        return json.dumps({"errors": "Conflict"})
+    if "422" in req:
+        context.status_code = 422
+        return json.dumps({"errors": "Unprocessable Entity"})
+    if "420" in req:
+        context.status_code = 420
+        return json.dumps({"errors": "Enhance Your Calm"})
