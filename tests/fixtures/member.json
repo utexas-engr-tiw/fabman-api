@@ -253,14 +253,16 @@
     },
     "get_packages_embedded": {
         "method": "GET",
-        "endpoint": "/members/1/packages/?embed=package",
+        "endpoint": "/members/1/packages?embed=package",
         "data": [
             {
                 "id": 1,
                 "package": 1,
                 "_embedded": {
-                    "id": 1,
-                    "name": "Test Package"
+                    "package": {
+                        "id": 1,
+                        "name": "Test Package"
+                    }
                 }
             }
         ]
