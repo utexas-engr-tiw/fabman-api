@@ -24,6 +24,8 @@ from fabman.util import clean_headers
 
 logger = logging.getLogger(__name__)
 
+CACHE_SIZE = 4
+
 
 class Requester(object):
     """Main class responsible for handling all http requests to the API.
@@ -192,7 +194,7 @@ class Requester(object):
             logger.debug("No data")
 
         # add response to cache
-        if len(self.__cache) > 4:
+        if len(self.__cache) >= CACHE_SIZE:
             self.__cache.pop()
         self.__cache.insert(0, response)
 
