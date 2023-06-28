@@ -9,7 +9,7 @@ class Invoice(FabmanObject):
     """Simple Class to handle Invoices"""
 
     def __str__(self):
-        return f"Invoice #{self.id}: {self.amount} {self.state}"
+        return f"Invoice #{self.id}: {self.total} {self.state}"
 
     def cancel(self) -> requests.Response:
         """
