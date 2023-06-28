@@ -1,0 +1,10 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/bookings/1",
+        "data": {
+            "status": "success"
+        },
+        "status_code": 204
+    }
+}
