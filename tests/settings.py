@@ -2,6 +2,7 @@
 
 BASE_URL = "https://fabman.io"
 BASE_URL_WITH_VERSION = "https://fabman.io/api/v1"
+BASE_URL_WITH_TRAILING_SLASH = "https://fabman.io/api/v1/"
 BASE_URL_AS_HTTP = "http://api.fabman.io"
 BASE_URL_AS_BLANK = ""
 BASE_URL_AS_INVALID = "fabman.io"
