@@ -9,7 +9,7 @@ class Charge(FabmanObject):
     """Charge object handles management of charges in fabman"""
 
     def __str__(self):
-        return f"Charge #{self.id}: {self.amount} {self.description}"
+        return f"Charge #{self.id}: {self.price} {self.description}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -23,7 +23,7 @@ class Charge(FabmanObject):
             "DELETE", f"/charges/{self.id}", _kwargs=kwargs
         )
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
