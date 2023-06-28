@@ -153,6 +153,7 @@ class TestFabman(unittest.TestCase):
         self.assertIsInstance(job, Job)
         self.assertTrue(hasattr(job, "id"))
         self.assertTrue(job.id == 1)
+        self.assertTrue(str(job) == "Job #1")
 
     def test_get_jobs(self, m):
         register_uris({"fabman": ["get_jobs"]}, m)
