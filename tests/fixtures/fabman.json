@@ -283,6 +283,22 @@
         "status_code": 200
 
     },
+    "get_member_by_id_device_embed": {
+        "method": "GET",
+        "endpoint": "/members/1?embed=device",
+        "data": {
+            "id": 1,
+            "firstName": "Gal",
+            "lastName": "Dukat",
+            "_embedded": {
+                "device": {
+                    "id": 1,
+                    "name": "Device 1"
+                }
+            }
+        },
+        "status_code": 200
+    },
     "get_member_by_id_with_embed_str": {
         "method": "GET",
         "endpoint": "/members/1?embed=memberPackages",
@@ -652,7 +668,9 @@
         "method": "GET",
         "endpoint": "/training-courses/1",
         "data": {
-            "id": 1
+            "id": 1,
+            "title": "Bajoran Worker Training",
+            "lockVersion": 2
         },
         "status_code": 200
     },

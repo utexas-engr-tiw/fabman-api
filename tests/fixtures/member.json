@@ -23,9 +23,21 @@
         "data": {},
         "status_code": 204
     },
+    "delete_change": {
+        "method": "DELETE",
+        "endpoint": "/members/1/changes/1",
+        "data": {},
+        "status_code": 204
+    },
     "delete_credit": {
         "method": "DELETE",
         "endpoint": "/members/1/credits/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_device_change": {
+        "method": "DELETE",
+        "endpoint": "/members/1/device/changes/1",
         "data": {},
         "status_code": 204
     },
@@ -38,6 +50,18 @@
     "delete_package": {
         "method": "DELETE",
         "endpoint": "/members/1/packages/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_payment_method": {
+        "method": "DELETE",
+        "endpoint": "/members/1/payment-method",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_training": {
+        "method": "DELETE",
+        "endpoint": "/members/1/trainings/1",
         "data": {},
         "status_code": 204
     },
@@ -226,6 +250,20 @@
             "creditedYearlyUntilDate": "2024-05-23"
         },
         "status_code": 200
+    },
+    "get_packages_embedded": {
+        "method": "GET",
+        "endpoint": "/members/1/packages/?embed=package",
+        "data": [
+            {
+                "id": 1,
+                "package": 1,
+                "_embedded": {
+                    "id": 1,
+                    "name": "Test Package"
+                }
+            }
+        ]
     },
     "get_package_by_id_doesnt_hold": {
         "method": "GET",

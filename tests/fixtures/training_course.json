@@ -1,0 +1,8 @@
+{
+    "delete": {
+        "method": "DELETE",
+        "endpoint": "/training-courses/1",
+        "data": {},
+        "status_code": 204
+    }
+}
