@@ -5,6 +5,7 @@ from typing import Union
 import requests
 
 from fabman.fabman_object import FabmanObject
+from fabman.package import Package
 from fabman.paginated_list import PaginatedList
 
 
@@ -27,7 +28,7 @@ class MemberCredit(FabmanObject):
             "DELETE", f"/members/{self.member_id}/credits/{self.id}", _kwargs=kwargs
         )
 
-        return response.json()
+        return response
 
     def get_uses(self, **kwargs) -> requests.Response:
         """
@@ -79,7 +80,7 @@ class MemberKey(FabmanObject):
             "DELETE", f"/members/{self.member}/key", _kwargs=kwargs
         )
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """
@@ -89,6 +90,9 @@ class MemberKey(FabmanObject):
         Calls "PUT /member{self.member}/key"
         Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdKey
         """
+
+        kwargs.update({"lockVersion": self.lockVersion})
+
         response = self._requester.request(
             "PUT", f"/members/{self.member}/key", _kwargs=kwargs
         )
@@ -118,18 +122,43 @@ class MemberPackage(FabmanObject):
             "DELETE", f"/members/{self.member_id}/packages/{self.id}", _kwargs=kwargs
         )
 
-        return response.json()
+        return response
 
-    def get_package(self) -> None:
+    def get_package(self, **kwargs) -> Package:
         """
         Gets information about the package
 
         Calls "GET /packages/{id}"
         Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesId
         """
-        raise NotImplementedError(
-            "get_package_info not implemented yet. Awaiting Packages implementation"
+        if "package" in self._embedded:
+            data = self._embedded["package"]
+        else:
+            response = self._requester.request(
+                "GET", f"/packages/{self.package}", _kwargs=kwargs
+            )
+            data = response.json()
+
+        return Package(self._requester, data)
+
+    def update(self, **kwargs) -> None:
+        """
+        Updates a member package and updates the MemberPackage object in place with new
+        data from the API
+
+        Calls "PUT /members/{id}/packages/{memberPackageId}"
+        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdPackagesMemberPackageId
+        """
+        kwargs.update({"lockVersion": self.lockVersion})
+
+        response = self._requester.request(
+            "PUT", f"/members/{self.member_id}/packages/{self.id}", _kwargs=kwargs
         )
+
+        data = response.json()
+
+        for attr, val in data.items():
+            setattr(self, attr, val)
 
 
 class Member(FabmanObject):
@@ -377,7 +406,7 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        return MemberKey(self._requester, response.json())
 
     def get_packages(self, **kwargs) -> Union[list, PaginatedList]:
         """
@@ -419,7 +448,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return MemberPackage(self._requester, response.json())
+        data = response.json()
+        data.update({"member_id": self.id})
+
+        return MemberPackage(self._requester, data)
 
     def get_payment_account(self, **kwargs) -> requests.Response:
         """
