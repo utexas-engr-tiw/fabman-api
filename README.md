@@ -37,7 +37,7 @@ From there, you can begin interacting with api endpoints as described in the off
 member = f.get_member(12345)
 member.update(firstName="Natalie", lastName="Wynn")
 ```
-All parameters except for IDs are taken in as kwargs and should follow the camelCase naming conventions found on the Fabman API
+All parameters except for IDs are taken in as kwargs and should follow the camelCase naming conventions found on the Fabman API. Moreover, the library performs minimal checking of parameters, leaving that to the Fabman API. For required fields for create and update fields, refer to the [Live Fabman API Documentation](https://fabman.io/api/v1/documentation#/). The one exception to this is the `lockVersion` requirement for update methods. All update methods will automatically add the current `lockVersion` parameter to the body.
 
 ## Contributing
 
