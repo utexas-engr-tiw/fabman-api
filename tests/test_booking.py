@@ -21,8 +21,12 @@ class TestBooking(unittest.TestCase):
 
             self.booking: Booking = self.fabman.get_booking(1)
 
-    def test_sanity(self, m):
-        self.assertEqual(1, 1)
+    def test_instance(self, m):
+        self.assertIsInstance(self.booking, Booking)
+
+    def test_str(self, m):
+        string = str(self.booking)
+        self.assertTrue(string == "Booking #1: 2023-01-01T14:00 - 2023-01-01T15:00")
 
     def test_delete(self, m):
         register_uris({"booking": ["delete"]}, m)
