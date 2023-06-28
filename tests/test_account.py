@@ -8,7 +8,7 @@ import requests_mock
 from fabman import Fabman
 from fabman.account import Account
 from tests import settings
-from tests.util import register_uris
+from tests.util import register_uris, validate_update
 
 
 @requests_mock.Mocker()
@@ -23,3 +23,21 @@ class TestAccount(unittest.TestCase):
 
     def test_sanity(self, m) -> None:
         self.assertEqual(1, 1)
+
+    def test_get_payment_info(self, m):
+        register_uris({"accounts": ["get_payment_info"]}, m)
+
+        info = self.account.get_payment_info()
+        self.assertIsInstance(info, dict)
+        self.assertTrue(info["id"] == 1)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            f"{settings.BASE_URL_WITH_VERSION}/accounts/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.account.update(name="New Name")
+        self.assertTrue(m.called)
