@@ -14,10 +14,10 @@ class TestRequester(unittest.TestCase):
     def setUp(self):
         self.requester = Requester(settings.BASE_URL_WITH_VERSION, settings.API_KEY)
 
-    def test_sanity(self):
+    def test_sanity(self, m):
         self.assertEqual(1, 1)
 
-    def test_instance(self):
+    def test_instance(self, m):
         self.assertIsInstance(self.requester, Requester)
 
     def test_get(self, m):
