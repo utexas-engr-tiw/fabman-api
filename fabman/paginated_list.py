@@ -7,6 +7,7 @@ from fabman.fabman_object import FabmanObject
 from fabman.requester import Requester
 
 
+# TODO: kwargs are not coming through correctly, so commands for pagination are not working
 class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
     """
     Abstracts pagination and rate limiting of the Fabman API.
@@ -72,7 +73,7 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
             self._request_method,
             self._next_url,
             _url=self._url_override,
-            # _kwargs=self._next_params
+            _kwargs=self._next_params,
         )
 
         data = response.json()
