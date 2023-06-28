@@ -9,7 +9,7 @@ class ResourceLog(FabmanObject):
     """Class for interacting with the resource-logs endpoint on the Fabman API"""
 
     def __str__(self):
-        return f"ResourceLog #{self.id}: {self.resource} {self.type}"
+        return f"ResourceLog #{self.id}, Resource #{self.resource} - {self.type}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -23,7 +23,7 @@ class ResourceLog(FabmanObject):
 
         response = self._requester.request("DELETE", uri, _kwargs=kwargs)
 
-        return response.json()
+        return response
 
     def update(self, **kwargs) -> None:
         """

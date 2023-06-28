@@ -802,8 +802,27 @@
         "method": "GET",
         "endpoint": "/resource-logs/1",
         "data": {
-            "id": 1
-        },
+            "id": 1,
+            "resource": 1,
+            "type": "reboot",
+            "member": null,
+            "stoppedAt": "2023-06-23T18:04:08.689Z",
+            "lockVersion": 1,
+            "createdAt": "2023-06-23T18:04:08.689Z",
+            "updatedAt": "2023-06-23T18:04:13.872Z",
+            "stopType": null,
+            "idleDurationSeconds": null,
+            "reason": null,
+            "notes": null,
+            "metadata": null,
+            "account": 2084,
+            "originalMember": null,
+            "updatedBy": null,
+            "extraChargeDescription": null,
+            "extraChargePrice": null,
+            "extraChargeTaxPercent": null,
+            "extraChargeDetails": ""
+          },
         "status_code": 200
     },
     "get_resource_logs": {
