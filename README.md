@@ -3,6 +3,7 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/fabman.svg)](https://pypi.python.org/pypi/fabman)
 [![Build Status](https://github.com/utexas-engr-tiw/fabman-api/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/utexas-engr-tiw/fabman-api/actions)
 [![Coverage](https://codecov.io/gh/utexas-engr-tiw/fabman-api/branch/main/graph/badge.svg?token=AGABZU5YOJ)](https://codecov.io/gh/utexas-engr-tiw/fabman-api)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Fabman API 
 
