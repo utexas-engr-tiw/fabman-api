@@ -16,6 +16,7 @@ from fabman.exceptions import (
     FabmanException,
     ForbiddenError,
     InvalidAccessToken,
+    RateLimitExceeded,
     ResourceDoesNotExist,
     Unauthorized,
     UnprocessableEntity,
@@ -224,10 +225,9 @@ class Requester(object):
         # rate limit is number of request/second at time of writing. Unable to hit the
         # rate limit on home connection to verify this handling works. May break in the future.
         if response.status_code == 429:
-            logger.warning("Rate limit exceeded. Waiting before trying again.")
-            sleep(5)
-            self.request(
-                method, endpoint, headers, use_auth, _url, _kwargs, json, **kwargs
+            raise RateLimitExceeded(
+                "Rate Limit Exceeded. Too many requests in a short amount of time. Retry in at least 2 seconds."
+                "https://github.com/FabmanHQ/fabman-api#rate-limiting"
             )
 
         if response.status_code > 400:

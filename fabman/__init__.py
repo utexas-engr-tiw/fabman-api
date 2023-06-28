@@ -2,4 +2,4 @@ from .fabman import Fabman
 
 __all__ = ["Fabman"]
 
-__version__ = "1.0.6"
+__version__ = "1.1.0"
