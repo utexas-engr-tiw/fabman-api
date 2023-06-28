@@ -119,7 +119,7 @@ class Package(FabmanObject):
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
         data = response.json()
-        data.update({"packageId": self.id})
+        data.update({"package_id": self.id})
 
         return PackagePermission(self._requester, data)
 

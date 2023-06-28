@@ -31,6 +31,20 @@ class TestPackage(unittest.TestCase):
 
         self.assertTrue(string == "Package #1: Test Package")
 
+    def test_create_credit(self, m):
+        register_uris({"package": ["create_credit"]}, m)
+
+        credit = self.package.create_credit()
+        self.assertIsInstance(credit, PackageCredit)
+        self.assertTrue(hasattr(credit, "package_id"))
+
+    def test_create_permission(self, m):
+        register_uris({"package": ["create_permission"]}, m)
+
+        permission = self.package.create_permission()
+        self.assertIsInstance(permission, PackagePermission)
+        self.assertTrue(hasattr(permission, "package_id"))
+
     def test_delete(self, m):
         register_uris({"package": ["delete"]}, m)
 
@@ -152,3 +166,14 @@ class TestPackagePermission(unittest.TestCase):
         self.assertTrue(m.called)
         self.assertIsInstance(resp, requests.Response)
         self.assertTrue(resp.status_code == 204)
+
+    def test_update(self, m):
+        m.register_uri(
+            "PUT",
+            f"{settings.BASE_URL_WITH_VERSION}/packages/1/permissions/1",
+            text=validate_update,
+            status_code=200,
+        )
+
+        self.permission.update(scope="spoofing")
+        self.assertTrue(m.called)
