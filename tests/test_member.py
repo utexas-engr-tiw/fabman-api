@@ -372,12 +372,7 @@ class TestMemberPackage(unittest.TestCase):
         self.assertIsInstance(package, Package)
 
     def test_get_package_embedded(self, m):
-        register_uris(
-            {
-                "member": ["get_packages_embedded"],
-            },
-            m,
-        )
+        register_uris({"member": ["get_packages_embedded"]}, m)
 
         memberPackage = self.member.get_packages(embed=["package"])
         self.assertIsInstance(memberPackage, PaginatedList)
