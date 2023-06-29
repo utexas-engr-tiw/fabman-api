@@ -166,6 +166,10 @@ class TestMembers(unittest.TestCase):
         self.assertIsInstance(trainings, list)
         self.assertTrue(trainings[0]["id"] == 2)
 
+        training = member.get_training(2)
+        self.assertIsInstance(training, dict)
+        self.assertTrue(training["id"] == 2)
+
         # key
         key = member.get_key()
         self.assertIsInstance(key, MemberKey)
