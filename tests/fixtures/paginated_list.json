@@ -1,0 +1,68 @@
+{
+    "get_members_first": {
+        "method": "GET",
+        "endpoint": "/members?limit=5",
+        "data": [
+            {
+                "id": 1,
+                "firstName": "Julian",
+                "lastName": "Bashear"
+            },
+            {
+                "id": 2,
+                "firstName": "Miles",
+                "lastName": "O'Brien"
+            },
+            {
+                "id": 3,
+                "firstName": "Benjamin",
+                "lastName": "Sisko"
+            },
+            {
+                "id": 4,
+                "firstName": "Elim",
+                "lastName": "Garak"
+            },
+            {
+                "id": 5,
+                "firstName": "Kira",
+                "lastName": "Neyrs"
+            }
+        ],
+        "status_code": 200,
+        "headers": {
+            "link": "</api/v1/members?limit=5&offset=5>; rel=\"next\""
+        }
+    },
+    "get_members_second": {
+        "method": "GET",
+        "endpoint": "/members?limit=5&offset=5",
+        "data": [
+            {
+                "id": 6,
+                "firstName": "Gul",
+                "lastName": "Dukat"
+            },
+            {
+                "id": 7,
+                "firstName": "Keiko",
+                "lastName": "O'Brien"
+            },
+            {
+                "id": 8,
+                "firstName": "Jadzia",
+                "lastName": "Dax"
+            },
+            {
+                "id": 9,
+                "firstName": "Vic",
+                "lastName": "Fontaine"
+            },
+            {
+                "id": 10,
+                "firstName": "Winn",
+                "lastName": "Adami"
+            }
+        ]
+    }
+}
