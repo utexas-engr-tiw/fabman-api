@@ -1,5 +1,5 @@
 """Tests for the Space class."""
-# pylint: disable=missing-docstring, invalid-name, unused-argument
+# pylint: disable=missing-docstring, invalid-name, unused-argument, protected-access
 
 import unittest
 
@@ -66,6 +66,34 @@ class TestSpace(unittest.TestCase):
         billing = self.space.get_billing_settings()
         self.assertIsInstance(billing, SpaceBillingSettings)
         self.assertTrue(hasattr(billing, "space_id"))
+
+    def test_get_embedded(self, m):
+        register_uris({"space": ["get_embedded"]}, m)
+
+        space = self.fabman.get_space(
+            1, embed=["billingSettings", "holidays", "openingHours"]
+        )
+        self.assertIsInstance(space, Space)
+        self.assertTrue(hasattr(space, "_embedded"))
+
+        # billingSettings
+        self.assertTrue("billingSettings" in space._embedded)
+        billing = space.get_billing_settings()
+        self.assertIsInstance(billing, SpaceBillingSettings)
+        self.assertTrue(hasattr(billing, "space_id"))
+
+        # holidays
+        self.assertTrue("holidays" in space._embedded)
+        holidays = space.get_holidays()
+        self.assertIsInstance(holidays, list)
+        self.assertTrue(len(holidays) == 3)
+        self.assertIsInstance(holidays[0], SpaceHoliday)
+        self.assertTrue(hasattr(holidays[0], "space_id"))
+
+        # openingHours
+        self.assertTrue("openingHours" in space._embedded)
+        opening_hours = space.get_opening_hours()
+        self.assertIsInstance(opening_hours, list)
 
     def test_get_holiday(self, m):
         register_uris({"space": ["get_holiday"]}, m)

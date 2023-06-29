@@ -21,6 +21,24 @@
         "data": {},
         "status_code": 204
     },
+    "delete_calendar_token": {
+        "method": "DELETE",
+        "endpoint": "/spaces/1/calendar-token",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_holiday":{ 
+        "method": "DELETE",
+        "endpoint": "/spaces/1/holidays/1",
+        "data": {},
+        "status_code": 204
+    },
+    "delete_stripe": {
+        "method": "DELETE",
+        "endpoint": "/spaces/1/billing-settings/stripe",
+        "data": {},
+        "status_code": 204
+    },
     "get_billing_settings": {
         "method": "GET",
         "endpoint": "/spaces/1/billing-settings",
@@ -51,23 +69,107 @@
         },
         "status_code": 200
     },
-    "delete_calendar_token": {
-        "method": "DELETE",
-        "endpoint": "/spaces/1/calendar-token",
-        "data": {},
-        "status_code": 204
-    },
-    "delete_holiday":{ 
-        "method": "DELETE",
-        "endpoint": "/spaces/1/holidays/1",
-        "data": {},
-        "status_code": 204
-    },
-    "delete_stripe": {
-        "method": "DELETE",
-        "endpoint": "/spaces/1/billing-settings/stripe",
-        "data": {},
-        "status_code": 204
+    "get_embedded": {
+        "method": "GET",
+        "endpoint": "/spaces/1?embed=billingSettings&embed=holidays&embed=openingHours",
+        "data": {
+            "id": 1,
+            "name": "Operations Center",
+            "timezone": "Bajoran/Standard",
+            "lockVersion": 1,
+            "createdAt": "2023-04-28T18:23:12.829Z",
+            "updatedAt": "2023-06-12T19:44:27.550Z",
+            "account": 1,
+            "updatedBy": 1,
+            "locale": "en",
+            "bookingTermsOfService": null,
+            "bookingSlotsPerHour": 4,
+            "bookingWindowMinHours": null,
+            "bookingWindowMaxDays": 7,
+            "bookingLockInHours": null,
+            "bookingMaxMinutesPerMemberDay": 120,
+            "bookingMaxMinutesPerMemberWeek": null,
+            "bookingOpeningHours": "during",
+            "bookingExclusiveMinutes": 10,
+            "state": "active",
+            "bookingRefundable": true,
+            "emailAddress": "sisko@ds9.fed",
+            "website": "https://exmaple.com",
+            "phone": "5555551234",
+            "shortName": "Ops",
+            "infoText": "",
+            "calendarToken": null,
+            "calendarUrl": null,
+            "_embedded": {
+                "billingSettings": {
+                    "space": 1,
+                    "account": 1,
+                    "taxPercent": "0.00",
+                    "invoiceNumberPrefix": "",
+                    "nextInvoiceNumber": 1001,
+                    "invoiceHeader": null,
+                    "invoiceFooter": null,
+                    "lockVersion": 1,
+                    "createdAt": "2023-06-06T18:19:10.059Z",
+                    "updatedAt": "2023-06-06T18:19:10.059Z",
+                    "updatedBy": null,
+                    "defaultInvoiceDeadline": 0,
+                    "defaultInvoiceDeadlineUnit": "day",
+                    "statementName": null,
+                    "stripeUser": null,
+                    "stripePublicKey": null,
+                    "stripeName": null,
+                    "stripeLivemode": null,
+                    "enableSepa": false,
+                    "sepaCreditorId": null,
+                    "sepaIban": null,
+                    "sepaAccountOwnerName": null,
+                    "sepaMandateText": null
+                },
+                "holidays": [
+                    {
+                        "id": 1,
+                        "title": "Emissary's Day",
+                        "fromDateTime": "2023-06-28T00:00",
+                        "untilDateTime": "2023-06-28T23:59",
+                        "affects": "all",
+                        "lockVersion": 1,
+                        "createdAt": "2023-06-28T20:44:05.863Z",
+                        "updatedAt": "2023-06-28T20:44:05.863Z",
+                        "updatedBy": 1
+                    },
+                    {
+                        "id": 2,
+                        "title": "Bajoran Gratitude Festival",
+                        "fromDateTime": "2023-07-28T00:00",
+                        "untilDateTime": "2023-07-28T23:59",
+                        "affects": "all",
+                        "lockVersion": 1,
+                        "createdAt": "2023-06-28T20:44:05.863Z",
+                        "updatedAt": "2023-06-28T20:44:05.863Z",
+                        "updatedBy": 1
+                    },
+                    {
+                        "id": 3,
+                        "title": "First Fridays on the Promenade",
+                        "fromDateTime": "2023-07-28T00:00",
+                        "untilDateTime": "2023-07-28T23:59",
+                        "affects": "all",
+                        "lockVersion": 1,
+                        "createdAt": "2023-06-28T20:44:05.863Z",
+                        "updatedAt": "2023-06-28T20:44:05.863Z",
+                        "updatedBy": 1
+                    }
+                ],
+                "openingHours": [
+                    {
+                        "dayOfWeek": 7,
+                        "fromTime": "10:00",
+                        "untilTime": "23:00"
+                    }
+                ]
+            }
+        }
     },
     "get_holiday": {
         "method": "GET",
@@ -112,6 +214,66 @@
                 "updatedBy": 1
               }
         ]
+    },
+    "get_holidays_embedded": {
+        "method": "GET",
+        "endpoint" : "/spaces/1?embed=holidays",
+        "data": {
+            "id": 1,
+            "name": "Operations Center",
+            "timezone": "Bajoran/Standard",
+            "lockVersion": 1,
+            "createdAt": "2023-04-28T18:23:12.829Z",
+            "updatedAt": "2023-06-12T19:44:27.550Z",
+            "account": 1,
+            "updatedBy": 1,
+            "locale": "en",
+            "bookingTermsOfService": null,
+            "bookingSlotsPerHour": 4,
+            "bookingWindowMinHours": null,
+            "bookingWindowMaxDays": 7,
+            "bookingLockInHours": null,
+            "bookingMaxMinutesPerMemberDay": 120,
+            "bookingMaxMinutesPerMemberWeek": null,
+            "bookingOpeningHours": "during",
+            "bookingExclusiveMinutes": 10,
+            "state": "active",
+            "bookingRefundable": true,
+            "emailAddress": "sisko@ds9.fed",
+            "website": "https://exmaple.com",
+            "phone": "5555551234",
+            "shortName": "Ops",
+            "infoText": "",
+            "calendarToken": null,
+            "calendarUrl": null,
+            "_embedded": {
+                "holidays": {
+                    "space": 1,
+                    "account": 1,
+                    "taxPercent": "0.00",
+                    "invoiceNumberPrefix": "",
+                    "nextInvoiceNumber": 1001,
+                    "invoiceHeader": null,
+                    "invoiceFooter": null,
+                    "lockVersion": 1,
+                    "createdAt": "2023-06-06T18:19:10.059Z",
+                    "updatedAt": "2023-06-06T18:19:10.059Z",
+                    "updatedBy": null,
+                    "defaultInvoiceDeadline": 0,
+                    "defaultInvoiceDeadlineUnit": "day",
+                    "statementName": null,
+                    "stripeUser": null,
+                    "stripePublicKey": null,
+                    "stripeName": null,
+                    "stripeLivemode": null,
+                    "enableSepa": false,
+                    "sepaCreditorId": null,
+                    "sepaIban": null,
+                    "sepaAccountOwnerName": null,
+                    "sepaMandateText": null
+                }
+            }
+        }
     },
     "get_opening_hours": {
         "method": "GET",
