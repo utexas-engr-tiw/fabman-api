@@ -123,9 +123,9 @@
         "method": "GET",
         "endpoint": "/members/1/device",
         "data": {
-            "name": "Apple iPhone",
-            "details": "iOS 16.4.1, Mobile Safari 16.4",
-            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
+            "name": "Starfleet Tricorder",
+            "details": "iOS 160.4.1, Mobile Safari 16.4",
+            "userAgent": "Mozilla/5.1 (iPhone; CPU iPhone OS 160_4_1 like Mac OS X) AppleWebKit/6205.1.15 (KHTML, like Gecko) Version/160.4 Mobile/15E148 Safari/604.1",
             "createdAt": "2023-04-28T19:36:35.064Z",
             "updatedAt": "2023-05-11T18:03:23.546Z"
         },
@@ -164,6 +164,135 @@
             "details": "iOS 16.4.1, Mobile Safari 16.4",
             "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1",
             "updatedAt": "2023-05-03T15:52:19.542Z"
+        },
+        "status_code": 200
+    },
+    "get_embeds": {
+        "method": "GET",
+        "endpoint": "/members/1?embed=memberPackages&embed=trainings&embed=privileges&embed=key&embed=device",
+        "data": {
+            "updatedBy": 1,
+            "allowLogin": false,
+            "account": 1,
+            "firstName": "Julian",
+            "lastName": "Bashear",
+            "emailAddress": "bashear@ds9.starfleet",
+            "state": "active",
+            "taxExempt": false,
+            "hasBillingAddress": false,
+            "requireUpfrontPayment": false,
+            "upfrontMinimumBalance": "0.00",
+            "space": 1,
+            "updatedAt": "2023-06-28T22:16:18.183Z",
+            "createdAt": "2023-06-28T22:16:18.183Z",
+            "lockVersion": 1,
+            "id": 1,
+            "memberNumber": "1003",
+            "dateOfBirth": null,
+            "company": null,
+            "phone": null,
+            "address": null,
+            "notes": null,
+            "address2": null,
+            "city": null,
+            "zip": null,
+            "countryCode": null,
+            "region": null,
+            "billingFirstName": null,
+            "billingLastName": null,
+            "billingCompany": null,
+            "billingAddress": null,
+            "billingAddress2": null,
+            "billingCity": null,
+            "billingZip": null,
+            "billingCountryCode": null,
+            "billingRegion": null,
+            "billingInvoiceText": null,
+            "gender": null,
+            "stripeCustomer": null,
+            "metadata": null,
+            "paidForBy": null,
+            "language": null,
+            "_embedded": {
+                "memberPackages": [
+                    {
+                        "id": 1,
+                        "package": 1,
+                        "fromDate": "2023-05-24",
+                        "untilDate": null,
+                        "notes": null,
+                        "lockVersion": 1,
+                        "createdAt": "2023-05-24T20:06:16.903Z",
+                        "updatedAt": "2023-05-24T20:06:16.903Z",
+                        "updatedBy": 1,
+                        "customFees": false,
+                        "setupFee": "0.00",
+                        "recurringFee": "0.00",
+                        "recurringFeePeriod": "month",
+                        "chargedUntilDate": "2023-06-23",
+                        "creditedOnce": true,
+                        "creditedDailyUntilDate": "2023-06-23",
+                        "creditedWeeklyUntilDate": "2023-06-27",
+                        "creditedMonthlyUntilDate": "2023-06-23",
+                        "creditedYearlyUntilDate": "2024-05-23",
+                        "_embedded": {
+                            "package": {
+                                "id": 1,
+                                "name": "Test Package"
+                            }
+                        }
+                    }
+                ],
+                "trainings": [
+                    {
+                      "notes": null,
+                      "lockVersion": 1,
+                      "createdAt": "2023-06-29T16:18:06.290Z",
+                      "updatedAt": "2023-06-29T16:18:06.290Z",
+                      "updatedBy": 1,
+                      "id": 2,
+                      "fromDate": "2023-06-29",
+                      "trainingCourse": 1,
+                      "untilDate": null,
+                      "date": "2023-06-29",
+                      "_embedded": {
+                        "trainingCourse": {
+                          "id": 2,
+                          "account": 1,
+                          "title": "Dabo Girl Training",
+                          "notes": null,
+                          "state": "active",
+                          "lockVersion": 1,
+                          "createdAt": "2023-06-06T18:20:24.443Z",
+                          "updatedAt": "2023-06-21T23:31:33.408Z",
+                          "updatedBy": 1,
+                          "defaultDuration": 0,
+                          "defaultDurationUnit": "month"
+                        }
+                      }
+                    }
+                ],
+                "key": {
+                    "member": 1,
+                    "state": "active",
+                    "lockVersion": 4,
+                    "createdAt": "2023-06-26T22:23:22.414Z",
+                    "updatedAt": "2023-06-26T22:23:22.414Z",
+                    "updatedBy": 1,
+                    "account": 1,
+                    "type": "em4102"
+                },
+                "privileges": {
+                    "privileges": "member"
+                },
+                "device": {
+                    "name": "Starfleet Communicator",
+                    "details": "iOS 160.4.1, Mobile Safari 16.4",
+                    "userAgent": "Mozilla/5.1 (iPhone; CPU iPhone OS 160_4_1 like Mac OS X) AppleWebKit/6205.1.15 (KHTML, like Gecko) Version/160.4 Mobile/15E148 Safari/604.1",
+                    "createdAt": "2023-04-28T19:36:35.064Z",
+                    "updatedAt": "2023-05-11T18:03:23.546Z"
+                }
+            }
         },
         "status_code": 200
     },
@@ -322,13 +451,67 @@
     "get_trainings": {
         "method": "GET",
         "endpoint": "/members/1/trainings",
-        "data": [],
+        "data": [
+            {
+              "notes": null,
+              "lockVersion": 1,
+              "createdAt": "2023-06-29T16:18:06.290Z",
+              "updatedAt": "2023-06-29T16:18:06.290Z",
+              "updatedBy": 1,
+              "id": 1,
+              "fromDate": "2023-06-29",
+              "trainingCourse": 1,
+              "untilDate": null,
+              "date": "2023-06-29",
+              "_embedded": {
+                "trainingCourse": {
+                  "id": 1,
+                  "account": 1,
+                  "title": "Dabo Girl Training",
+                  "notes": null,
+                  "state": "active",
+                  "lockVersion": 1,
+                  "createdAt": "2023-06-06T18:20:24.443Z",
+                  "updatedAt": "2023-06-21T23:31:33.408Z",
+                  "updatedBy": 1,
+                  "defaultDuration": 0,
+                  "defaultDurationUnit": "month"
+                }
+              }
+            }
+          ],
         "status_code": 200
     },
     "get_training_by_id": {
         "method": "GET",
         "endpoint": "/members/1/trainings/1",
-        "data": {},
+        "data": {
+            "notes": null,
+            "lockVersion": 1,
+            "createdAt": "2023-06-29T16:18:06.290Z",
+            "updatedAt": "2023-06-29T16:18:06.290Z",
+            "updatedBy": 1,
+            "id": 1,
+            "fromDate": "2023-06-29",
+            "trainingCourse": 1,
+            "untilDate": null,
+            "date": "2023-06-29",
+            "_embedded": {
+              "trainingCourse": {
+                "id": 1,
+                "account": 1,
+                "title": "Dabo Girl Training",
+                "notes": null,
+                "state": "active",
+                "lockVersion": 1,
+                "createdAt": "2023-06-06T18:20:24.443Z",
+                "updatedAt": "2023-06-21T23:31:33.408Z",
+                "updatedBy": 1,
+                "defaultDuration": 0,
+                "defaultDurationUnit": "month"
+              }
+            }
+        },
         "status_code": 200
     },
     "get_due_invoices": {

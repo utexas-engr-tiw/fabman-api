@@ -1,5 +1,5 @@
 """Tests for the Member class."""
-# pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name, unused-argument
+# pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name, unused-argument, protected-access
 
 import unittest
 import warnings
@@ -114,7 +114,7 @@ class TestMembers(unittest.TestCase):
 
         device = self.member.get_device()
         self.assertIsInstance(device, dict)
-        self.assertEqual(device["name"], "Apple iPhone")
+        self.assertEqual(device["name"], "Starfleet Tricorder")
 
     def test_get_device_embeded(self, m):
         register_uris({"fabman": ["get_member_by_id_device_embed"]}, m)
@@ -138,6 +138,48 @@ class TestMembers(unittest.TestCase):
         change = self.member.get_device_change(1)
 
         self.assertIsInstance(change, dict)
+
+    def test_get_embeds(self, m):
+        register_uris({"member": ["get_embeds"]}, m)
+
+        member = self.fabman.get_member(
+            1, embed=["memberPackages", "trainings", "key", "privileges", "device"]
+        )
+        self.assertIsInstance(member, Member)
+        self.assertTrue(hasattr(member, "_embedded"))
+        self.assertTrue("memberPackages" in member._embedded)
+        self.assertTrue("trainings" in member._embedded)
+        self.assertTrue("key" in member._embedded)
+        self.assertTrue("privileges" in member._embedded)
+        self.assertTrue("device" in member._embedded)
+
+        # memberPackages
+        packages = member.get_packages()
+        self.assertIsInstance(packages, list)
+        self.assertIsInstance(packages[0], MemberPackage)
+
+        package = member.get_package(1)
+        self.assertIsInstance(package, MemberPackage)
+
+        # trainings
+        trainings = member.get_trainings()
+        self.assertIsInstance(trainings, list)
+        self.assertTrue(trainings[0]["id"] == 2)
+
+        # key
+        key = member.get_key()
+        self.assertIsInstance(key, MemberKey)
+        self.assertTrue(key.lockVersion == 4)
+
+        # privileges
+        privileges = member.get_privileges()
+        self.assertIsInstance(privileges, dict)
+        self.assertTrue(privileges["privileges"] == "member")
+
+        # device
+        device = member.get_device()
+        self.assertIsInstance(device, dict)
+        self.assertTrue(device["name"] == "Starfleet Communicator")
 
     def test_get_invitation(self, m):
         register_uris({"member": ["get_invitation"]}, m)
