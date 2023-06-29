@@ -398,7 +398,7 @@ class Member(FabmanObject):
         Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdKey
         """
         if "key" in self._embedded:
-            return self._embedded["key"]
+            return MemberKey(self._requester, self._embedded["key"])
 
         response = self._requester.request(
             "GET",
@@ -440,7 +440,7 @@ class Member(FabmanObject):
         if "memberPackages" in self._embedded:
             for package in self._embedded["memberPackages"]:
                 if package["id"] == member_package_id:
-                    return package
+                    return MemberPackage(self._requester, package)
 
         response = self._requester.request(
             "GET",
