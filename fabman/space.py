@@ -197,9 +197,10 @@ class Space(FabmanObject):
         """
         if "holidays" in self._embedded:
             out = []
-            for holiday in self._embedded["holiday"]:
-                setattr(holiday, "space_id", self.id)
+            for holiday in self._embedded["holidays"]:
+                holiday.update({"space_id": self.id})
                 out.append(SpaceHoliday(self._requester, holiday))
+            return out
 
         return PaginatedList(
             SpaceHoliday,
@@ -210,7 +211,7 @@ class Space(FabmanObject):
             kwargs=kwargs,
         )
 
-    def get_opening_hours(self, **kwargs) -> requests.Response:
+    def get_opening_hours(self, **kwargs) -> Union[list, requests.Response]:
         """
         Get the opening hours for the space.
 
