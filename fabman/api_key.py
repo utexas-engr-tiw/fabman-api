@@ -6,7 +6,9 @@ from fabman.fabman_object import FabmanObject
 
 
 class ApiKey(FabmanObject):
-    """Class for interacting with the api-keys endpoints on the Fabman API"""
+    """
+    Class for interacting with the api-keys endpoints on the Fabman API
+    """
 
     def __str__(self):
         return f"ApiKey #{self.id}: {self.label}"
@@ -15,8 +17,11 @@ class ApiKey(FabmanObject):
         """
         Deletes an api-key. *WARNING: This is irreversible.*
 
-        Calls "DELETE /api-keys/{apiKeyId}"
-        Documentation https://fabman.io/api/v1/documentation#/api-keys/deleteApiKeysId
+        :calls: "DELETE /api-keys/{apiKeyId}" \
+		<https://fabman.io/api/v1/documentation#/api-keys/deleteApiKeysId>
+  
+        :returns: Response from the API with status code 204 (No Content) if successful
+        :rtype: requests.Response
         """
 
         uri = f"/api-keys/{self.id}"
@@ -29,8 +34,11 @@ class ApiKey(FabmanObject):
         """
         Returns the token for an api-key. Must be called with a valid api-key.
 
-        Calls "GET /api-keys/{apiKeyId}/token"
-        Documentation https://fabman.io/api/v1/documentation#/api-keys/getApiKeysIdToken
+        :calls: "GET /api-keys/{apiKeyId}/token" \
+		<https://fabman.io/api/v1/documentation#/api-keys/getApiKeysIdToken>
+  
+        :returns: Response from the API with status code 200 (OK) if successful
+        :rtype: requests.Response
         """
 
         uri = f"/api-keys/{self.id}/token"
@@ -44,8 +52,11 @@ class ApiKey(FabmanObject):
         Updates the api-key. Attributes are updated in place with new information
         returned by the API.
 
-        Calls "PUT /api-keys/{apiKeyId}"
-        Documentation https://fabman.io/api/v1/documentation#/api-keys/putApiKeysId
+        :calls: "PUT /api-keys/{apiKeyId}" \
+		<https://fabman.io/api/v1/documentation#/api-keys/putApiKeysId>
+  
+        :returns: None
+        :rtype: None
         """
 
         uri = f"/api-keys/{self.id}"
