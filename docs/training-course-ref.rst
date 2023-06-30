@@ -1,0 +1,5 @@
+Training Courses
+================
+
+.. autoclass:: fabman.training_course.TrainingCourse
+    :members:
