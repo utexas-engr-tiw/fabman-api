@@ -36,10 +36,10 @@ class Fabman(object):
         All methods take kwargs as their arguments, please refer to the Fabman API
         for more information
 
-        Args:
-            :access_token (str): The access token to access the API
-            :base_url (str, optional): The base url of the API. Defaults to
-            "https://api.fabman.io/v1".
+        :param access_token: The access token to use for the API
+        :type access_token: str
+        :param base_url (optional): The base url to use for the API
+        :type base_url: str
         """
 
         if "https://" not in base_url:
