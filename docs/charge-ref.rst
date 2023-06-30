@@ -1,3 +1,5 @@
+.. _charge:
+
 Charge 
 ======
 

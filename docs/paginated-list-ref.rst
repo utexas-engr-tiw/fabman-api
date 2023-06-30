@@ -1,3 +1,5 @@
+.. _paginated_list:
+
 Paginated List
 ==============
 

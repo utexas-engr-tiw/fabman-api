@@ -1,3 +1,5 @@
+.. _fabman_object:
+
 FabmanObject
 ============
 

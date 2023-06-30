@@ -1,5 +1,7 @@
-Resources
-=========
+.. _resource:
+
+Resource
+========
 
 .. autoclass:: fabman.resource.Resource
     :members:

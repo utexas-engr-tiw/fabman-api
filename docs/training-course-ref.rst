@@ -1,3 +1,5 @@
+.. _training_courses:
+
 Training Courses
 ================
 

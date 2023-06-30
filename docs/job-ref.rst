@@ -1,5 +1,7 @@
-Jobs
-====
+.. _job:
+
+Job
+===
 
 .. autoclass:: fabman.job.Job
     :members:
