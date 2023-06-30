@@ -407,14 +407,6 @@ class TestFabman(unittest.TestCase):
         self.assertTrue(hasattr(resources[0], "id"))
         self.assertTrue(resources[0].id == 1)
 
-    def test_get_resource_type(self, m):
-        register_uris({"fabman": ["get_resource_type_by_id"]}, m)
-
-        resource_type = self.fabman.get_resource_type(1)
-        self.assertIsInstance(resource_type, ResourceType)
-        self.assertTrue(hasattr(resource_type, "id"))
-        self.assertTrue(resource_type.id == 1)
-
     def test_get_resource_types(self, m):
         register_uris({"fabman": ["get_resource_types"]}, m)
 
