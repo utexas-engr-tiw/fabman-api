@@ -13,7 +13,6 @@ Welcome to Fabman API's documentation!
    getting-started
    examples
    keyword-args
-   exceptions
    troubleshooting
    debugging
    class-reference
