@@ -4,6 +4,8 @@
 [![Build Status](https://github.com/utexas-engr-tiw/fabman-api/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/utexas-engr-tiw/fabman-api/actions)
 [![Coverage](https://codecov.io/gh/utexas-engr-tiw/fabman-api/branch/main/graph/badge.svg?token=AGABZU5YOJ)](https://codecov.io/gh/utexas-engr-tiw/fabman-api)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Documentation Status](https://readthedocs.org/projects/fabman-api/badge/?version=latest)](https://fabman-api.readthedocs.io/en/latest/?badge=latest)
+
 
 # Fabman API 
 
@@ -35,7 +37,7 @@ f = Fabman(API_KEY)
 From there, you can begin interacting with api endpoints as described in the official documentation. Most top-level methods return an object which manages that object. For example, to get a single member and update that member's name,
 ```python
 member = f.get_member(12345)
-member.update(firstName="Natalie", lastName="Wynn")
+member.update(firstName="Kira", lastName="Nerys")
 ```
 All parameters except for IDs are taken in as kwargs and should follow the camelCase naming conventions found on the Fabman API. Moreover, the library performs minimal checking of parameters, leaving that to the Fabman API. For required fields for create and update fields, refer to the [Live Fabman API Documentation](https://fabman.io/api/v1/documentation#/). The one exception to this is the `lockVersion` requirement for update methods. All update methods will automatically add the current `lockVersion` parameter to the body.
 
