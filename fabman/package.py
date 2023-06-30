@@ -16,8 +16,11 @@ class PackageCredit(FabmanObject):
         """
         Deletes a credit from a package. *WARNING: This is irreversible.*
 
-        Calls "DELETE /packages/{packageId}/credits/{creditId}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/deletePackagesPackageIdCreditsCreditId
+        :calls: "DELETE /packages/{packageId}/credits/{creditId}" \
+		<https://fabman.io/api/v1/documentation#/packages/deletePackagesIdCreditsCreditid>
+  
+        :returns: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/packages/{self.package_id}/credits/{self.id}"
@@ -30,8 +33,11 @@ class PackageCredit(FabmanObject):
         """
         Updates the credit. Attributes are updated in place with new information.
 
-        Calls "PUT /packages/{packageId}/credits/{creditId}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/putPackagesPackageIdCreditsCreditId
+        :calls: "PUT /packages/{packageId}/credits/{creditId}" \
+		<https://fabman.io/api/v1/documentation#/packages/putPackagesIdCreditsCreditid>
+
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/packages/{self.package_id}/credits/{self.id}"
@@ -55,8 +61,11 @@ class PackagePermission(FabmanObject):
         """
         Deletes a permission from a package. *WARNING: This is irreversible.*
 
-        Calls "DELETE /packages/{packageId}/permissions/{permissionId}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/deletePackagesPackageIdPermissionsPermissionId
+        :calls: "DELETE /packages/{packageId}/permissions/{permissionId}" \
+		<https://fabman.io/api/v1/documentation#/packages/deletePackagesIdPermissionsPermissionid>
+
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/packages/{self.package_id}/permissions/{self.id}"
@@ -69,8 +78,11 @@ class PackagePermission(FabmanObject):
         """
         Updates the permission. Attributes are updated in place with new information.
 
-        Calls "PUT /packages/{packageId}/permissions/{permissionId}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/putPackagesPackageIdPermissionsPermissionId
+        :calls: "PUT /packages/{packageId}/permissions/{permissionId}" \
+		<https://fabman.io/api/v1/documentation#/packages/putPackagesIdPermissionsPermissionid>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/packages/{self.package_id}/permissions/{self.id}"
@@ -94,8 +106,11 @@ class Package(FabmanObject):
         """
         Create a credit for this package. Takes no arguments.
 
-        Calls "POST /packages/{id}/credits"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/postPackagesIdCredits
+        :calls: "POST /packages/{id}/credits" \
+		<https://fabman.io/api/v1/documentation#/packages/postPackagesIdCredits>
+
+        :return: Object with information and methods of the new credit
+        :rtype: fabman.package.PackageCredit
         """
 
         uri = f"/packages/{self.id}/credits"
@@ -110,8 +125,11 @@ class Package(FabmanObject):
         """
         Create a new permission for this package. Gives new abilities to package hodlers.
 
-        Calls "POST /packages/{id}/permissions"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/postPackagesIdPermissions
+        :calls: "POST /packages/{id}/permissions" \
+		<https://fabman.io/api/v1/documentation#/packages/postPackagesIdPermissions>
+  
+        :return: Object with information and methods of the new permission
+        :rtype: fabman.package.PackagePermission
         """
 
         uri = f"/packages/{self.id}/permissions"
@@ -127,8 +145,13 @@ class Package(FabmanObject):
         """
         Return a credit for this package given a credit_id.
 
-        Calls "GET /packages/{id}/credits/{creditId}"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesIdCreditsCreditId
+        :calls: "GET /packages/{id}/credits/{creditId}" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackagesIdCreditsCreditid>
+
+        :param credit_id: ID of the credit to retrieve
+        :type credit_id: int
+        :return: Object with information and methods of the credit
+        :rtype: fabman.package.PackageCredit
         """
 
         uri = f"/packages/{self.id}/credits/{credit_id}"
@@ -145,6 +168,9 @@ class Package(FabmanObject):
 
         Calls: "GET /packages/{id}/credits"
         Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesIdCredits
+
+        :return: List of credits for this package
+        :rtype: fabman.paginated_list.PaginatedList
         """
 
         return PaginatedList(
@@ -160,8 +186,11 @@ class Package(FabmanObject):
         """
         Return a permission for this package given a permission_id.
 
-        Calls "GET /packages/{id}/permissions/{permissionId}"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesIdPermissionsPermissionId
+        :calls: "GET /packages/{id}/permissions/{permissionId}" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackagesIdPermissionsPermissionid>
+  
+        :returns: Object with information and methods of the permission
+        :rtype: fabman.package.PackagePermission
         """
         uri = f"/packages/{self.id}/permissions/{permission_id}"
         response = self._requester.request("GET", uri, _kwargs=kwargs)
@@ -175,8 +204,11 @@ class Package(FabmanObject):
         """
         Return a PaginatedList of permissions for the package.
 
-        Calls "GET /packages/{id}/permissions"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesIdPermissions
+        :calls: "GET /packages/{id}/permissions" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackagesIdPermissions>
+
+        :returns: List of permissions for the package
+        :rtype: fabman.paginated_list.PaginatedList
         """
 
         return PaginatedList(
@@ -192,8 +224,11 @@ class Package(FabmanObject):
         """
         Deletes the package. Takes no arguments. **WARNINGL: This is irreversible.**
 
-        Calls "DELETE /packages/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/deletePackagesId
+        :calls: "DELETE /packages/{id}" \
+		<https://fabman.io/api/v1/documentation#/packages/deletePackagesId>
+  
+        :returns: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/packages/{self.id}"
@@ -207,8 +242,11 @@ class Package(FabmanObject):
         Update information on the package. Note that many fields may be unalterable
         by the API key holder.
 
-        Calls "PUT /packages/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/putPackagesId
+        :calls: "PUT /packages/{id}" \
+		<https://fabman.io/api/v1/documentation#/packages/putPackagesId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/packages/{self.id}"

@@ -19,10 +19,13 @@ class MemberCredit(FabmanObject):
 
     def delete(self, **kwargs) -> requests.Response:
         """
-        Deletes a credit from a user account. *WARNING: THIS CANNOT BE UNDONE.*
+        Deletes a credit from a user account. **WARNING: THIS CANNOT BE UNDONE.**
 
-        Calls "DELETE /members/{member_id}/credits/{credit_id}"
-        Documentation https://fabman.io/api/v1/documentation#/members/deleteMembersIdCreditsCreditId
+        :calls: "DELETE /members/{member_id}/credits/{credit_id}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdCreditsCreditid>
+
+        :returns: An empty dict if successful.
+        :rtype: dict
         """
         response = self._requester.request(
             "DELETE", f"/members/{self.member_id}/credits/{self.id}", _kwargs=kwargs
@@ -34,8 +37,11 @@ class MemberCredit(FabmanObject):
         """
         Retrieves a list of uses of the credit.
 
-        Calls "GET /members/{member_id}/credits/{credit_id}/uses"
-        Documentation https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditidUses
+        :calls: "GET /members/{member_id}/credits/{credit_id}/uses" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditidUses>
+  
+        :return: A list of uses of the credit.
+        :rtype: list
         """
         response = self._requester.request(
             "GET", f"/members/{self.member_id}/credits/{self.id}/uses", _kwargs=kwargs
@@ -47,8 +53,11 @@ class MemberCredit(FabmanObject):
         """
         Updates an existing credit in place
 
-        Calls "PUT /members/{id}/credits/{creditId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdCreditsCreditId
+        :calls: "PUT /members/{id}/credits/{creditId}" \
+		<https://fabman.io/api/v1/documentation#/members/putMembersIdCreditsCreditid>
+  
+        :returns: None
+        :rtype: None
         """
         kwargs.update({"lockVersion": self.lockVersion})
         response = self._requester.request(
@@ -71,10 +80,13 @@ class MemberKey(FabmanObject):
 
     def delete(self, **kwargs) -> requests.Response:
         """
-        Deletes a member key
+        Deletes a member key. **WARNING: THIS CANNOT BE UNDONE.**
 
-        Calls "DELETE /members/{self.member}/key"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdKey
+        :calls: "DELETE /members/{self.member}/key" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdKey>
+  
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
         response = self._requester.request(
             "DELETE", f"/members/{self.member}/key", _kwargs=kwargs
@@ -87,8 +99,11 @@ class MemberKey(FabmanObject):
         Updates a member key and updates the MemberKey object in place with new
         data from the API.
 
-        Calls "PUT /member{self.member}/key"
-        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdKey
+        :calls: "PUT /member{self.member}/key" \
+		<https://fabman.io/api/v1/documentation#/members/putMembersIdKey>
+  
+        :returns: None
+        :rtype: None
         """
 
         kwargs.update({"lockVersion": self.lockVersion})
@@ -114,8 +129,11 @@ class MemberPackage(FabmanObject):
     def delete(self, **kwargs) -> requests.Response:
         """Removes the package from the current user account. *WARNING: THIS CANNOT BE UNDONE.*
 
-        Calls "DELETE /members/{id}/packages/{memberPackageId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdPackagesMemberPackageId
+        :calls: "DELETE /members/{id}/packages/{memberPackageId}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdPackagesMemberpackageid>
+
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
 
         response = self._requester.request(
@@ -128,8 +146,11 @@ class MemberPackage(FabmanObject):
         """
         Gets information about the package
 
-        Calls "GET /packages/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/getPackagesId
+        :calls: "GET /packages/{id}" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackagesId>
+        
+        :returns: :code:`fabman.package.Package` object with Package details
+        :rtype: fabman.package.Package
         """
         if "package" in self._embedded:
             data = self._embedded["package"]
@@ -146,8 +167,11 @@ class MemberPackage(FabmanObject):
         Updates a member package and updates the MemberPackage object in place with new
         data from the API
 
-        Calls "PUT /members/{id}/packages/{memberPackageId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersIdPackagesMemberPackageId
+        :calls: "PUT /members/{id}/packages/{memberPackageId}" \
+		<https://fabman.io/api/v1/documentation#/members/putMembersIdPackagesMemberpackageid>
+  
+        :returns: None
+        :rtype: None
         """
         kwargs.update({"lockVersion": self.lockVersion})
 
@@ -172,8 +196,12 @@ class Member(FabmanObject):
     def create_credit(self, **kwargs) -> MemberCredit:
         """
         Creates a member credit
-        calls "POST /members/{id}/credits"
-        Documentation: https://fabman.io/api/v1/documentation#/members/postMembersIdCredits
+        
+        :calls: "POST /members/{id}/credits" \
+		<https://fabman.io/api/v1/documentation#/members/postMembersIdCredits>
+
+        :returns: :code:`fabman.member.MemberCredit` object with credit details
+        :rtype: fabman.member.MemberCredit
         """
 
         kwargs.update({"lockVersion": self.lockVersion})
@@ -194,8 +222,11 @@ class Member(FabmanObject):
         Creates a key for the member if one does not already exist. If member already has
         a key, use `update_key()`.
 
-        Calls "POST /members/{id}/key"
-        Documentation: https://fabman.io/api/v1/documentation#/members/postMembersIdKey
+        :calls: "POST /members/{id}/key" \
+		<https://fabman.io/api/v1/documentation#/members/postMembersIdKey>
+  
+        :returns: :code:`fabman.member.MemberKey` object with key details
+        :rtype: fabman.member.MemberKey
         """
 
         response = self._requester.request(
@@ -207,8 +238,12 @@ class Member(FabmanObject):
     def delete(self, **kwargs) -> requests.Response:
         """
         Deletes a member
-        calls "DELETE /members/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersId
+        
+        :calls: "DELETE /members/{id}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersId>
+  
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
         return self._requester.request(
             "DELETE",
@@ -219,8 +254,14 @@ class Member(FabmanObject):
     def delete_change(self, change_id: int, **kwargs) -> requests.Response:
         """
         Deletes a member change given change ID
-        calls "DELETE /members/{id}/changes/{changeId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdChangesChangeId
+        
+        :calls: "DELETE /members/{id}/changes/{changeId}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdChangesChangeid>
+
+        :param change_id: ID of the change to delete
+        :type change_id: int
+        :return: Response information of delete call
+        :rtype: requests.Response
         """
         return self._requester.request(
             "DELETE",
@@ -231,8 +272,14 @@ class Member(FabmanObject):
     def delete_device_change(self, change_id: int, **kwargs) -> requests.Response:
         """
         Deletes a member device change given change ID
-        Calls "DELETE /members/{id}/device/changes/{changeId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdDeviceChangesChangeId
+        
+        :calls: "DELETE /members/{id}/device/changes/{changeId}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdDeviceChangesChangeid>
+
+        :param change_id: ID of the change to delete
+        :type change_id: int
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
         return self._requester.request(
             "DELETE",
@@ -243,8 +290,12 @@ class Member(FabmanObject):
     def delete_payment_method(self, **kwargs) -> requests.Response:
         """
         Deletes a member payment method
-        Calls "DELETE /members/{id}/payment-method"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdPaymentMethod
+        
+        :calls: "DELETE /members/{id}/payment-method" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdPaymentmethod>
+  
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
         return self._requester.request(
             "DELETE",
@@ -255,8 +306,14 @@ class Member(FabmanObject):
     def delete_training(self, training_id: int, **kwargs) -> requests.Response:
         """
         Deletes a member training given training ID
-        Calls "DELETE /members/{id}/trainings/{trainingId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/deleteMembersIdTrainingsTrainingId
+        
+        :calls: "DELETE /members/{id}/trainings/{trainingId}" \
+		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdTrainingsTrainingid>
+
+        :param training_id: ID of the training to delete
+        :type training_id: int
+        :returns: Response information of delete call
+        :rtype: requests.Response
         """
         return self._requester.request(
             "DELETE",
@@ -267,8 +324,12 @@ class Member(FabmanObject):
     def get_balance_items(self, **kwargs) -> requests.Response:
         """
         Retrieves the balance items of a member
-        calls "GET /members/{id}/balance-items"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdBalanceitems
+        
+        :calls: "GET /members/{id}/balance-items" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdBalanceitems>
+  
+        :returns: Response information of get call
+        :rtype: requests.Response
         """
         response = self._requester.request(
             "GET",
@@ -281,8 +342,12 @@ class Member(FabmanObject):
     def get_changes(self, **kwargs) -> requests.Response:
         """
         Retrieves the changes of a member
-        calls "GET /members/{id}/changes"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdChanges
+        
+        :calls: "GET /members/{id}/changes" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdChanges>
+  
+        :returns: List of changes of a member
+        :rtype: list
         """
         response = self._requester.request(
             "GET",
@@ -295,8 +360,11 @@ class Member(FabmanObject):
     def get_credits(self, **kwargs) -> PaginatedList:
         """
         Retrieves the credits of a member
-        calls "GET /members/{id}/credits"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdCredits
+        :calls: "GET /members/{id}/credits" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdCredits>
+  
+        :returns: List of credits of a member
+        :rtype: fabman.paginated_list.PaginatedList
         """
         return PaginatedList(
             MemberCredit,
@@ -310,8 +378,14 @@ class Member(FabmanObject):
     def get_credit(self, credit_id: int, **kwargs) -> MemberCredit:
         """
         Retrieves a credit of a member
-        calls "GET /members/{id}/credits/{creditId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditId
+        
+        :calls: "GET /members/{id}/credits/{creditId}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdCreditsCreditid>
+  
+        :param credit_id: ID of the credit to retrieve
+        :type credit_id: int
+        :returns: :code:`fabman.member.MemberCredit` object with credit details
+        :rtype: fabman.member.MemberCredit
         """
         response = self._requester.request(
             "GET",
@@ -327,8 +401,12 @@ class Member(FabmanObject):
     def get_device(self, **kwargs) -> requests.Response:
         """
         Retrieves the device of a member used to authenticate on a bridge.
-        calls "GET /members/{id}/devices"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdDevice
+        
+        :calls: "GET /members/{id}/devices" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdDevice>
+  
+        :returns: Device information
+        :rtype: dict
         """
         if "device" in self._embedded:
             return self._embedded["device"]
@@ -344,8 +422,12 @@ class Member(FabmanObject):
     def get_device_changes(self, **kwargs) -> requests.Response:
         """
         Retrieves the device changes of a member
-        calls "GET /members/{id}/device/changes"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdDeviceChanges
+        
+        :calls: "GET /members/{id}/device/changes" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdDeviceChanges>
+
+        :returns: List of device changes of a member
+        :rtype: list
         """
         response = self._requester.request(
             "GET",
@@ -358,8 +440,14 @@ class Member(FabmanObject):
     def get_device_change(self, change_id: int, **kwargs) -> requests.Response:
         """
         Retrieves a device change of a member given the change ID
-        calls "GET /members/{id}/device/changes/{changeId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdDeviceChangesChangeId
+        
+        :calls: "GET /members/{id}/device/changes/{changeId}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdDeviceChangesChangeId>
+  
+        :param change_id: ID of the change to retrieve
+        :type change_id: int
+        :returns: Device change information
+        :rtype: dict
         """
         response = self._requester.request(
             "GET",
@@ -371,17 +459,24 @@ class Member(FabmanObject):
 
     def get_export(self, **kwargs) -> requests.Response:
         """
-        Retrieves the export of a member
-        calls "GET /members/{id}/export"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdExport
+        Retrieves the export of a member. This is a placeholder for future functionality.
+        
+        :calls: "GET /members/{id}/export" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdExport>
+  
+        :raises: NotImplementedError
         """
         raise NotImplementedError("get_export not implemented yet")
 
     def get_invitation(self, **kwargs) -> requests.Response:
         """
         Retrieves the invitation status of a member
-        calls "GET /members/{id}/invitations"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdInvitation
+        
+        :calls: "GET /members/{id}/invitations" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdInvitation>
+  
+        :returns: Invitation status of a member
+        :rtype: dict
         """
         response = self._requester.request(
             "GET",
@@ -391,11 +486,15 @@ class Member(FabmanObject):
 
         return response.json()
 
-    def get_key(self, **kwargs):
+    def get_key(self, **kwargs) -> MemberKey:
         """
         Retrieves the keycard number of a member
-        calls "GET /members/{id}/key"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdKey
+        
+        :calls: "GET /members/{id}/key" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdKey>
+  
+        :returns: :code:`fabman.member.MemberKey` object with key details
+        :rtype: fabman.member.MemberKey
         """
         if "key" in self._embedded:
             return MemberKey(self._requester, self._embedded["key"])
@@ -412,8 +511,11 @@ class Member(FabmanObject):
         """
         Retrieves the packages of a member
 
-        calls "GET /members/{id}/packages"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPackages
+        :calls: "GET /members/{id}/packages" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPackages>
+  
+        :returns: List of packages of a member
+        :rtype: fabman.paginated_list.PaginatedList
         """
         if "memberPackages" in self._embedded:
             out = []
@@ -434,8 +536,14 @@ class Member(FabmanObject):
     def get_package(self, member_package_id: int, **kwargs) -> MemberPackage:
         """
         Retrieves a package of a member
-        calls "GET /members/{id}/packages/{memberPackageId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPackagesMemberPackageId
+        
+        :calls: "GET /members/{id}/packages/{memberPackageId}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPackagesMemberpackageid>
+  
+        :param member_package_id: ID of the package to retrieve
+        :type member_package_id: int
+        :returns: :code:`fabman.member.MemberPackage` object with package details
+        :rtype: fabman.member.MemberPackage
         """
         if "memberPackages" in self._embedded:
             for package in self._embedded["memberPackages"]:
@@ -456,8 +564,12 @@ class Member(FabmanObject):
     def get_payment_account(self, **kwargs) -> requests.Response:
         """
         Retrieves the payment account of a member
-        calls "GET /members/{id}/payment-account"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentAccount
+        
+        :calls: "GET /members/{id}/payment-account" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentaccount>
+  
+        :returns: Payment account information
+        :rtype: dict
         """
         response = self._requester.request(
             "GET",
@@ -470,8 +582,11 @@ class Member(FabmanObject):
     def get_payment_method(self, **kwargs) -> requests.Response:
         """
         Retrieves the payment method of a member
-        calls "GET /members/{id}/payment-method"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentMethod
+        :calls: "GET /members/{id}/payment-method" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentmethod>
+  
+        :returns: Payment method information
+        :rtype: dict
         """
         response = self._requester.request(
             "GET",
@@ -484,8 +599,12 @@ class Member(FabmanObject):
     def get_payment_method_mandate_preview(self, **kwargs) -> requests.Response:
         """
         Retrieves the payment method mandate preview of a member
-        calls "GET /members/{id}/payment-method-mandate-preview"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentMethodMandatePreview
+        
+        :calls: "GET /members/{id}/payment-method-mandate-preview" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPaymentmethodmandatepreview>
+  
+        :returns: Payment method mandate preview information
+        :rtype: dict
         """
         response = self._requester.request(
             "GET",
@@ -498,8 +617,11 @@ class Member(FabmanObject):
     def get_privileges(self, **kwargs) -> requests.Response:
         """
         Retrieves the privileges of a member
-        calls "GET /members/{id}/privileges"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdPrivileges
+        :calls: "GET /members/{id}/privileges" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdPrivileges>
+  
+        :returns: privileges of a member
+        :rtype: dict
         """
         if "privileges" in self._embedded:
             return self._embedded["privileges"]
@@ -515,8 +637,11 @@ class Member(FabmanObject):
     def get_trained_resources(self, **kwargs) -> requests.Response:
         """
         Retrieves the trained resources of a member
-        calls "GET /members/{id}/trained-resources"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdTrainedResources
+        :calls: "GET /members/{id}/trained-resources" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdTrainedResources>
+  
+        :return: Trained resources of a member
+        :rtype: list
         """
         response = self._requester.request(
             "GET",
@@ -528,9 +653,14 @@ class Member(FabmanObject):
 
     def get_trainings(self, **kwargs) -> requests.Response:
         """
+        TODO: Move to MemberTrainings object
+        
         Retrieves the trainings of a member
-        calls "GET /members/{id}/trainings"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdTrainings
+        :calls: "GET /members/{id}/trainings" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdTrainings>
+
+        :return: List of trainings of a member
+        :rtype: list
         """
         if "trainings" in self._embedded:
             return self._embedded["trainings"]
@@ -545,9 +675,15 @@ class Member(FabmanObject):
 
     def get_training(self, training_id: int, **kwargs) -> requests.Response:
         """
+        TODO: Move this to MemberTraining Object
         Retrieves a training of a member
-        calls "GET /members/{id}/trainings/{trainingId}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersIdTrainingsTrainingId
+        :calls: "GET /members/{id}/trainings/{trainingId}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersIdTrainingstrainingid>
+        
+        :param training_id: ID of the training to retrieve
+        :type training_id: int
+        :return: Training information
+        :rtype: dict
         """
         if "trainings" in self._embedded:
             for training in self._embedded["trainings"]:
@@ -567,8 +703,11 @@ class Member(FabmanObject):
         Updates the objects with more recent data from the API. Needs to be called
         when update() fails for lockVersioning.
 
-        Calls "GET /members/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/members/getMembersId
+        :calls: "GET /members/{id}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersId>
+  
+        :returns: None -- updates attributes of the current object
+        :rtype: None
         """
 
         response = self._requester.request("GET", f"/members/{self.id}")
@@ -583,8 +722,11 @@ class Member(FabmanObject):
         Updates the member object and sets the modified attributes based on what
         is returned by the server.  Member object is updated in place.
 
-        calls "PUT /members/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/putMembersId
+        :calls: "PUT /members/{id}" \
+		<https://fabman.io/api/v1/documentation#/members/putMembersId>
+  
+        :returns: None -- updates attributes of the current object
+        :rtype: None
         """
 
         kwargs.update({"lockVersion": self.lockVersion})

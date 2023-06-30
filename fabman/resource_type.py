@@ -18,8 +18,11 @@ class ResourceType(FabmanObject):
         are therefore tied to all resources of that type. Be sure you know
         what you are doing when using this endpoint. There is no confirmation.
 
-        Calls "DELETE /resource-types/{resourceTypeId}"
-        Documentation https://fabman.io/api/v1/documentation#/resource-types/deleteResourceTypesResourceTypeId
+        :calls: "DELETE /resource-types/{resourceTypeId}" \
+		<https://fabman.io/api/v1/documentation#/resource-types/deleteResourcetypesId>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/resource-types/{self.id}"
@@ -33,8 +36,11 @@ class ResourceType(FabmanObject):
         Updates the resource-type. Attributes are updated in place with new information
         retrieved from the API.
 
-        Calls "PUT /resource-types/{resourceTypeId}"
-        Documentation https://fabman.io/api/v1/documentation#/resource-types/putResourceTypesResourceTypeId
+        :calls: "PUT /resource-types/{resourceTypeId}" \
+		<https://fabman.io/api/v1/documentation#/resource-types/putResourcetypesId>
+
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/resource-types/{self.id}"

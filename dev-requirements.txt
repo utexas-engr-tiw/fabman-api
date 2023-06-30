@@ -3,3 +3,5 @@ autopep8
 pylint
 isort
 black
+sphinx
+sphinx_rtd_theme

@@ -18,8 +18,11 @@ class SpaceBillingSettings(FabmanObject):
         """
         Deletes Stripe information from a space. *WARNING: This is irreversible.*
 
-        Calls "DELETE /space/{id]/billing-settings/stripe"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdBillingsettingsStripe
+        :calls: "DELETE /space/{id]/billing-settings/stripe" \
+		<https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdBillingsettingsStripe>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.space_id}/billing-settings/stripe"
@@ -33,8 +36,11 @@ class SpaceBillingSettings(FabmanObject):
         Updates the space-billing-settings. Attributes are updated in place with new information
         retrieved from the API.
 
-        Calls "PUT /space-billing-settings/{spaceBillingSettingsId}"
-        Documentation https://fabman.io/api/v1/documentation#/space-billing-settings/putSpaceBillingSettingsSpaceBillingSettingsId
+        :calls: "PUT /space-billing-settings/{spaceBillingSettingsId}" \
+		<https://fabman.io/api/v1/documentation#/space-billing-settings/putSpaceBillingSettingsSpaceBillingSettingsId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/spaces/{self.space_id}/billing-settings"
@@ -51,10 +57,12 @@ class SpaceBillingSettings(FabmanObject):
     def update_stripe(self, **kwargs) -> None:
         """
         Updates the space-billing-settings. Attributes are updated in place with new information
-        retrieved from the API.
+        retrieved from the API. Placeholder for future implementation
 
-        Calls "PUT /space-billing-settings/{spaceBillingSettingsId}"
-        Documentation https://fabman.io/api/v1/documentation
+        :calls: "PUT /space-billing-settings/{spaceBillingSettingsId}" \
+		<https://fabman.io/api/v1/documentation>
+  
+        :raises: NotImplementedError
         """
 
         raise NotImplementedError("This method is not yet implemented.")
@@ -70,8 +78,11 @@ class SpaceHoliday(FabmanObject):
         """
         Deletes a space holiday. *WARNING: This is irreversible.*
 
-        Calls "DELETE /space/{spaceId}/holidays/{holidayId}"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdHolidaysHolidayid
+        :calls: "DELETE /space/{spaceId}/holidays/{holidayId}" \
+		<https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdHolidaysHolidayid>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.space_id}/holidays/{self.id}"
@@ -85,9 +96,11 @@ class SpaceHoliday(FabmanObject):
         Updates the space holiday. Attributes are updated in place with new information
         retrieved from the API.
 
-        Calls "PUT /space/{spaceId}/holidays/{holidayId}"
-        #/spaces/putSpacesIdHolidaysHolidayid
-        Documentation https://fabman.io/api/v1/documentation
+        :calls: "PUT /space/{spaceId}/holidays/{holidayId}" \
+		<https://fabman.io/api/v1/documentation#/spaces/putSpacesIdHolidaysHolidayid>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/spaces/{self.space_id}/holidays/{self.id}"
@@ -112,8 +125,11 @@ class Space(FabmanObject):
         """
         Creates a new holiday for the space.
 
-        Calls "POST /spaces/{spaceId}/holidays"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/postSpacesIdHolidays
+        :calls: "POST /spaces/{spaceId}/holidays" \
+		<https://fabman.io/api/v1/documentation#/spaces/postSpacesIdHolidays>
+  
+        :return: Object with new holiday information
+        :rtype: fabman.space.SpaceHoliday
         """
 
         uri = f"/spaces/{self.id}/holidays"
@@ -126,8 +142,11 @@ class Space(FabmanObject):
         """
         Deletes a space. *WARNING: This is irreversible.*
 
-        Calls "DELETE /spaces/{spaceId}"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesId
+        :calls: "DELETE /spaces/{spaceId}" \
+		<https://fabman.io/api/v1/documentation#/spaces/deleteSpacesId>
+
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.id}"
@@ -140,8 +159,11 @@ class Space(FabmanObject):
         """
         Deletes a space calendar token. *WARNING: This is irreversible.*
 
-        Calls "DELETE /spaces/{spaceId}/calendar-token"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdCalendartoken
+        :calls: "DELETE /spaces/{spaceId}/calendar-token" \
+		<https://fabman.io/api/v1/documentation#/spaces/deleteSpacesIdCalendartoken>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.id}/calendar-token"
@@ -154,8 +176,11 @@ class Space(FabmanObject):
         """
         Returns the billing settings for the space.
 
-        Calls "GET /spaces/{spaceId}/billing-settings"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdBillingsettings
+        :calls: "GET /spaces/{spaceId}/billing-settings" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpacesIdBillingsettings>
+  
+        :return: Object with billing settings information
+        :rtype: fabman.space.SpaceBillingSettings
         """
         if "billingSettings" in self._embedded:
             settings = self._embedded["billingSettings"]
@@ -175,8 +200,13 @@ class Space(FabmanObject):
         """
         Returns a specific holiday for the space given a holiday_id.
 
-        Calls "GET /spaces/{spaceId}/holidays/{holidayId}"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidaysHolidayid
+        :calls: "GET /spaces/{spaceId}/holidays/{holidayId}" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidaysHolidayid>
+        
+        :param holiday_id: ID of the holiday to retrieve
+        :type holiday_id: int
+        :return: Object with holiday information
+        :rtype: fabman.space.SpaceHoliday
         """
 
         uri = f"/spaces/{self.id}/holidays/{holiday_id}"
@@ -190,10 +220,14 @@ class Space(FabmanObject):
 
     def get_holidays(self, **kwargs) -> Union[list, PaginatedList]:
         """
-        Returns a list of holidays for the space.
+        Returns a list of holidays for the space. If the information is cached from an embedded call, 
+        a list of SpaceHoliday objects is returned. Otherwise, a PaginatedList will be returned.
 
-        Calls "GET /spaces/{spaceId}/holidays"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidays
+        :calls: "GET /spaces/{spaceId}/holidays" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpacesIdHolidays>
+  
+        :return: List of SpaceHoliday Objects
+        :rtype: list[fabman.space.SpaceHoliday] or fabman.paginated_list.PaginatedList
         """
         if "holidays" in self._embedded:
             out = []
@@ -215,8 +249,11 @@ class Space(FabmanObject):
         """
         Get the opening hours for the space.
 
-        Calls "GET /spaces/{spaceId}/opening-hours"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/getSpacesIdOpeninghours
+        :calls: "GET /spaces/{spaceId}/opening-hours" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpacesIdOpeninghours>
+
+        :return: List of opening hours
+        :rtype: list
         """
 
         if "openingHours" in self._embedded:
@@ -233,8 +270,11 @@ class Space(FabmanObject):
         Updates the space. Attributes are updated in place with new information
         from the API.
 
-        Calls "PUT /spaces/{spaceId}"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesId
+        :calls: "PUT /spaces/{spaceId}" \
+		<https://fabman.io/api/v1/documentation#/spaces/putSpacesId>
+
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/spaces/{self.id}"
@@ -253,8 +293,11 @@ class Space(FabmanObject):
         Updates the space calendar token and returns a link to the new calendar ics
         file. Calendar Token attribute is updated in place with new information.
 
-        Calls "PUT /spaces/{spaceId}/calendar-token"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesIdCalendartoken
+        :calls: "PUT /spaces/{spaceId}/calendar-token" \
+		<https://fabman.io/api/v1/documentation#/spaces/putSpacesIdCalendartoken>
+
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.id}/calendar-token"
@@ -275,8 +318,11 @@ class Space(FabmanObject):
         present in the _embedded attribute, the opening hours are updated in
         place with information returned by the api.
 
-        calls "PUT /spaces/{spaceId}/opening-hours"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/putSpacesIdOpeninghours
+        :calls: "PUT /spaces/{spaceId}/opening-hours" \
+		<https://fabman.io/api/v1/documentation#/spaces/putSpacesIdOpeninghours>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/spaces/{self.id}/opening-hours"

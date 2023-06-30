@@ -15,8 +15,11 @@ class Invoice(FabmanObject):
         """
         Cancels an invoice. Takes no arguments.
 
-        Calls "POST /invoices/{id}/cancel"
-        Documentation: https://fabman.io/api/v1/documentation#/invoices/postInvoicesIdCancel
+        :calls: "POST /invoices/{id}/cancel" \
+		<https://fabman.io/api/v1/documentation#/invoices/postInvoicesIdCancel>
+  
+        :returns: An empty dict if successful.
+        :type: dict
         """
 
         data = {"lockVersion": self.lockVersion}
@@ -30,8 +33,11 @@ class Invoice(FabmanObject):
         """
         Returns details about the invoice. Takes no arguments.
 
-        Calls "GET /invoices/{id}/details"
-        Documentation: https://fabman.io/api/v1/documentation
+        :calls: "GET /invoices/{id}/details" \
+		<https://fabman.io/api/v1/documentation>
+  
+        :returns: A dict containing details about the invoice.
+        :rtype: dict
         """
 
         if "details" in self._embedded:
@@ -50,8 +56,11 @@ class Invoice(FabmanObject):
         Updates the invoice. Attributes are updated in place with new information
         provided by the API
 
-        Calls "PUT /invoices/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/invoices/putInvoicesId
+        :calls: "PUT /invoices/{id}" \
+		<https://fabman.io/api/v1/documentation#/invoices/putInvoicesId>
+  
+        :returns: None -- updates attributes of the current object
+        :rtype: None
         """
 
         kwargs.update({"lockVersion": self.lockVersion})

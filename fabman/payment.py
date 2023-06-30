@@ -15,8 +15,11 @@ class Payment(FabmanObject):
         """
         Deletes a payment. *WARNING: This is irreversible.*
 
-        Calls "DELETE /payments/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/payments/deletePaymentsId
+        :calls: "DELETE /payments/{id}" \
+		<https://fabman.io/api/v1/documentation#/payments/deletePaymentsId>
+
+        :returns: response information of call
+        :rtype: requests.Response
         """
         uri = f"/payments/{self.id}"
 
@@ -28,8 +31,11 @@ class Payment(FabmanObject):
         """
         Requests a payment from the customer.
 
-        Calls "POST /payments/{id}/request-payment"
-        Documentation: https://fabman.io/api/v1/documentation#/payments/postPaymentsIdRequestPayment
+        :calls: "POST /payments/{id}/request-payment" \
+		<https://fabman.io/api/v1/documentation#/payments/postPaymentsIdRequestpayment>
+        
+        :return: response information of the call
+        :rtype: requests.Response
         """
         uri = f"/payments/{self.id}/request-payment"
 
@@ -42,8 +48,11 @@ class Payment(FabmanObject):
         Updates a payment. Attributes are modified in place using updated information
         from the API.
 
-        Calls "PUT /payments/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/payments/putPaymentsId
+        :calls: "PUT /payments/{id}" \
+		<https://fabman.io/api/v1/documentation#/payments/putPaymentsId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/payments/{self.id}"

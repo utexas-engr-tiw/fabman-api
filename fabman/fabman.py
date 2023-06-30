@@ -31,14 +31,15 @@ class Fabman(object):
     """
 
     def __init__(self, access_token: str, base_url="https://fabman.io/api/v1"):
-        """Initializes the Fabman class with the given access token and base url.
+        """
+        Initializes the Fabman class with the given access token and base url.
         All methods take kwargs as their arguments, please refer to the Fabman API
         for more information
 
-        Args:
-            access_token (str): The access token to access the API
-            base_url (str, optional): The base url of the API. Defaults to
-            "https://api.fabman.io/v1".
+        :param access_token: The access token to use for the API
+        :type access_token: str
+        :param base_url (optional): The base url to use for the API
+        :type base_url: str
         """
 
         if "https://" not in base_url:
@@ -67,8 +68,11 @@ class Fabman(object):
         """
         Creates a new API key for a member.
 
-        Calls "POST /api-keys"
-        Documentation https://fabman.io/api/v1/documentation#/api-keys/postApikeys
+        :calls: "POST /api-keys" \
+        <https://fabman.io/api/v1/documentation#/api-keys/postApikeys>
+        
+        :returns: :code:`ApiKey` object if successful
+        :rtype: :code:`fabman.ApiKey`
         """
 
         uri = "/api-keys"
@@ -80,8 +84,11 @@ class Fabman(object):
         """
         Creates a new booking in the Fabman database.
 
-        Calls "POST /bookings"
-        Documentation https://fabman.io/api/v1/documentation#/bookings/postBookings
+        :calls: "POST /bookings" \
+		<https://fabman.io/api/v1/documentation#/bookings/postBookings>
+  
+        :returns: :code:`Booking` object if successful
+        :rtype: :code:`fabman.Booking`
         """
 
         uri = "/bookings"
@@ -94,8 +101,11 @@ class Fabman(object):
         """
         Creates a new charge in the Fabman database.
 
-        Calls "POST /charges"
-        Documentation https://fabman.io/api/v1/documentation#/charges/postCharges
+        :calls: "POST /charges" \
+		<https://fabman.io/api/v1/documentation#/charges/postCharges>
+  
+        :returns: :code:`Charge` object if successful
+        :rtype: :code:`fabman.Charge`
         """
 
         uri = "/charges"
@@ -108,8 +118,11 @@ class Fabman(object):
         """
         Creates a new invoice in the Fabman database.
 
-        Calls "POST /invoices"
-        Documentation https://fabman.io/api/v1/documentation#/invoices/postInvoices
+        :calls: "POST /invoices" \
+		<https://fabman.io/api/v1/documentation#/invoices/postInvoices>
+  
+        :returns: :code:`Invoice` object if successful
+        :rtype: :code:`fabman.Invoice`
         """
 
         uri = "/invoices"
@@ -124,8 +137,11 @@ class Fabman(object):
         method to work with key assignments is to use the Member class and the
         associated MemberKey class that works with the key assignments endpoint.
 
-        Calls "POST /key-assignments"
-        Documentation https://fabman.io/api/v1/documentation#/key-assignments/postKeyassignments
+        :calls: "POST /key-assignments" \
+		<https://fabman.io/api/v1/documentation#/key-assignments/postKeyassignments>
+  
+        :returns: :code:`requests.Response` object if successful
+        :rtype: :code:`requests.Response`
         """
 
         uri = "/key-assignments"
@@ -135,11 +151,14 @@ class Fabman(object):
         return response
 
     def create_member(self, **kwargs) -> Member:
-        """Creates a new member in the Fabman database.
-        Calls "POST /members"
-        Documentation: https://fabman.io/api/v1/documentation#/members/postMembers
+        """
+        Creates a new member in the Fabman database.
 
-        Returns:
+        :calls: "POST /members" \
+        <https://fabman.io/api/v1/documentation#/members/postMembers>
+
+        :returns: :code:`Member` object if successful
+        :rtype: :code:`fabman.Member`
 
         """
         uri = "/members"
@@ -152,8 +171,11 @@ class Fabman(object):
         """
         Creates a new package in the Fabman database.
 
-        Calls "POST /packages"
-        Documentation: https://fabman.io/api/v1/documentation#/packages/postPackages
+        :calls: "POST /packages" \
+        <https://fabman.io/api/v1/documentation#/packages/postPackages>
+        
+        :returns: :code:`Package` object if successful
+        :rtype: :code:`fabman.Package`
         """
 
         uri = "/packages"
@@ -166,8 +188,11 @@ class Fabman(object):
         """
         Creates a new payment in the Fabman database.
 
-        Calls "POST /payments"
-        Documentation https://fabman.io/api/v1/documentation#/payments/postPayments
+        :calls: "POST /payments" \
+		<https://fabman.io/api/v1/documentation#/payments/postPayments>
+  
+        :returns: :code:`Payment` object if successful
+        :rtype: :code:`fabman.Payment`
         """
 
         uri = "/payments"
@@ -180,8 +205,11 @@ class Fabman(object):
         """
         Creates a new resource in the Fabman database.
 
-        Calls "POST /resources"
-        Documentation https://fabman.io/api/v1/documentation#/resources/postResources
+        :calls: "POST /resources" \
+		<https://fabman.io/api/v1/documentation#/resources/postResources>
+  
+        :returns: :code:`Resource` object if successful
+        :rtype: :code:`fabman.Resource`
         """
 
         uri = "/resources"
@@ -194,8 +222,11 @@ class Fabman(object):
         """
         Creates a new resource log in the Fabman database. Use with caution.
 
-        Calls "POST /resource-logs"
-        Documentation https://fabman.io/api/v1/documentation#/resource-logs/postResourceLogs
+        :calls: "POST /resource-logs" \
+		<https://fabman.io/api/v1/documentation#/resource-logs/postResourcelogs>
+  
+        :returns: :code:`ResourceLog` object if successful
+        :rtype: :code:`fabman.ResourceLog`
         """
         uri = "/resource-logs"
 
@@ -207,8 +238,11 @@ class Fabman(object):
         """
         Creates a new resource type in the Fabman database.
 
-        Calls "POST /resource-types"
-        Documentation https://fabman.io/api/v1/documentation#/resource-types/postResourceTypes
+        :calls: "POST /resource-types" \
+		<https://fabman.io/api/v1/documentation#/resource-types/postResourcetypes>
+  
+        :returns: :code:`ResourceType` object if successful
+        :rtype: :code:`fabman.ResourceType`
         """
         uri = "/resource-types"
 
@@ -220,8 +254,11 @@ class Fabman(object):
         """
         Creates a new space in the Fabman database.
 
-        Calls "POST /spaces"
-        Documentation https://fabman.io/api/v1/documentation#/spaces/postSpaces
+        :calls: "POST /spaces" \
+		<https://fabman.io/api/v1/documentation#/spaces/postSpaces>
+  
+        :returns: :code:`Space` object if successful
+        :rtype: :code:`fabman.Space`
         """
         uri = "/spaces"
 
@@ -233,8 +270,11 @@ class Fabman(object):
         """
         Creates a new Training course in the Fabman database.
 
-        Calls "POST /training-courses"
-        Documentation: https://fabman.io/api/v1/documentation#/training-courses/postTrainingcourses
+        :calls: "POST /training-courses" \
+        <https://fabman.io/api/v1/documentation#/training-courses/postTrainingcourses>
+        
+        :returns: :code:`TrainingCourse` object if successful
+        :rtype: :code:`fabman.TrainingCourse`
         """
 
         uri = "/training-courses"
@@ -247,8 +287,11 @@ class Fabman(object):
         """
         Creates a new webhook in the Fabman database.
 
-        Calls "POST /webhooks"
-        Documentation: https://fabman.io/api/v1/documentation#/webhooks/postWebhooks
+        :calls: "POST /webhooks" \
+        <https://fabman.io/api/v1/documentation#/webhooks/postWebhooks>
+        
+        :returns: :code:`Webhook` object if successful
+        :rtype: :code:`fabman.Webhook`
         """
 
         uri = "/webhooks"
@@ -263,8 +306,13 @@ class Fabman(object):
         retrievable is the account of the API key holder. Majority of endpoints
         are not implemented as they require superuser privileges.
 
-        Calls "GET /accounts/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/accounts/getAccountsId
+        :calls: "GET /accounts/{account_id}" \
+        <https://fabman.io/api/v1/documentation#/accounts/getAccountsId>
+        
+        :param account_id: The id of the account to retrieve
+        :type account_id: int
+        :returns: :code:`Account` object if successful
+        :rtype: :code:`fabman.Account`
         """
 
         uri = f"/accounts/{account_id}"
@@ -278,8 +326,11 @@ class Fabman(object):
         Get a list of accounts. Note, for most users this will only return the account
         of the API key holder. Most documented endpoints are unimplemented as a result.
 
-        Calls "GET /accounts"
-        Documentation: https://fabman.io/api/v1/documentation#/accounts/getAccounts
+        :calls: "GET /accounts" \
+        <https://fabman.io/api/v1/documentation#/accounts/getAccounts>
+        
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
         return PaginatedList(Account, self.__requester, "GET", "/accounts", **kwargs)
 
@@ -287,8 +338,13 @@ class Fabman(object):
         """
         Get information about a single API key by its ID.
 
-        Calls "GET /api-keys/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/api-keys/getApikeysId
+        :calls: "GET /api-keys/{key_id}" \
+        <https://fabman.io/api/v1/documentation#/api-keys/getApikeysId>
+        
+        :param key_id: The id of the API key to retrieve
+        :type key_id: int
+        :returns: :code:`ApiKey` object if successful
+        :rtype: :code:`fabman.ApiKey`
         """
 
         uri = f"/api-keys/{key_id}"
@@ -301,8 +357,11 @@ class Fabman(object):
         """
         Get a list of API keys. Can specify filters, search string, etc.
 
-        Calls "GET /api-keys"
-        Documentation: https://fabman.io/api/v1/documentation#/api-keys/getApikeys
+        :calls: "GET /api-keys" \
+		<https://fabman.io/api/v1/documentation#/api-keys/getApikeys>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(ApiKey, self.__requester, "GET", "/api-keys", **kwargs)
@@ -311,8 +370,13 @@ class Fabman(object):
         """
         Get a single booking by its ID.
 
-        Calls "GET /bookings/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/bookings/getBookingsId
+        :calls: "GET /bookings/{id}" \
+		<https://fabman.io/api/v1/documentation#/bookings/getBookingsId>
+
+        :param booking_id: The id of the booking to retrieve
+        :type booking_id: int
+        :returns: :code:`Booking` object if successful
+        :rtype: :code:`fabman.Booking`
         """
         uri = f"/bookings/{booking_id}"
 
@@ -325,8 +389,11 @@ class Fabman(object):
         Retrieves a PaginatedList of bookings from the API. Can specify filters, search
         string, etc.
 
-        Calls "GET /bookings"
-        Documentation: https://fabman.io/api/v1/documentation#/bookings/getBookings
+        :calls: "GET /bookings" \
+		<https://fabman.io/api/v1/documentation#/bookings/getBookings>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
         return PaginatedList(Booking, self.__requester, "GET", "/bookings", **kwargs)
 
@@ -334,8 +401,13 @@ class Fabman(object):
         """
         Retrieves a single Charge given the charge_id.
 
-        Calls "Get /charges/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/charges/getChargesId
+        :calls: "Get /charges/{id}" \
+		<https://fabman.io/api/v1/documentation#/charges/getChargesId>
+
+        :param charge_id: The id of the charge to retrieve
+        :type charge_id: int
+        :returns: :code:`Charge` object if successful
+        :rtype: :code:`fabman.Charge`
         """
 
         uri = f"/charges/{charge_id}"
@@ -348,8 +420,11 @@ class Fabman(object):
         """
         Retrieves all charges from the API. Can specify filters, search string, etc.
 
-        Calls "GET /charges"
-        Documentation: https://fabman.io/api/v1/documentation#/charges/getCharges
+        :calls: "GET /charges" \
+		<https://fabman.io/api/v1/documentation#/charges/getCharges>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Charge, self.__requester, "GET", "/charges", **kwargs)
@@ -358,8 +433,13 @@ class Fabman(object):
         """
         Retrieve information of a single invoice by its ID.
 
-        Calls "GET /invoices/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/invoices/getInvoicesId
+        :calls: "GET /invoices/{id}" \
+		<https://fabman.io/api/v1/documentation#/invoices/getInvoicesId>
+  
+        :param invoice_id: The id of the invoice to retrieve
+        :type invoice_id: int
+        :returns: :code:`Invoice` object if successful
+        :rtype: :code:`fabman.Invoice`
         """
 
         uri = f"/invoices/{invoice_id}"
@@ -372,52 +452,53 @@ class Fabman(object):
         """
         Retrieves list of all invoices. Can specify filters, search string, etc.
 
-        Calls "GET /invoices"
-        Documentation https://fabman.io/api/v1/documentation#/invoices/getInvoices
+        :calls: "GET /invoices" \
+		<https://fabman.io/api/v1/documentation#/invoices/getInvoices>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Invoice, self.__requester, "GET", "/invoices", **kwargs)
 
-    def get_job(self, job_id, **kwargs):
+    def get_job(self, job_id, **kwargs) -> Job:
         """
         Retrieve a single job from the Fabman API given the job_id.
 
-        Calls "GET /jobs/{id}"
-        Documentation https://fabman.io/api/v1/documentation
+        :calls: "GET /jobs/{id}" \
+		<https://fabman.io/api/v1/documentation#/jobs/getJobsId>
+  
+        :param job_id: The id of the job to retrieve
+        :type job_id: int
+        :returns: :code:`Job` object if successful
+        :rtype: :code:`Job`
         """
         uri = f"/jobs/{job_id}"
         response = self.__requester.request("GET", uri, _kwargs=kwargs)
 
         return Job(self.__requester, response.json())
 
-    def get_jobs(self, **kwargs):
+    def get_jobs(self, **kwargs) -> PaginatedList:
         """
         Retrieves a list of all jobs. Can specify filters, search string, etc.
 
-        Calls "GET /jobs"
-        Documentation https://fabman.io/api/v1/documentation#/jobs/getJobs
+        :calls: "GET /jobs" \
+		<https://fabman.io/api/v1/documentation#/jobs/getJobs>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Job, self.__requester, "GET", "/jobs", **kwargs)
 
-    def get_members(self, **kwargs):
-        """Get all of the members in the Fabman database. Can specify filters,
-        search string, result limits, offsets, and sorting. Refer to the Fabman API
-        documentation.
-
-        calls "GET /members"
-        documentation https://fabman.io/api/v1/documentation#/members/getMembers
-        """
-
-        return PaginatedList(Member, self.__requester, "GET", "/members", **kwargs)
-
     def get_member(self, member_id: int, **kwargs):
         """Retrieves a member from the API give their id
-        calls "GET /members/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/members/getMembersId
+        :calls: "GET /members/{id}" \
+		<https://fabman.io/api/v1/documentation#/members/getMembersId>
 
-        Args:
-            member_id (int): ID of the member to be called
+        :param member_id: The id of the member to retrieve
+        :type member_id: int
+        :returns: :code:`Member` object if successful
         """
         uri = f"/members/{member_id}"
 
@@ -425,12 +506,31 @@ class Fabman(object):
 
         return Member(self.__requester, response.json())
 
+    def get_members(self, **kwargs):
+        """Get all of the members in the Fabman database. Can specify filters,
+        search string, result limits, offsets, and sorting. Refer to the Fabman API
+        documentation.
+
+        :calls: "GET /members" \
+		<https://fabman.io/api/v1/documentation#/members/getMembers>
+
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
+        """
+
+        return PaginatedList(Member, self.__requester, "GET", "/members", **kwargs)
+
     def get_package(self, package_id: int, **kwargs) -> Package:
         """
         Retrieves a single Package given a package_id
 
-        Calls "GET /packages/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/packages/getPackagesId
+        :calls: "GET /packages/{id}" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackagesId>
+  
+        :param package_id: The id of the package to retrieve
+        :type package_id: int
+        :returns: :code:`Package` object if successful
+        :rtype: :code:`fabman.Package`
         """
 
         uri = f"/packages/{package_id}"
@@ -443,8 +543,11 @@ class Fabman(object):
         """
         Retrieves a list of packages. Can specify filters, search string, etc.
 
-        Calls "GET /packages"
-        Documentation https://fabman.io/api/v1/documentation#/packages/getPackages
+        :calls: "GET /packages" \
+		<https://fabman.io/api/v1/documentation#/packages/getPackages>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Package, self.__requester, "GET", "/packages", **kwargs)
@@ -453,8 +556,13 @@ class Fabman(object):
         """
         Retrieves a single payment given a payment_id.
 
-        Calls "GET /payments/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/payments/getPaymentsId
+        :calls: "GET /payments/{id}" \
+		<https://fabman.io/api/v1/documentation#/payments/getPaymentsId>
+
+        :param payment_id: The id of the payment to retrieve
+        :type payment_id: int
+        :returns: :code:`Payment` object if successful
+        :rtype: :code:`fabman.Payment`
         """
 
         uri = f"/payments/{payment_id}"
@@ -467,8 +575,11 @@ class Fabman(object):
         """
         Retrieves a list of payments. Can specify filters, search string, etc.
 
-        Calls "GET /payments"
-        Documentation https://fabman.io/api/v1/documentation#/payments/getPayments
+        :calls: "GET /payments" \
+		<https://fabman.io/api/v1/documentation#/payments/getPayments>
+
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Payment, self.__requester, "GET", "/payments", **kwargs)
@@ -477,8 +588,13 @@ class Fabman(object):
         """
         Get a single resource by its ID. Embed information is also available.
 
-        Calls "GET /resources/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/getResourcesId
+        :calls: "GET /resources/{id}" \
+		<https://fabman.io/api/v1/documentation#/resources/getResourcesId>
+
+        :param resource_id: The id of the resource to retrieve
+        :type resource_id: int
+        :returns: :code:`Resource` object if successful
+        :rtype: :code:`fabman.Resource`
         """
         uri = f"/resources/{resource_id}"
 
@@ -491,8 +607,11 @@ class Fabman(object):
         Get list of available resources (e.g. doors, printers, etc.) Limit, offset,
         and a number of filters are available. Refer to the appropriate documentation.
 
-        calls "GET /resources"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/getResources
+        :calls: "GET /resources" \
+		<https://fabman.io/api/v1/documentation#/resources/getResources>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
         return PaginatedList(
             Resource,
@@ -506,8 +625,13 @@ class Fabman(object):
         """
         Retrieves a single Resource Log from the API.
 
-        Calls "GET /resource-logs/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/resource-logs/getResourceLogsId
+        :calls: "GET /resource-logs/{id}" \
+		<https://fabman.io/api/v1/documentation#/resource-logs/getResourcelogsId>
+
+        :param resource_log_id: The id of the resource log to retrieve
+        :type resource_log_id: int
+        :returns: :code:`ResourceLog` object if successful
+        :rtype: :code:`fabman.ResourceLog`
         """
 
         uri = f"/resource-logs/{resource_log_id}"
@@ -520,34 +644,26 @@ class Fabman(object):
         """
         Retrieves a list of resource logs. Can specify filters, search string, etc.
 
-        Calls "GET /resource-logs"
-        Documentation: https://fabman.io/api/v1/documentation#/resource-logs/getResourceLogs
+        :calls: "GET /resource-logs" \
+		<https://fabman.io/api/v1/documentation#/resource-logs/getResourcelogs>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(
             ResourceLog, self.__requester, "GET", "/resource-logs", **kwargs
         )
 
-    def get_resource_type(self, resource_type_id, **kwargs) -> ResourceType:
-        """
-        Retrieves a single resource type given a resource_type_id.
-
-        Calls "GET /resource-types/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/resource-types/getResourceTypesId
-        """
-
-        uri = f"/resource-types/{resource_type_id}"
-
-        response = self.__requester.request("GET", uri, _kwargs=kwargs)
-
-        return ResourceType(self.__requester, response.json())
-
     def get_resource_types(self, **kwargs) -> PaginatedList:
         """
         Retrieves a list of resource types. Can specify filters, search string, etc.
 
-        Calls "GET /resource-types"
-        Documentation: https://fabman.io/api/v1/documentation#/resource-types/getResourceTypes
+        :calls: "GET /resource-types" \
+		<https://fabman.io/api/v1/documentation#/resource-types/getResourcetypes>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(
@@ -558,8 +674,13 @@ class Fabman(object):
         """
         Retrieves a single space given a space_id.
 
-        calls "GET /spaces/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/spaces/getSpacesId
+        :calls: "GET /spaces/{id}" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpacesId>
+
+        :param space_id: The id of the space to retrieve
+        :type space_id: int
+        :returns: :code:`Space` object if successful
+        :rtype: :code:`fabman.Space`
         """
 
         uri = f"/spaces/{space_id}"
@@ -572,8 +693,11 @@ class Fabman(object):
         """
         Retrieves a list of Spaces. Can specify filters, search string, etc.
 
-        Calls "GET /spaces"
-        Documentation: https://fabman.io/api/v1/documentation#/spaces/getSpaces
+        :calls: "GET /spaces" \
+		<https://fabman.io/api/v1/documentation#/spaces/getSpaces>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Space, self.__requester, "GET", "/spaces", **kwargs)
@@ -582,8 +706,13 @@ class Fabman(object):
         """
         Retrieve a single TrainingCourse object from the API.
 
-        Calls "GET /training-courses/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcoursesId
+        :calls: "GET /training-courses/{id}" \
+		<https://fabman.io/api/v1/documentation#/training-courses/getTrainingcoursesId>
+  
+        :param course_id: The id of the training course to retrieve
+        :type course_id: int
+        :returns: :code:`TrainingCourse` object if successful
+        :rtype: :code:`fabman.TrainingCourse`
         """
         uri = f"/training-courses/{course_id}"
 
@@ -595,18 +724,24 @@ class Fabman(object):
         """
         Retrieves a PaginatedList of Training Courses available on the api.
 
-        Calls "GET /training-courses"
-        Documentation: https://fabman.io/api/v1/documentation#/training-courses/getTrainingcourses
+        :calls: "GET /training-courses" \
+		<https://fabman.io/api/v1/documentation#/training-courses/getTrainingcourses>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
         return PaginatedList(
             TrainingCourse, self.__requester, "GET", "/training-courses", **kwargs
         )
 
-    def get_user(self, **kwargs):
+    def get_user(self, **kwargs) -> Member:
         """Gets authenticated user information from the API as Member object. Does
         not returns state and superuser information.
-        calls "GET /user/me"
-        Documentation: https: // fabman.io/api/v1/documentation  # /user/getUserMe
+        :calls: "GET /user/me" \
+		<https://fabman.io/api/v1/documentation#/user/getUserMe>
+
+        :returns: :code:`Member` object if successful
+        :rtype: :code:`fabman.Member`
         """
         uri = "/user/me"
 
@@ -618,8 +753,13 @@ class Fabman(object):
         """
         Retrieves a single webhook given a webhook_id.
 
-        Calls "GET /webhooks/{id}"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooksId
+        :calls: "GET /webhooks/{id}" \
+		<https://fabman.io/api/v1/documentation#/webhooks/getWebhooksId>
+  
+        :param webhook_id: The id of the webhook to retrieve
+        :type webhook_id: int
+        :returns: :code:`Webhook` object if successful
+        :rtype: :code:`fabman.Webhook`
         """
 
         uri = f"/webhooks/{webhook_id}"
@@ -632,8 +772,11 @@ class Fabman(object):
         """
         Retrieves a list of webhooks. Can specify filters, search string, etc.
 
-        Calls "GET /webhooks"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooks
+        :calls: "GET /webhooks" \
+		<https://fabman.io/api/v1/documentation#/webhooks/getWebhooks>
+  
+        :returns: :code:`PaginatedList` object if successful
+        :rtype: :code:`fabman.PaginatedList`
         """
 
         return PaginatedList(Webhook, self.__requester, "GET", "/webhooks", **kwargs)

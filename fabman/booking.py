@@ -18,8 +18,11 @@ class Booking(FabmanObject):
         """
         Deletes the booking. *WARNING: THIS CANNOT BE UNDONE.*
 
-        Calls "DELETE /bookings/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/bookings/deleteBookingsId
+        :calls: "DELETE /bookings/{id}" \
+		<https://fabman.io/api/v1/documentation#/bookings/deleteBookingsId>
+  
+        :returns: Response from the API with status code 204 (No Content) if successful
+        :rtype: requests.Response
         """
 
         uri = f"/bookings/{self.id}"
@@ -33,8 +36,11 @@ class Booking(FabmanObject):
         Update the booking object on the server. Returns the updated booking object.
         Updates all information in place.
 
-        Calls "PUT /bookings/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/bookings/putBookingsId
+        :calls: "PUT /bookings/{id}" \
+		<https://fabman.io/api/v1/documentation#/bookings/putBookingsId>
+
+        :returns: None
+        :rtype: None
         """
 
         uri = f"/bookings/{self.id}"

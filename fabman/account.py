@@ -19,8 +19,11 @@ class Account(FabmanObject):
         Update information on the account. Note that many fields may be unalterable
         by the API key holder.
 
-        Calls "PUT /accounts/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/account/putAccountsId
+        :calls: "PUT /accounts/{id}" \
+		<https://fabman.io/api/v1/documentation#/account/putAccountsId>
+
+        :returns: None
+        :rtype: None
         """
         uri = f"/accounts/{self.id}"
 
@@ -37,7 +40,11 @@ class Account(FabmanObject):
         """
         Get information about the payment plan of the account.
 
-        Calls "GET /accounts/{id}/payment-info"
+        :calls: "GET /accounts/{id}/payment-info" \
+        <https://fabman.io/api/v1/documentation#/accounts/getAccountsIdPaymentinfo>
+        
+        :returns: Information about the payment plan of the account.
+        :rtype: dict
         """
         uri = f"/accounts/{self.id}/payment-info"
 
