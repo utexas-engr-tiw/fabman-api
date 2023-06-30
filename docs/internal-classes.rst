@@ -7,3 +7,4 @@ Internal Classes
     fabman-object-ref
     paginated-list-ref
     requester-ref
+    exceptions-ref
