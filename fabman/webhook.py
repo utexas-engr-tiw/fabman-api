@@ -17,8 +17,11 @@ class Webhook(FabmanObject):
         """
         Deletes a webhook. *WARNING: This is irreversible.*
 
-        Calls "DELETE /webhooks/{webhookId}"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/deleteWebhooksId
+        :calls: "DELETE /webhooks/{webhookId}" \
+		<https://fabman.io/api/v1/documentation#/webhooks/deleteWebhooksId>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/webhooks/{self.id}"
@@ -31,8 +34,11 @@ class Webhook(FabmanObject):
         """
         Returns the events for a webhook.
 
-        Calls "GET /webhooks/{webhookId}/events"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/getWebhooksIdEvents
+        :calls: "GET /webhooks/{webhookId}/events" \
+		<https://fabman.io/api/v1/documentation#/webhooks/getWebhooksIdEvents>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         if "events" in self._embedded:
@@ -48,8 +54,11 @@ class Webhook(FabmanObject):
         """
         Sends a test event to the webhook.
 
-        Calls "POST /webhooks/{webhookId}/events"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/postWebhooksIdTest
+        :calls: "POST /webhooks/{webhookId}/events" \
+		<https://fabman.io/api/v1/documentation#/webhooks/postWebhooksIdTest>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/webhooks/{self.id}/test"
@@ -62,8 +71,11 @@ class Webhook(FabmanObject):
         """
         Updates the webhook. Attributes are updated in place with new information
 
-        Calls "PUT /webhooks/{webhookId}"
-        Documentation https://fabman.io/api/v1/documentation#/webhooks/putWebhooksId
+        :calls: "PUT /webhooks/{webhookId}" \
+		<https://fabman.io/api/v1/documentation#/webhooks/putWebhooksId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/webhooks/{self.id}"
