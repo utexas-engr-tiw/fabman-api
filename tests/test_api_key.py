@@ -7,7 +7,7 @@ import requests
 import requests_mock
 
 from fabman import Fabman
-from fabman.api_key import ApiKey
+from fabman.api_key import ApiKey, ApiKeyToken
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -41,8 +41,8 @@ class TestMembers(unittest.TestCase):
         register_uris({"api_key": ["get_token"]}, m)
 
         tok = self.api_key.get_token()
-        self.assertIsInstance(tok, dict)
-        self.assertTrue(tok["token"] == "123")
+        self.assertIsInstance(tok, ApiKeyToken)
+        self.assertTrue(tok.token == "123")
 
     def test_update(self, m):
         m.register_uri(
