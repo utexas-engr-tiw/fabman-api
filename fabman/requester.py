@@ -35,11 +35,11 @@ class Requester(object):
     """
 
     def __init__(self, base_url: str, access_token: str) -> None:
-        """_summary_
-
-        Args:
-            base_url (str): The base url of Fabman API. Should simply https://api.fabman.io/v1
-            access_token (_type_): Access token to access the API
+        """
+        :param base_url: The base URL of the Fabman instance's API.
+        :type base_url: str
+        :param access_token: The API key to authenticate requests with.
+        :type access_token: str
         """
 
         self.base_url = base_url
@@ -50,15 +50,8 @@ class Requester(object):
     def _delete_request(
         self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
     ) -> requests.Response:
-        """Handles a delete request to the API. Should never be called directly
-
-        Args:
-            url (str): url for the request
-            headers (dict): dictionary of headers
-            data (_type_, optional): data as part of the delete requests. Defaults to None.
-
-        Returns:
-            requests.Response
+        """
+        Handles a delete request to the API. Should never be called directly
         """
 
         return self.__session.delete(url, headers=headers, data=data, **kwargs)
@@ -66,15 +59,8 @@ class Requester(object):
     def _get_request(
         self, url: str, headers: dict, params: Optional[dict] = None, **kwargs
     ) -> requests.Response:
-        """Handles a get request to the API. Should never be called directly
-
-        Args:
-            url (str): url for the request
-            headers (dict): dictionary of headers
-            params (List, optional): dictionary of parameters. Defaults to None.
-        Returns:
-
-            requests.Response
+        """
+        Handles a get request to the API. Should never be called directly
         """
 
         return self.__session.get(url, headers=headers, params=params, **kwargs)
@@ -82,15 +68,8 @@ class Requester(object):
     def _post_request(
         self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
     ) -> requests.Response:
-        """Handles a post request to the API. Should never be called directly
-
-        Args:
-            url (str): url for the request
-            headers (dict): dictionary of headers
-            data (dict, optional): dictionary of data. Defaults to None.
-
-        Returns:
-            requests.Response
+        """
+        Handles a post request to the API. Should never be called directly
         """
 
         return self.__session.post(url, headers=headers, data=data, **kwargs)
@@ -98,12 +77,8 @@ class Requester(object):
     def _put_request(
         self, url: str, headers: dict, data: Optional[dict] = None, **kwargs
     ) -> requests.Response:
-        """Handles a put request to the API. Should never be called directly
-
-        Args:
-            url (str): url for the request
-            headers (dict): dictionary of headers
-            data (dict, optional): dictionary of data. Defaults to None.
+        """
+        Handles a put request to the API. Should never be called directly
         """
 
         return self.__session.put(url, headers=headers, data=data, **kwargs)
@@ -119,35 +94,27 @@ class Requester(object):
         json: Optional[bool] = False,
         **kwargs,
     ) -> requests.Response:
-        """Main method for handling requests to the API. Should never be called directly except for
+        """
+        Main method for handling requests to the API. Should never be called directly except for
         testing or from the Fabman class.
 
-        Args:
-            method (str): Method to be declared. Should be one of GET, POST, PUT, PATCH, DELETE
-            endpoint (Optional[str], optional): Endpoint of the api to call. Defaults to None.
-            headers (Optional[dict], optional): Any special headers to be added to the request.
-            Authorization headers are automatically handled. Defaults to None.
-            use_auth (Optional[bool], optional): Should the api call use authorization? Should be
-            true in almost any case. Defaults to True.
-            _url (Optional[str], optional): URL to call, should be None in most cases. Defaults
-            to None.
-            _kwargs (Optional[List], optional): Any special kwargs to use inside of the call.
-            Defaults to None.
-            json (Optional[bool], optional): Sending dict or json? Defaults to False.
+        :param method: The HTTP method to use for the request.
+        :type method: str
+        :param endpoint: The API endpoint to call.
+        :type endpoint: str
+        :param headers: HTTP headers to send with the request.
+        :type headers: dict
+        :param use_auth: Whether or not to include the access token in the request.
+        :type use_auth: bool
+        :param _url: The full URL to use for the request. This overrides the base_url and endpoint.
+        :type _url: str
+        :param _kwargs: Keyword arguments from the calling argument. These are morphed into the params or body of the request depending on :code:`method`.
+        :type _kwargs: dict
+        :param json: Whether or not to send the data as JSON.
+        :type json: bool
 
-        Raises:
-            ValueError
-            BadRequest
-            InvalidAccessToken
-            Unauthorized
-            ForbiddenError
-            ResourceDoesNotExist
-            Conflict
-            UnprocessableEntity
-            FabmanException
-
-        Returns:
-            _type_: _description_
+        :return: The response object if the call was successful
+        :rtype: requests.Response
         """
         full_url = _url if _url else f"{self.base_url}{endpoint}"
 
