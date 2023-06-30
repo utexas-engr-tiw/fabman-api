@@ -15,8 +15,11 @@ class Charge(FabmanObject):
         """
         Deletes the charge. *WARNING: THIS CANNOT BE UNDONE.*
 
-        Calls "DELETE /charges/{id}"
-        Documentation: https://fabman.io/api/v1/documentation
+        :calls: "DELETE /charges/{id}" \
+		<https://fabman.io/api/v1/documentation#/charges/deleteChargesId>
+  
+        :returns: Response from the API with status code 204 (No Content) if successful
+        :rlist: requests.Response
         """
 
         response = self._requester.request(
@@ -30,8 +33,11 @@ class Charge(FabmanObject):
         Update the charge object on the server. Updates all information in place
         with returned data from the server.
 
-        Calls "PUT /charges/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/charges/putChargesId
+        :calls: "PUT /charges/{id}" \
+		<https://fabman.io/api/v1/documentation#/charges/putChargesId>
+  
+        :returns: None
+        :rlist: None
         """
 
         kwargs.update({"lockVersion": self.lockVersion})
