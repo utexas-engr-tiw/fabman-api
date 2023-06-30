@@ -2,7 +2,14 @@
 
 import requests
 
-from fabman.fabman_object import FabmanObject
+from fabman.fabman_object import FabmanObject, FabmanStaticObject
+
+
+class InvoiceDetails(FabmanStaticObject):
+    """Simple Class to handle Invoice Details"""
+
+    def __str__(self):
+        return f"Invoice #{self.id}: {self.totalExcludingTax} # Charges: {len(self.charges)}"
 
 
 class Invoice(FabmanObject):
@@ -29,7 +36,7 @@ class Invoice(FabmanObject):
 
         return response.json()
 
-    def details(self, **kwargs) -> requests.Response:
+    def details(self, **kwargs) -> InvoiceDetails:
         """
         Returns details about the invoice. Takes no arguments.
 
@@ -41,15 +48,17 @@ class Invoice(FabmanObject):
         """
 
         if "details" in self._embedded:
-            return self._embedded["details"]
+            self._embedded["details"].update({"invoice_id": self.id})
+            return InvoiceDetails(self._embedded["details"])
 
         uri = f"/invoices/{self.id}/details"
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
-
+        data = response.json()
         self._embedded["details"] = response.json()
 
-        return response.json()
+        data.update({"invoice_id": self.id})
+        return InvoiceDetails(data)
 
     def update(self, **kwargs) -> None:
         """
