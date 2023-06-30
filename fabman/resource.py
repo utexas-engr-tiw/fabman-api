@@ -17,8 +17,11 @@ class ResourceBridge(FabmanObject):
         Update the bridge object on the server. Returns the updated bridge object.
         Updates all information in place.
 
-        Calls "PUT /resources/{resource_id}/bridge"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/putResourcesIdBridge
+        :calls: "PUT /resources/{resource_id}/bridge" \
+		<https://fabman.io/api/v1/documentation#/resources/putResourcesIdBridge>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
         uri = f"/resources/{self.resource_id}/bridge"
 
@@ -44,8 +47,11 @@ class Resource(FabmanObject):
         Delete the bridge that is currently connected to this resource. If no bridge
         is currently connected, this will do nothing.
 
-        Calls "DELETE /resources/{id}/bridge"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/deleteResourcesIdBridge
+        :calls: "DELETE /resources/{id}/bridge" \
+		<https://fabman.io/api/v1/documentation#/resources/deleteResourcesIdBridge>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
         uri = f"/resources/{self.id}/bridge"
 
@@ -58,8 +64,11 @@ class Resource(FabmanObject):
         Deletes the resource. *WARNING: THIS CANNOT BE UNDONE.* All future API
         calls from this resource will fail.
 
-        Calls "DELETE /resources/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/deleteResourcesId
+        :calls: "DELETE /resources/{id}" \
+		<https://fabman.io/api/v1/documentation#/resources/deleteResourcesId>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
         uri = f"/resources/{self.id}"
 
@@ -72,8 +81,12 @@ class Resource(FabmanObject):
         Get the bridge that is currently connected to this resource. If no bridge is
         connected, this will return an empty list.
 
-        Calls "GET /resources/{id}/bridge"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/getResourcesIdBridge
+        :calls: "GET /resources/{id}/bridge" \
+		<https://fabman.io/api/v1/documentation#/resources/getResourcesIdBridge>
+  
+        :return: ResourceBridge object with information on the bridge
+        :rtype: fabman.resource.ResourceBridge
+        
         """
         uri = f"/resources/{self.id}/bridge"
 
@@ -90,8 +103,11 @@ class Resource(FabmanObject):
         For most users, this will return a 204 code with an empty body. Only superusers
         or users who have created a custom bridge should be able to access this endpoint.
 
-        Calls "GET /resources/{id}/bridge/api-key"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/getResourcesIdBridgeApiKey
+        :calls: "GET /resources/{id}/bridge/api-key" \
+		<https://fabman.io/api/v1/documentation#/resources/getResourcesIdBridgeApikey>
+
+        :return: response information of call
+        :rtype: dict
         """
         uri = f"/resources/{self.id}/bridge/api-key"
 
@@ -104,8 +120,11 @@ class Resource(FabmanObject):
         Switch on the resource. Requires "code" field to be in the data packet.
         Does not seem to work without the proper code, which is undocumented.
 
-        Calls "POST /resources/{id}/switch-on"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/postResourcesIdSwitchOn
+        :calls: "POST /resources/{id}/switch-on" \
+		<https://fabman.io/api/v1/documentation#/resources/postResourcesIdBridgeSwitchon>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
         uri = f"/resources/{self.id}/switch-on"
 
@@ -117,8 +136,11 @@ class Resource(FabmanObject):
         """
         Update the resource.
 
-        Calls "PUT /resources/{id}"
-        Documentation: https://fabman.io/api/v1/documentation#/resources/putResourcesId
+        :calls: "PUT /resources/{id}" \
+		<https://fabman.io/api/v1/documentation#/resources/putResourcesId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
         uri = f"/resources/{self.id}"
 

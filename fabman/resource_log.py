@@ -15,8 +15,11 @@ class ResourceLog(FabmanObject):
         """
         Deletes a resource-log. *WARNING: This is irreversible.*
 
-        Calls "DELETE /resource-logs/{resourceLogId}"
-        Documentation https://fabman.io/api/v1/documentation#/resource-logs/deleteResourceLogsResourceLogId
+        :calls: "DELETE /resource-logs/{resourceLogId}" \
+		<https://fabman.io/api/v1/documentation#/resource-logs/deleteResourcelogsId>
+  
+        :return: response information of call
+        :rtype: requests.Response
         """
 
         uri = f"/resource-logs/{self.id}"
@@ -30,8 +33,11 @@ class ResourceLog(FabmanObject):
         Updates the resource-log. Attributes are updated in place with new information
         retrieved from the API.
 
-        Calls "PUT /resource-logs/{resourceLogId}"
-        Documentation https://fabman.io/api/v1/documentation#/resource-logs/putResourceLogsResourceLogId
+        :calls: "PUT /resource-logs/{resourceLogId}" \
+		<https://fabman.io/api/v1/documentation#/resource-logs/putResourcelogsId>
+  
+        :return: None -- attributes are updated in place
+        :rtype: None
         """
 
         uri = f"/resource-logs/{self.id}"
