@@ -17,4 +17,5 @@ Welcome to Fabman API's documentation!
    troubleshooting
    debugging
    class-reference
+   internal-classes
    
