@@ -18,9 +18,9 @@ class TestResourceType(unittest.TestCase):
         self.fabman = Fabman(settings.API_KEY)
 
         with requests_mock.Mocker() as m:
-            register_uris({"fabman": ["get_resource_type_by_id"]}, m)
+            register_uris({"fabman": ["get_resource_types"]}, m)
 
-            self.resource_type: ResourceType = self.fabman.get_resource_type(1)
+            self.resource_type: ResourceType = self.fabman.get_resource_types()[0]
 
     def test_instance(self, m):
         self.assertIsInstance(self.resource_type, ResourceType)
