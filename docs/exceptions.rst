@@ -1,2 +1,2 @@
-Exceptions 
+Exceptions
 ==========
