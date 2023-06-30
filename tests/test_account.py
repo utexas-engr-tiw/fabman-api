@@ -6,7 +6,7 @@ import unittest
 import requests_mock
 
 from fabman import Fabman
-from fabman.account import Account
+from fabman.account import Account, PaymentInfo
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -32,8 +32,8 @@ class TestAccount(unittest.TestCase):
         register_uris({"accounts": ["get_payment_info"]}, m)
 
         info = self.account.get_payment_info()
-        self.assertIsInstance(info, dict)
-        self.assertTrue(info["id"] == 1)
+        self.assertIsInstance(info, PaymentInfo)
+        self.assertTrue(info.id == 1)
 
     def test_update(self, m):
         m.register_uri(
