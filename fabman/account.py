@@ -1,7 +1,5 @@
 """Defines the Account object"""
 
-import requests
-
 from fabman.fabman_object import FabmanObject, FabmanStaticObject
 
 
