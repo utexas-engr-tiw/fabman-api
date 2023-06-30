@@ -34,4 +34,5 @@ classifiers=[
 
 [project.urls]
 "Homepage" = "https://github.com/utexas-engr-tiw/fabman-api"
+"Documentation" = "https://fabman-api.readthedocs.io/en/latest/"
 "Bug Tracker" = "https://github.com/utexas-engr-tiw/fabman-api/issues"
