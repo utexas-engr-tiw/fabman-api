@@ -1,12 +1,45 @@
 """Defines and handles the Member object returned by the API"""
 # pylint: disable=too-many-public-methods, line-too-long
-from typing import Union
+from typing import Optional, Union
 
 import requests
 
+from fabman.embedded_list import EmbeddedList
 from fabman.fabman_object import FabmanObject
 from fabman.package import Package
 from fabman.paginated_list import PaginatedList
+
+
+class MemberBalanceItems(FabmanObject):
+    """Simple Class to handle Member Balance Items"""
+
+
+class MemberChanges(FabmanObject):
+    """Simple class to hold Member Changes"""
+
+    def delete(self, **kwargs) -> requests.Response:
+        """
+        Deletes a member change given change ID
+        
+        :calls: "DELETE /members/{id}/changes/{changeId}" \
+        <https://fabman.io/api/v1/documentation#/members/deleteMembersIdChangesChangeid>
+        
+        :return: Response information of delete call
+        :rtype: requests.Response
+        """
+
+        return self._requester.request(
+            "DELETE", f"/members/{self.member_id}/changes/{self.id}", _kwargs=kwargs
+        )
+
+
+class MemberCreditUse(FabmanObject):
+    """
+    Simple class to hold Credit Use
+    """
+
+    def __str__(self):
+        return f"{self.id}: {self.amount} - {self.description}"
 
 
 class MemberCredit(FabmanObject):
@@ -33,7 +66,7 @@ class MemberCredit(FabmanObject):
 
         return response
 
-    def get_uses(self, **kwargs) -> requests.Response:
+    def get_uses(self, **kwargs) -> list[MemberCreditUse]:
         """
         Retrieves a list of uses of the credit.
 
@@ -47,7 +80,8 @@ class MemberCredit(FabmanObject):
             "GET", f"/members/{self.member_id}/credits/{self.id}/uses", _kwargs=kwargs
         )
 
-        return response.json()
+        data = response.json()
+        return [MemberCreditUse(self._requester, use) for use in data]
 
     def update(self, **kwargs) -> None:
         """
@@ -68,6 +102,43 @@ class MemberCredit(FabmanObject):
 
         for attr, val in data.items():
             setattr(self, attr, val)
+
+
+class MemberDevice(FabmanObject):
+    """Simple Class to represent a Member Device"""
+
+    def __str__(self):
+        return f"{self.id}: {self.name} - {self.type}"
+
+
+class MemberDeviceChange(FabmanObject):
+    """Simple class to represent a Member Device Change"""
+
+    def __str__(self) -> str:
+        return super().__str__()
+
+    def delete(self, **kwargs) -> requests.Response:
+        """
+        Deletes a member device change given change ID
+        
+        :calls: "DELETE /members/{id}/device/changes/{changeId}" \
+        <https://fabman.io/api/v1/documentation#/members/deleteMembersIdDeviceChangesChangeid>
+        
+        :returns: Response information of delete call
+        :rtype: requests.Response
+        """
+        return self._requester.request(
+            "DELETE",
+            f"/members/{self.member_id}/device/changes/{self.id}",
+            _kwargs=kwargs,
+        )
+
+
+class MemberInvitation(FabmanObject):
+    """Simple class to represent a MemberInvitation"""
+
+    def __str__(self) -> str:
+        return super().__str__()
 
 
 class MemberKey(FabmanObject):
@@ -185,6 +256,61 @@ class MemberPackage(FabmanObject):
             setattr(self, attr, val)
 
 
+class MemberPaymentAccount(FabmanObject):
+    """Simple object to hold Member Payment Accounts"""
+
+
+class MemberPaymentMethod(FabmanObject):
+    """Simple object to hold Member Payment Methods"""
+
+    def delete(self, **kwargs):
+        """Deletes a member payment method
+        
+        :calls: "DELETE /members/{id}/payment-method" \
+        <https://fabman.io/api/v1/documentation#/members/deleteMembersIdPaymentmethod>
+        
+        :return: Response information of the delete call
+        :rtype: requests.Response
+        """
+
+        return self._requester.request(
+            "DELETE", f"/members/{self.member_id}/payment-method", _kwargs=kwargs
+        )
+
+
+class MemberPaymentMethodMandatePreview(FabmanObject):
+    """Simple object to hold Member Payment Method Mandate Previews"""
+
+
+class MemberPrivileges(FabmanObject):
+    """Simple object to hold Member Privileges"""
+
+
+class MemberTrainedResource(FabmanObject):
+    """Simple object to hold Member Trained Resources
+    TODO: Would this actually make more sense to just return as Resource? Are they
+    the same objects?
+    """
+
+
+class MemberTraining(FabmanObject):
+    """Simple object to handle Member Trainings"""
+
+    def delete(self, **kwargs):
+        """Deletes a member training
+
+        :calls: "DELETE /members/{id}/trainings/{trainingId}" \
+        <https://fabman.io/api/v1/documentation#/members/deleteMembersIdTrainingsTrainingid>
+        
+        :return: Response Information of delete call
+        :rtype: requests.Response
+        """
+
+        return self._requester.request(
+            "DELETE", f"/members/{self.member_id}/trainings/{self.id}", _kwargs=kwargs
+        )
+
+
 class Member(FabmanObject):
     """
     Member object returned by the API. Provides access to all API calls that operate on a single member.
@@ -251,77 +377,7 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-    def delete_change(self, change_id: int, **kwargs) -> requests.Response:
-        """
-        Deletes a member change given change ID
-        
-        :calls: "DELETE /members/{id}/changes/{changeId}" \
-		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdChangesChangeid>
-
-        :param change_id: ID of the change to delete
-        :type change_id: int
-        :return: Response information of delete call
-        :rtype: requests.Response
-        """
-        return self._requester.request(
-            "DELETE",
-            f"/members/{self.id}/changes/{change_id}",
-            _kwargs=kwargs,
-        )
-
-    def delete_device_change(self, change_id: int, **kwargs) -> requests.Response:
-        """
-        Deletes a member device change given change ID
-        
-        :calls: "DELETE /members/{id}/device/changes/{changeId}" \
-		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdDeviceChangesChangeid>
-
-        :param change_id: ID of the change to delete
-        :type change_id: int
-        :returns: Response information of delete call
-        :rtype: requests.Response
-        """
-        return self._requester.request(
-            "DELETE",
-            f"/members/{self.id}/device/changes/{change_id}",
-            _kwargs=kwargs,
-        )
-
-    def delete_payment_method(self, **kwargs) -> requests.Response:
-        """
-        Deletes a member payment method
-        
-        :calls: "DELETE /members/{id}/payment-method" \
-		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdPaymentmethod>
-  
-        :returns: Response information of delete call
-        :rtype: requests.Response
-        """
-        return self._requester.request(
-            "DELETE",
-            f"/members/{self.id}/payment-method",
-            _kwargs=kwargs,
-        )
-
-    def delete_training(self, training_id: int, **kwargs) -> requests.Response:
-        """
-        Deletes a member training given training ID
-        
-        :calls: "DELETE /members/{id}/trainings/{trainingId}" \
-		<https://fabman.io/api/v1/documentation#/members/deleteMembersIdTrainingsTrainingid>
-
-        :param training_id: ID of the training to delete
-        :type training_id: int
-        :returns: Response information of delete call
-        :rtype: requests.Response
-        """
-        return self._requester.request(
-            "DELETE",
-            f"/members/{self.id}/trainings/{training_id}",
-            _kwargs=kwargs,
-        )
-
-    def get_balance_items(self, **kwargs) -> requests.Response:
+    def get_balance_items(self, **kwargs) -> MemberBalanceItems:
         """
         Retrieves the balance items of a member
         
@@ -337,9 +393,12 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_changes(self, **kwargs) -> requests.Response:
+        return MemberBalanceItems(self._requester, data)
+
+    def get_changes(self, **kwargs) -> MemberChanges:
         """
         Retrieves the changes of a member
         
@@ -354,8 +413,10 @@ class Member(FabmanObject):
             f"/members/{self.id}/changes",
             _kwargs=kwargs,
         )
+        data = response.json()
+        data.update({"member_id": self.id})
 
-        return response.json()
+        return MemberChanges(self._requester, data)
 
     def get_credits(self, **kwargs) -> PaginatedList:
         """
@@ -398,7 +459,7 @@ class Member(FabmanObject):
 
         return MemberCredit(self._requester, data)
 
-    def get_device(self, **kwargs) -> requests.Response:
+    def get_device(self, **kwargs) -> MemberDevice:
         """
         Retrieves the device of a member used to authenticate on a bridge.
         
@@ -417,9 +478,9 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        return MemberDevice(self._requester, response.json())
 
-    def get_device_changes(self, **kwargs) -> requests.Response:
+    def get_device_changes(self, **kwargs) -> list[MemberDeviceChange]:
         """
         Retrieves the device changes of a member
         
@@ -427,17 +488,17 @@ class Member(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/members/getMembersIdDeviceChanges>
 
         :returns: List of device changes of a member
-        :rtype: list
+        :rtype: list[MemberDeviceChange]
         """
         response = self._requester.request(
             "GET",
             f"/members/{self.id}/device/changes",
             _kwargs=kwargs,
         )
+        data = response.json()
+        return [MemberDeviceChange(self._requester, change) for change in data]
 
-        return response.json()
-
-    def get_device_change(self, change_id: int, **kwargs) -> requests.Response:
+    def get_device_change(self, change_id: int, **kwargs) -> MemberDeviceChange:
         """
         Retrieves a device change of a member given the change ID
         
@@ -455,7 +516,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
+
+        return MemberDeviceChange(self._requester, data)
 
     def get_export(self, **kwargs) -> requests.Response:
         """
@@ -468,7 +532,7 @@ class Member(FabmanObject):
         """
         raise NotImplementedError("get_export not implemented yet")
 
-    def get_invitation(self, **kwargs) -> requests.Response:
+    def get_invitation(self, **kwargs) -> MemberInvitation:
         """
         Retrieves the invitation status of a member
         
@@ -484,7 +548,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
+
+        return MemberInvitation(self._requester, data)
 
     def get_key(self, **kwargs) -> MemberKey:
         """
@@ -497,17 +564,19 @@ class Member(FabmanObject):
         :rtype: fabman.member.MemberKey
         """
         if "key" in self._embedded:
-            return MemberKey(self._requester, self._embedded["key"])
+            data = self._embedded["key"]
+        else:
+            response = self._requester.request(
+                "GET",
+                f"/members/{self.id}/key",
+                _kwargs=kwargs,
+            )
+            data = response.json()
+        data.update({"member_id": self.id})
 
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/key",
-            _kwargs=kwargs,
-        )
+        return MemberKey(self._requester, data)
 
-        return MemberKey(self._requester, response.json())
-
-    def get_packages(self, **kwargs) -> Union[list, PaginatedList]:
+    def get_packages(self, **kwargs) -> Union[EmbeddedList, PaginatedList]:
         """
         Retrieves the packages of a member
 
@@ -518,11 +587,14 @@ class Member(FabmanObject):
         :rtype: fabman.paginated_list.PaginatedList
         """
         if "memberPackages" in self._embedded:
-            out = []
-            for package in self._embedded["memberPackages"]:
-                package.update({"member_id": self.id})
-                out.append(MemberPackage(self._requester, package))
-            return out
+            return EmbeddedList(
+                MemberPackage,
+                self._embedded["memberPackages"],
+                self._requester,
+                "GET",
+                f"/members/{self.id}/packages",
+                extra_attribs={"member_id": self.id},
+            )
 
         return PaginatedList(
             MemberPackage,
@@ -545,23 +617,24 @@ class Member(FabmanObject):
         :returns: :code:`fabman.member.MemberPackage` object with package details
         :rtype: fabman.member.MemberPackage
         """
+        data = dict()
         if "memberPackages" in self._embedded:
             for package in self._embedded["memberPackages"]:
                 if package["id"] == member_package_id:
-                    return MemberPackage(self._requester, package)
+                    data = package
+        if len(data) == 0:
+            response = self._requester.request(
+                "GET",
+                f"/members/{self.id}/packages/{member_package_id}",
+                _kwargs=kwargs,
+            )
 
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/packages/{member_package_id}",
-            _kwargs=kwargs,
-        )
-
-        data = response.json()
+            data = response.json()
         data.update({"member_id": self.id})
 
         return MemberPackage(self._requester, data)
 
-    def get_payment_account(self, **kwargs) -> requests.Response:
+    def get_payment_account(self, **kwargs) -> MemberPaymentAccount:
         """
         Retrieves the payment account of a member
         
@@ -577,9 +650,12 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_payment_method(self, **kwargs) -> requests.Response:
+        return MemberPaymentAccount(self._requester, data)
+
+    def get_payment_method(self, **kwargs) -> MemberPaymentMethod:
         """
         Retrieves the payment method of a member
         :calls: "GET /members/{id}/payment-method" \
@@ -594,9 +670,14 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_payment_method_mandate_preview(self, **kwargs) -> requests.Response:
+        return MemberPaymentMethod(self._requester, data)
+
+    def get_payment_method_mandate_preview(
+        self, **kwargs
+    ) -> MemberPaymentMethodMandatePreview:
         """
         Retrieves the payment method mandate preview of a member
         
@@ -612,9 +693,12 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_privileges(self, **kwargs) -> requests.Response:
+        return MemberPaymentMethodMandatePreview(self._requester, data)
+
+    def get_privileges(self, **kwargs) -> MemberPrivileges:
         """
         Retrieves the privileges of a member
         :calls: "GET /members/{id}/privileges" \
@@ -632,9 +716,12 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_trained_resources(self, **kwargs) -> requests.Response:
+        return MemberPrivileges(self._requester, data)
+
+    def get_trained_resources(self, **kwargs) -> MemberTrainedResource:
         """
         Retrieves the trained resources of a member
         :calls: "GET /members/{id}/trained-resources" \
@@ -649,33 +736,43 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        return response.json()
+        data = response.json()
+        data.update({"member_id": self.id})
 
-    def get_trainings(self, **kwargs) -> requests.Response:
+        return MemberTrainedResource(self._requester, data)
+
+    def get_trainings(
+        self, ignore_embeds: Optional[bool] = False, **kwargs
+    ) -> Union[PaginatedList, EmbeddedList]:
         """
-        TODO: Move to MemberTrainings object
         
         Retrieves the trainings of a member
         :calls: "GET /members/{id}/trainings" \
 		<https://fabman.io/api/v1/documentation#/members/getMembersIdTrainings>
 
         :return: List of trainings of a member
-        :rtype: list
+        :rtype: Union[PaginatedList, EmbeddedList]
         """
-        if "trainings" in self._embedded:
-            return self._embedded["trainings"]
+        if "trainings" in self._embedded and not ignore_embeds:
+            return EmbeddedList(
+                MemberTraining,
+                self._embedded["trainings"],
+                self._requester,
+                "GET",
+                f"/members/{self.id}/trainings",
+                extra_attribs={"member_id": self.id},
+            )
 
-        response = self._requester.request(
+        return PaginatedList(
+            MemberTraining,
+            self._requester,
             "GET",
             f"/members/{self.id}/trainings",
-            _kwargs=kwargs,
+            extra_attribs={"member_id": self.id},
         )
 
-        return response.json()
-
-    def get_training(self, training_id: int, **kwargs) -> requests.Response:
+    def get_training(self, training_id: int, **kwargs) -> MemberTraining:
         """
-        TODO: Move this to MemberTraining Object
         Retrieves a training of a member
         :calls: "GET /members/{id}/trainings/{trainingId}" \
 		<https://fabman.io/api/v1/documentation#/members/getMembersIdTrainingstrainingid>
@@ -685,18 +782,22 @@ class Member(FabmanObject):
         :return: Training information
         :rtype: dict
         """
+        data = {}
         if "trainings" in self._embedded:
             for training in self._embedded["trainings"]:
                 if training["id"] == training_id:
-                    return training
+                    data = training
+        if len(data) == 0:
+            response = self._requester.request(
+                "GET",
+                f"/members/{self.id}/trainings/{training_id}",
+                _kwargs=kwargs,
+            )
 
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/trainings/{training_id}",
-            _kwargs=kwargs,
-        )
+            data = response.json()
+        data.update({"member_id": self.id})
 
-        return response.json()
+        return MemberTraining(self._requester, data)
 
     def refresh(self) -> None:
         """
