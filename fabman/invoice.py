@@ -2,10 +2,10 @@
 
 import requests
 
-from fabman.fabman_object import FabmanObject, FabmanStaticObject
+from fabman.fabman_object import FabmanObject
 
 
-class InvoiceDetails(FabmanStaticObject):
+class InvoiceDetails(FabmanObject):
     """Simple Class to handle Invoice Details"""
 
     def __str__(self):
@@ -49,7 +49,7 @@ class Invoice(FabmanObject):
 
         if "details" in self._embedded:
             self._embedded["details"].update({"invoice_id": self.id})
-            return InvoiceDetails(self._embedded["details"])
+            return InvoiceDetails(self._requester, self._embedded["details"])
 
         uri = f"/invoices/{self.id}/details"
 
@@ -58,7 +58,7 @@ class Invoice(FabmanObject):
         self._embedded["details"] = response.json()
 
         data.update({"invoice_id": self.id})
-        return InvoiceDetails(data)
+        return InvoiceDetails(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """

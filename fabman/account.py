@@ -1,9 +1,9 @@
 """Defines the Account object"""
 
-from fabman.fabman_object import FabmanObject, FabmanStaticObject
+from fabman.fabman_object import FabmanObject
 
 
-class PaymentInfo(FabmanStaticObject):
+class PaymentInfo(FabmanObject):
     """Holds PaymentInfo as returned from the accounts endpoint."""
 
     def __str__(self):
@@ -55,4 +55,4 @@ class Account(FabmanObject):
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
 
-        return PaymentInfo(response.json())
+        return PaymentInfo(self._requester, response.json())

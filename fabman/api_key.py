@@ -2,10 +2,10 @@
 
 import requests
 
-from fabman.fabman_object import FabmanObject, FabmanStaticObject
+from fabman.fabman_object import FabmanObject
 
 
-class ApiKeyToken(FabmanStaticObject):
+class ApiKeyToken(FabmanObject):
     """Simple Class to hold the token for an api-key"""
 
     def __str__(self):
@@ -55,7 +55,7 @@ class ApiKey(FabmanObject):
 
         data.update({"api_key_id": self.id})
 
-        return ApiKeyToken(data)
+        return ApiKeyToken(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """
