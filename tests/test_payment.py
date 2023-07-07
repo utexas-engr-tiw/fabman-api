@@ -7,7 +7,7 @@ import requests
 import requests_mock
 
 from fabman import Fabman
-from fabman.payment import Payment
+from fabman.payment import Payment, PaymentRequest
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -49,8 +49,10 @@ class TestPayment(unittest.TestCase):
 
         resp = self.payment.request_payment()
         self.assertTrue(m.called)
-        self.assertIsInstance(resp, requests.Response)
-        self.assertTrue(resp.status_code == 201)
+        self.assertIsInstance(resp, PaymentRequest)
+        self.assertTrue(resp.payment_id == 1)
+
+        self.assertEqual(str(resp), "PaymentRequest for Payment #1")
 
     def test_update(self, m):
         """Checks to ensure lockVersion is added and used"""

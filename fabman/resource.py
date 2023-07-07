@@ -33,6 +33,14 @@ class ResourceBridge(FabmanObject):
             setattr(self, attr, val)
 
 
+class ResourceBridgeApiKey(FabmanObject):
+    """Simple class to hold Bridge API key information"""
+
+    def __str__(self):
+        api_key = "xxxx" + self.apiKey[-4:]
+        return f"Resource #{self.resource_id}: {api_key}"
+
+
 class Resource(FabmanObject):
     """
     Resource object returned by the API. Provides access to all API calls that
@@ -97,7 +105,7 @@ class Resource(FabmanObject):
 
         return ResourceBridge(self._requester, data)
 
-    def get_bridge_api_key(self, **kwargs) -> requests.Response:
+    def get_bridge_api_key(self, **kwargs) -> ResourceBridgeApiKey:
         """
         Get the API key for the bridge that is currently connected to this resource.
         For most users, this will return a 204 code with an empty body. Only superusers
@@ -107,13 +115,16 @@ class Resource(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/resources/getResourcesIdBridgeApikey>
 
         :return: response information of call
-        :rtype: dict
+        :rtype: ResourceBridgeApiKey
         """
         uri = f"/resources/{self.id}/bridge/api-key"
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
 
-        return response.json()
+        data = response.json()
+        data.update({"resource_id": self.id})
+
+        return ResourceBridgeApiKey(self._requester, data)
 
     def switch_on(self, **kwargs) -> requests.Response:
         """

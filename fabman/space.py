@@ -4,6 +4,7 @@ from typing import Union
 
 import requests
 
+from fabman.embedded_list import EmbeddedList
 from fabman.fabman_object import FabmanObject
 from fabman.paginated_list import PaginatedList
 
@@ -115,6 +116,18 @@ class SpaceHoliday(FabmanObject):
             setattr(self, attr, val)
 
 
+class SpaceOpeningHours(FabmanObject):
+    """Class for holding Opening Hours requests"""
+
+    def __str__(self):
+        out = f"Space #{self.space_id} Opening Hours:\n"
+        out += "+-----------------+-----------------+\n"
+        for day in self.days:
+            out += f"{day['dayOfWeek']}: {day['fromTime']} - {day['untilTime']}\n"
+
+        return out
+
+
 class Space(FabmanObject):
     """Class for interacting with the Space endpoint on the Fabman API"""
 
@@ -218,7 +231,7 @@ class Space(FabmanObject):
 
         return SpaceHoliday(self._requester, data)
 
-    def get_holidays(self, **kwargs) -> Union[list, PaginatedList]:
+    def get_holidays(self, **kwargs) -> Union[EmbeddedList, PaginatedList]:
         """
         Returns a list of holidays for the space. If the information is cached from an embedded call, 
         a list of SpaceHoliday objects is returned. Otherwise, a PaginatedList will be returned.
@@ -231,10 +244,15 @@ class Space(FabmanObject):
         """
         if "holidays" in self._embedded:
             out = []
-            for holiday in self._embedded["holidays"]:
-                holiday.update({"space_id": self.id})
-                out.append(SpaceHoliday(self._requester, holiday))
-            return out
+            return EmbeddedList(
+                SpaceHoliday,
+                self._embedded["holidays"],
+                self._requester,
+                "GET",
+                f"/spaces/{self.id}/holidays",
+                extra_attribs={"space_id": self.id},
+                kwargs=kwargs,
+            )
 
         return PaginatedList(
             SpaceHoliday,
@@ -245,7 +263,7 @@ class Space(FabmanObject):
             kwargs=kwargs,
         )
 
-    def get_opening_hours(self, **kwargs) -> Union[list, requests.Response]:
+    def get_opening_hours(self, **kwargs) -> SpaceOpeningHours:
         """
         Get the opening hours for the space.
 
@@ -257,13 +275,15 @@ class Space(FabmanObject):
         """
 
         if "openingHours" in self._embedded:
-            return self._embedded["openingHours"]
+            data = {"days": self._embedded["openingHours"]}
+        else:
+            uri = f"/spaces/{self.id}/opening-hours"
 
-        uri = f"/spaces/{self.id}/opening-hours"
+            response = self._requester.request("GET", uri, _kwargs=kwargs)
+            data = {"days": response.json()}
 
-        response = self._requester.request("GET", uri, _kwargs=kwargs)
-
-        return response
+        data.update({"space_id": self.id})
+        return SpaceOpeningHours(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """
@@ -312,7 +332,7 @@ class Space(FabmanObject):
 
         return response
 
-    def update_opening_hours(self, **kwargs) -> requests.Response:
+    def update_opening_hours(self, **kwargs) -> SpaceOpeningHours:
         """
         Updates the opening hours of a space. If the the openingHours key is
         present in the _embedded attribute, the opening hours are updated in
@@ -322,14 +342,15 @@ class Space(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/spaces/putSpacesIdOpeninghours>
   
         :return: response information of call
-        :rtype: requests.Response
+        :rtype: SpaceOpeningHours
         """
 
         uri = f"/spaces/{self.id}/opening-hours"
 
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
-        if "openingHours" in self._embedded:
-            self._embedded["openingHours"] = self.get_opening_hours()
+        data = response.json()
+        out = {"days": data}
+        out.update({"space_id": self.id})
 
-        return response
+        return SpaceOpeningHours(self._requester, out)

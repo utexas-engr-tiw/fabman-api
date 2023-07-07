@@ -5,6 +5,13 @@ import requests
 from fabman.fabman_object import FabmanObject
 
 
+class ApiKeyToken(FabmanObject):
+    """Simple Class to hold the token for an api-key"""
+
+    def __str__(self):
+        return f"ApiKeyToken #{self.api_key_id}: {self.token}"
+
+
 class ApiKey(FabmanObject):
     """
     Class for interacting with the api-keys endpoints on the Fabman API
@@ -30,7 +37,7 @@ class ApiKey(FabmanObject):
 
         return response
 
-    def get_token(self, **kwargs) -> requests.Response:
+    def get_token(self, **kwargs) -> ApiKeyToken:
         """
         Returns the token for an api-key. Must be called with a valid api-key.
 
@@ -44,8 +51,11 @@ class ApiKey(FabmanObject):
         uri = f"/api-keys/{self.id}/token"
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
+        data = response.json()
 
-        return response.json()
+        data.update({"api_key_id": self.id})
+
+        return ApiKeyToken(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """

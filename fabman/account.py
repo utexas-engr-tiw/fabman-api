@@ -1,8 +1,13 @@
 """Defines the Account object"""
 
-import requests
-
 from fabman.fabman_object import FabmanObject
+
+
+class PaymentInfo(FabmanObject):
+    """Holds PaymentInfo as returned from the accounts endpoint."""
+
+    def __str__(self):
+        return f"PaymentInfo for Account #{self.account_id}: {self.paymentMethod}"
 
 
 class Account(FabmanObject):
@@ -36,7 +41,7 @@ class Account(FabmanObject):
         for attr, val in data.items():
             setattr(self, attr, val)
 
-    def get_payment_info(self, **kwargs) -> requests.Response:
+    def get_payment_info(self, **kwargs) -> PaymentInfo:
         """
         Get information about the payment plan of the account.
 
@@ -44,10 +49,12 @@ class Account(FabmanObject):
         <https://fabman.io/api/v1/documentation#/accounts/getAccountsIdPaymentinfo>
         
         :returns: Information about the payment plan of the account.
-        :rtype: dict
+        :rtype: fabman.account.PaymentInfo
         """
         uri = f"/accounts/{self.id}/payment-info"
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
+        data = response.json()
+        data.update({"account_id": self.id})
 
-        return response.json()
+        return PaymentInfo(self._requester, data)

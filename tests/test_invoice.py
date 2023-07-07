@@ -6,7 +6,7 @@ import unittest
 import requests_mock
 
 from fabman import Fabman
-from fabman.invoice import Invoice
+from fabman.invoice import Invoice, InvoiceDetails
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -45,8 +45,21 @@ class TestInvoice(unittest.TestCase):
 
         details = self.invoice.details()
         self.assertTrue(m.called)
-        self.assertIsInstance(details, dict)
-        self.assertTrue(details["id"] == 1)
+        self.assertIsInstance(details, InvoiceDetails)
+        self.assertTrue(details.id == 1)
+
+        self.assertEqual(str(details), "Invoice #1: 12.34 # Charges: 1")
+
+    def test_details_embedded(self, m):
+        register_uris({"fabman": ["get_invoice_embedded_detail"]}, m)
+        invoice = self.fabman.get_invoice(1)
+
+        details = invoice.details()
+        self.assertTrue(m.called)
+        self.assertIsInstance(details, InvoiceDetails)
+        self.assertEqual(details.id, 2)
+
+        self.assertEqual(str(details), "Invoice #2: 45.67 # Charges: 1")
 
     def test_update(self, m):
         m.register_uri(

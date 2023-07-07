@@ -5,6 +5,13 @@ import requests
 from fabman.fabman_object import FabmanObject
 
 
+class PaymentRequest(FabmanObject):
+    """Simple class to hold payment request information"""
+
+    def __str__(self):
+        return f"PaymentRequest for Payment #{self.payment_id}"
+
+
 class Payment(FabmanObject):
     """Defines the Payment object for interacting with payments on the Fabman API"""
 
@@ -27,7 +34,7 @@ class Payment(FabmanObject):
 
         return response
 
-    def request_payment(self, **kwargs) -> requests.Response:
+    def request_payment(self, **kwargs) -> PaymentRequest:
         """
         Requests a payment from the customer.
 
@@ -35,13 +42,16 @@ class Payment(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/payments/postPaymentsIdRequestpayment>
         
         :return: response information of the call
-        :rtype: requests.Response
+        :rtype: PaymentRequest
         """
         uri = f"/payments/{self.id}/request-payment"
 
         response = self._requester.request("POST", uri, _kwargs=kwargs)
 
-        return response
+        data = response.json()
+        data.update({"payment_id": self.id})
+
+        return PaymentRequest(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """

@@ -100,7 +100,7 @@ class TestPackage(unittest.TestCase):
 
 
 @requests_mock.Mocker()
-class TestMemberCredit(unittest.TestCase):
+class TestPackageCredit(unittest.TestCase):
     def setUp(self) -> None:
         self.fabman = Fabman(settings.API_KEY)
 

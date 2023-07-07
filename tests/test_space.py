@@ -7,8 +7,9 @@ import requests
 import requests_mock
 
 from fabman import Fabman
+from fabman.embedded_list import EmbeddedList
 from fabman.paginated_list import PaginatedList
-from fabman.space import Space, SpaceBillingSettings, SpaceHoliday
+from fabman.space import Space, SpaceBillingSettings, SpaceHoliday, SpaceOpeningHours
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -85,15 +86,15 @@ class TestSpace(unittest.TestCase):
         # holidays
         self.assertTrue("holidays" in space._embedded)
         holidays = space.get_holidays()
-        self.assertIsInstance(holidays, list)
-        self.assertTrue(len(holidays) == 3)
+        self.assertIsInstance(holidays, EmbeddedList)
         self.assertIsInstance(holidays[0], SpaceHoliday)
         self.assertTrue(hasattr(holidays[0], "space_id"))
 
         # openingHours
         self.assertTrue("openingHours" in space._embedded)
         opening_hours = space.get_opening_hours()
-        self.assertIsInstance(opening_hours, list)
+        self.assertIsInstance(opening_hours, SpaceOpeningHours)
+        self.assertEqual(opening_hours.space_id, 1)
 
     def test_get_holiday(self, m):
         register_uris({"space": ["get_holiday"]}, m)
@@ -117,8 +118,10 @@ class TestSpace(unittest.TestCase):
 
         resp = self.space.get_opening_hours()
         self.assertTrue(m.called)
-        self.assertIsInstance(resp, requests.Response)
-        self.assertTrue(resp.status_code == 200)
+        self.assertIsInstance(resp, SpaceOpeningHours)
+        self.assertTrue(resp.space_id == 1)
+
+        self.assertTrue("Space #1 Opening Hours" in str(resp))
 
     def test_update_calendar_token(self, m):
         register_uris({"space": ["update_calendar_token"]}, m)
@@ -135,8 +138,8 @@ class TestSpace(unittest.TestCase):
 
         resp = self.space.update_opening_hours()
         self.assertTrue(m.called)
-        self.assertIsInstance(resp, requests.Response)
-        self.assertTrue(resp.status_code == 200)
+        self.assertIsInstance(resp, SpaceOpeningHours)
+        self.assertTrue(resp.space_id == 1)
 
     def test_update(self, m):
         m.register_uri(

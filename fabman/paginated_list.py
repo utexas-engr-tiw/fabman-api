@@ -1,5 +1,5 @@
 """Handles pagination of the api"""
-from typing import Optional, Type
+from typing import List, Optional, Type
 
 from requests.structures import CaseInsensitiveDict
 
@@ -24,18 +24,36 @@ class PaginatedList(object):  # pylint: disable=too-many-instance-attributes
         self._get_up_to_index(index)
         return self._elements[index]
 
-    def __init__(
-        self,  # pylint: disable=too-many-arguments
+    def __init__(  # pylint: disable=too-many-arguments
+        self,
         content_class: Type[FabmanObject],
         requester: Requester,
         request_method: str,
         first_url: str,
         extra_attribs: Optional[dict] = None,
-        _root=None,
-        url_override=None,
+        _root: Optional[str] = None,
+        url_override: Optional[str] = None,
         **kwargs,
     ) -> None:
-        """Initializes the PaginatedList class with the given parameters."""
+        """Abstracts pagination of the Fabman API. Provides a simple interface to work with
+        objects and requests new objects from the API as needed.
+
+        :param content_class: Class of the stored objects. Must inherit from FabmanObject
+        :type content_class: Type[fabman.fabman_object.FabmanObject]
+        :param requester: Requester for refreshing the API
+        :type requester: fabman.requester.Requester
+        :param request_method: One of "GET", "POST", "PUT", "DELETE"
+        :type request_method: str
+        :param first_url: endpoint to be called for the first page
+        :type first_url: str
+        :param extra_attribs: Extra attributes to be added to :code:`content_class`, defaults to None
+        :type extra_attribs: Optional[dict], optional
+        :param _root: Root endpoint without parameters, defaults to None
+        :type _root: str, optional
+        :param url_override: Override the base_url, defaults to None
+        :type url_override: str, optional
+        """
+
         self._elements = []
 
         self._content_class = content_class
