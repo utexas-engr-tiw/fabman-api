@@ -67,6 +67,13 @@ class TestMembers(unittest.TestCase):
         self.assertTrue(hasattr(key, "type"))
         self.assertTrue(key.type == "em4102")
 
+    def test_create_training(self, m):
+        register_uris({"member": ["create_training"]}, m)
+
+        training = self.member.create_training(account="1", training_course="1")
+        self.assertIsInstance(training, MemberTraining)
+        self.assertTrue(hasattr(training, "id"))
+
     def test_delete(self, m):
         register_uris({"member": ["delete"]}, m)
 

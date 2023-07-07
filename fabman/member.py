@@ -371,6 +371,19 @@ class Member(FabmanObject):
 
         return MemberKey(self._requester, response.json())
 
+    def create_training(self, **kwargs) -> MemberTraining:
+        """Creates a Training object which links a member to a training course.
+
+        :return: MemberTraining object
+        :rtype: MemberTraining
+        """
+
+        response = self._requester.request(
+            "POST", f"/members/{self.id}/trainings", _kwargs=kwargs
+        )
+
+        return MemberTraining(self._requester, response.json())
+
     def delete(self, **kwargs) -> requests.Response:
         """
         Deletes a member

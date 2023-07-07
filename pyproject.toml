@@ -4,9 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fabman"
-version = "1.2.9"
+version = "1.2.10"
 authors = [
     {name = "Davin Lawrence", email="davin.lawrence@utexas.edu"},
+    {name = "Texas Inventionworks", email="tiw@utexas.edu"}
 ]
 dependencies = [
     "requests>=2.31.0",
