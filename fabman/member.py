@@ -288,16 +288,22 @@ class MemberPaymentMethodMandatePreview(FabmanObject):
 class MemberPrivileges(FabmanObject):
     """Simple object to hold Member Privileges"""
 
+    def __str__(self):
+        return f"Member #{self.member_id} is {self.privileges}"
 
-class MemberTrainedResource(FabmanObject):
-    """Simple object to hold Member Trained Resources
-    TODO: Would this actually make more sense to just return as Resource? Are they
-    the same objects?
-    """
+
+class MemberTrainedResources(FabmanObject):
+    """Simple object to hold Member Trained Resources"""
+
+    def __str__(self):
+        return f"Member #{self.member_id} is trained on {len(self.resources)} resources"
 
 
 class MemberTraining(FabmanObject):
     """Simple object to handle Member Trainings"""
+
+    def __str__(self):
+        return f"MemberTraining #{self.id} for member #{self.member_id}"
 
     def delete(self, **kwargs):
         """Deletes a member training
@@ -474,15 +480,18 @@ class Member(FabmanObject):
         :rtype: dict
         """
         if "device" in self._embedded:
-            return self._embedded["device"]
+            data = self._embedded["device"]
+        else:
+            response = self._requester.request(
+                "GET",
+                f"/members/{self.id}/device",
+                _kwargs=kwargs,
+            )
 
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/device",
-            _kwargs=kwargs,
-        )
+            data = response.json()
+        data.update({"member_id": self.id})
 
-        return MemberDevice(self._requester, response.json())
+        return MemberDevice(self._requester, data)
 
     def get_device_changes(self, **kwargs) -> list[MemberDeviceChange]:
         """
@@ -654,7 +663,7 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        data = response.json()
+        data = {"payments": response.json()}
         data.update({"member_id": self.id})
 
         return MemberPaymentAccount(self._requester, data)
@@ -712,20 +721,20 @@ class Member(FabmanObject):
         :rtype: dict
         """
         if "privileges" in self._embedded:
-            return self._embedded["privileges"]
+            data = self._embedded["privileges"]
+        else:
+            response = self._requester.request(
+                "GET",
+                f"/members/{self.id}/privileges",
+                _kwargs=kwargs,
+            )
 
-        response = self._requester.request(
-            "GET",
-            f"/members/{self.id}/privileges",
-            _kwargs=kwargs,
-        )
-
-        data = response.json()
+            data = response.json()
         data.update({"member_id": self.id})
 
         return MemberPrivileges(self._requester, data)
 
-    def get_trained_resources(self, **kwargs) -> MemberTrainedResource:
+    def get_trained_resources(self, **kwargs) -> MemberTrainedResources:
         """
         Retrieves the trained resources of a member
         :calls: "GET /members/{id}/trained-resources" \
@@ -740,10 +749,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
 
-        data = response.json()
+        data = {"resources": response.json()}
         data.update({"member_id": self.id})
 
-        return MemberTrainedResource(self._requester, data)
+        return MemberTrainedResources(self._requester, data)
 
     def get_trainings(
         self, ignore_embeds: Optional[bool] = False, **kwargs
