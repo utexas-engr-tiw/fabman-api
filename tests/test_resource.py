@@ -7,7 +7,7 @@ import requests
 import requests_mock
 
 from fabman import Fabman
-from fabman.resource import Resource, ResourceBridge
+from fabman.resource import Resource, ResourceBridge, ResourceBridgeApiKey
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -58,7 +58,8 @@ class TestResource(unittest.TestCase):
         register_uris({"resource": ["get_bridge_api_key"]}, m)
         api_key = self.resource.get_bridge_api_key()
 
-        self.assertIsInstance(api_key, dict)
+        self.assertIsInstance(api_key, ResourceBridgeApiKey)
+        self.assertTrue(api_key.resource_id == 1)
 
     def test_switch_on(self, m):
         register_uris({"resource": ["switch_on"]}, m)
