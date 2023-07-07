@@ -15,7 +15,40 @@
             "type": "em4102",
             "token": "12345678",
             "status": "active"
-        }
+        },
+        "status_code": 201
+    },
+    "create_training": {
+        "method": "POST",
+        "endpoint": "/members/1/trainings",
+        "data": {
+            "notes": null,
+            "lockVersion": 1,
+            "createdAt": "2023-06-29T16:18:06.290Z",
+            "updatedAt": "2023-06-29T16:18:06.290Z",
+            "updatedBy": 1,
+            "id": 1,
+            "fromDate": "2023-06-29",
+            "trainingCourse": 1,
+            "untilDate": null,
+            "date": "2023-06-29",
+            "_embedded": {
+              "trainingCourse": {
+                "id": 1,
+                "account": 1,
+                "title": "Dabo Girl Training",
+                "notes": null,
+                "state": "active",
+                "lockVersion": 1,
+                "createdAt": "2023-06-06T18:20:24.443Z",
+                "updatedAt": "2023-06-21T23:31:33.408Z",
+                "updatedBy": 1,
+                "defaultDuration": 0,
+                "defaultDurationUnit": "month"
+              }
+            }
+        },
+        "status_code": 201
     },
     "delete": {
         "method": "DELETE",
