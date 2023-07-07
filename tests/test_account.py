@@ -33,7 +33,10 @@ class TestAccount(unittest.TestCase):
 
         info = self.account.get_payment_info()
         self.assertIsInstance(info, PaymentInfo)
-        self.assertTrue(info.id == 1)
+        self.assertEqual(info.id, 1)
+        self.assertEqual(info.account_id, 1)
+
+        self.assertEqual(str(info), "PaymentInfo for Account #1: stripe")
 
     def test_update(self, m):
         m.register_uri(
