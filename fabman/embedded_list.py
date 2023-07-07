@@ -47,9 +47,9 @@ class EmbeddedList(object):
         self._elements = []
 
         for element in initial_data:
-            obj = content_class(requester, element)
             if extra_attribs:
-                obj.update(extra_attribs)
+                element.update(extra_attribs)
+            obj = content_class(requester, element)
             self._elements.append(obj)
 
         self._content_class = content_class
