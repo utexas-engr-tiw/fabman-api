@@ -52,6 +52,8 @@ class TestPayment(unittest.TestCase):
         self.assertIsInstance(resp, PaymentRequest)
         self.assertTrue(resp.payment_id == 1)
 
+        self.assertEqual(str(resp), "PaymentRequest for Payment #1")
+
     def test_update(self, m):
         """Checks to ensure lockVersion is added and used"""
         m.register_uri(
