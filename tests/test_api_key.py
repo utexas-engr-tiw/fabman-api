@@ -44,6 +44,8 @@ class TestMembers(unittest.TestCase):
         self.assertIsInstance(tok, ApiKeyToken)
         self.assertTrue(tok.token == "123")
 
+        self.assertEqual(str(tok), "ApiKeyToken #1: 123")
+
     def test_update(self, m):
         m.register_uri(
             "PUT",
