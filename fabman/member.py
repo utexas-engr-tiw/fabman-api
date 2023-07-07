@@ -118,7 +118,7 @@ class MemberDeviceChange(FabmanObject):
     """Simple class to represent a Member Device Change"""
 
     def __str__(self) -> str:
-        return super().__str__()
+        return f"DeviceChange #{self.id} for member #{self.member_id}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -265,6 +265,9 @@ class MemberPaymentAccount(FabmanObject):
 
 class MemberPaymentMethod(FabmanObject):
     """Simple object to hold Member Payment Methods"""
+
+    def __str__(self):
+        return f"Member #{self.member_id} has a {self.type} payment method"
 
     def delete(self, **kwargs):
         """Deletes a member payment method
@@ -509,6 +512,9 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
         data = response.json()
+        for el in data:
+            el.update({"member_id": self.id})
+
         return [MemberDeviceChange(self._requester, change) for change in data]
 
     def get_device_change(self, change_id: int, **kwargs) -> MemberDeviceChange:
