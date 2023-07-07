@@ -8,7 +8,7 @@ import requests_mock
 
 from fabman import Fabman
 from fabman.paginated_list import PaginatedList
-from fabman.space import Space, SpaceBillingSettings, SpaceHoliday
+from fabman.space import Space, SpaceBillingSettings, SpaceHoliday, SpaceOpeningHours
 from tests import settings
 from tests.util import register_uris, validate_update
 
@@ -117,8 +117,8 @@ class TestSpace(unittest.TestCase):
 
         resp = self.space.get_opening_hours()
         self.assertTrue(m.called)
-        self.assertIsInstance(resp, requests.Response)
-        self.assertTrue(resp.status_code == 200)
+        self.assertIsInstance(resp, SpaceOpeningHours)
+        self.assertTrue(resp.space_id == 1)
 
     def test_update_calendar_token(self, m):
         register_uris({"space": ["update_calendar_token"]}, m)
@@ -135,8 +135,8 @@ class TestSpace(unittest.TestCase):
 
         resp = self.space.update_opening_hours()
         self.assertTrue(m.called)
-        self.assertIsInstance(resp, requests.Response)
-        self.assertTrue(resp.status_code == 200)
+        self.assertIsInstance(resp, SpaceOpeningHours)
+        self.assertTrue(resp.space_id == 1)
 
     def test_update(self, m):
         m.register_uri(

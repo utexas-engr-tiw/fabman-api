@@ -257,7 +257,7 @@ class Space(FabmanObject):
             kwargs=kwargs,
         )
 
-    def get_opening_hours(self, **kwargs) -> Union[list, requests.Response]:
+    def get_opening_hours(self, **kwargs) -> SpaceOpeningHours:
         """
         Get the opening hours for the space.
 
@@ -269,13 +269,15 @@ class Space(FabmanObject):
         """
 
         if "openingHours" in self._embedded:
-            return self._embedded["openingHours"]
+            data = {"days": self._embedded["openingHours"]}
+        else:
+            uri = f"/spaces/{self.id}/opening-hours"
 
-        uri = f"/spaces/{self.id}/opening-hours"
+            response = self._requester.request("GET", uri, _kwargs=kwargs)
+            data = {"days": response.json()}
 
-        response = self._requester.request("GET", uri, _kwargs=kwargs)
-
-        return response
+        data.update({"space_id": self.id})
+        return SpaceOpeningHours(self._requester, data)
 
     def update(self, **kwargs) -> None:
         """
