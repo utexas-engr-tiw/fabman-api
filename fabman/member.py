@@ -14,8 +14,11 @@ class MemberBalanceItems(FabmanObject):
     """Simple Class to handle Member Balance Items"""
 
 
-class MemberChanges(FabmanObject):
+class MemberChange(FabmanObject):
     """Simple class to hold Member Changes"""
+
+    def __str__(self):
+        return f"Change #{self.id} for member #{self.member_id}"
 
     def delete(self, **kwargs) -> requests.Response:
         """
@@ -385,7 +388,7 @@ class Member(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/members/getMembersIdBalanceitems>
   
         :returns: Response information of get call
-        :rtype: requests.Response
+        :rtype: MemberBalanceItems
         """
         response = self._requester.request(
             "GET",
@@ -398,7 +401,7 @@ class Member(FabmanObject):
 
         return MemberBalanceItems(self._requester, data)
 
-    def get_changes(self, **kwargs) -> MemberChanges:
+    def get_changes(self, **kwargs) -> list[MemberChange]:
         """
         Retrieves the changes of a member
         
@@ -406,7 +409,7 @@ class Member(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/members/getMembersIdChanges>
   
         :returns: List of changes of a member
-        :rtype: list
+        :rtype: list[MemberChange]
         """
         response = self._requester.request(
             "GET",
@@ -414,9 +417,10 @@ class Member(FabmanObject):
             _kwargs=kwargs,
         )
         data = response.json()
-        data.update({"member_id": self.id})
+        for change in data:
+            change.update({"member_id": self.id})
 
-        return MemberChanges(self._requester, data)
+        return [MemberChange(self._requester, x) for x in data]
 
     def get_credits(self, **kwargs) -> PaginatedList:
         """
