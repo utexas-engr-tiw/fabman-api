@@ -7,7 +7,7 @@ class PaymentInfo(FabmanObject):
     """Holds PaymentInfo as returned from the accounts endpoint."""
 
     def __str__(self):
-        return f"PaymentInfo #{self.id}: {self.paymentMethodDetails}"
+        return f"PaymentInfo for Account #{self.account_id}: {self.paymentMethod}"
 
 
 class Account(FabmanObject):
@@ -54,5 +54,7 @@ class Account(FabmanObject):
         uri = f"/accounts/{self.id}/payment-info"
 
         response = self._requester.request("GET", uri, _kwargs=kwargs)
+        data = response.json()
+        data.update({"account_id": self.id})
 
-        return PaymentInfo(self._requester, response.json())
+        return PaymentInfo(self._requester, data)
