@@ -1,6 +1,6 @@
 """Defines and handles the Member object returned by the API"""
 # pylint: disable=too-many-public-methods, line-too-long
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 import requests
 
@@ -69,7 +69,7 @@ class MemberCredit(FabmanObject):
 
         return response
 
-    def get_uses(self, **kwargs) -> list[MemberCreditUse]:
+    def get_uses(self, **kwargs) -> List[MemberCreditUse]:
         """
         Retrieves a list of uses of the credit.
 
@@ -410,7 +410,7 @@ class Member(FabmanObject):
 
         return MemberBalanceItems(self._requester, data)
 
-    def get_changes(self, **kwargs) -> list[MemberChange]:
+    def get_changes(self, **kwargs) -> List[MemberChange]:
         """
         Retrieves the changes of a member
         

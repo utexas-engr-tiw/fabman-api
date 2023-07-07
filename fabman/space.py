@@ -4,6 +4,7 @@ from typing import Union
 
 import requests
 
+from fabman.embedded_list import EmbeddedList
 from fabman.fabman_object import FabmanObject
 from fabman.paginated_list import PaginatedList
 
@@ -230,7 +231,7 @@ class Space(FabmanObject):
 
         return SpaceHoliday(self._requester, data)
 
-    def get_holidays(self, **kwargs) -> Union[list, PaginatedList]:
+    def get_holidays(self, **kwargs) -> Union[EmbeddedList, PaginatedList]:
         """
         Returns a list of holidays for the space. If the information is cached from an embedded call, 
         a list of SpaceHoliday objects is returned. Otherwise, a PaginatedList will be returned.
@@ -243,10 +244,15 @@ class Space(FabmanObject):
         """
         if "holidays" in self._embedded:
             out = []
-            for holiday in self._embedded["holidays"]:
-                holiday.update({"space_id": self.id})
-                out.append(SpaceHoliday(self._requester, holiday))
-            return out
+            return EmbeddedList(
+                SpaceHoliday,
+                self._embedded["holidays"],
+                self._requester,
+                "GET",
+                f"/spaces/{self.id}/holidays",
+                extra_attribs={"space_id": self.id},
+                kwargs=kwargs,
+            )
 
         return PaginatedList(
             SpaceHoliday,

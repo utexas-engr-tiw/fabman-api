@@ -7,6 +7,7 @@ import requests
 import requests_mock
 
 from fabman import Fabman
+from fabman.embedded_list import EmbeddedList
 from fabman.paginated_list import PaginatedList
 from fabman.space import Space, SpaceBillingSettings, SpaceHoliday, SpaceOpeningHours
 from tests import settings
@@ -85,8 +86,7 @@ class TestSpace(unittest.TestCase):
         # holidays
         self.assertTrue("holidays" in space._embedded)
         holidays = space.get_holidays()
-        self.assertIsInstance(holidays, list)
-        self.assertTrue(len(holidays) == 3)
+        self.assertIsInstance(holidays, EmbeddedList)
         self.assertIsInstance(holidays[0], SpaceHoliday)
         self.assertTrue(hasattr(holidays[0], "space_id"))
 
