@@ -93,7 +93,8 @@ class TestSpace(unittest.TestCase):
         # openingHours
         self.assertTrue("openingHours" in space._embedded)
         opening_hours = space.get_opening_hours()
-        self.assertIsInstance(opening_hours, list)
+        self.assertIsInstance(opening_hours, SpaceOpeningHours)
+        self.assertEqual(opening_hours.space_id, 1)
 
     def test_get_holiday(self, m):
         register_uris({"space": ["get_holiday"]}, m)
