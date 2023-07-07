@@ -121,6 +121,8 @@ class TestSpace(unittest.TestCase):
         self.assertIsInstance(resp, SpaceOpeningHours)
         self.assertTrue(resp.space_id == 1)
 
+        self.assertTrue("Space #1 Opening Hours" in str(resp))
+
     def test_update_calendar_token(self, m):
         register_uris({"space": ["update_calendar_token"]}, m)
 
