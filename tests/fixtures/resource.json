@@ -31,7 +31,7 @@
         "method": "GET",
         "endpoint": "/resources/1/bridge/api-key",
         "data": {
-
+            "apiKey": "abcdef123456"
         },
         "status_code": 200
     },

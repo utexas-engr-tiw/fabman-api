@@ -37,7 +37,8 @@ class ResourceBridgeApiKey(FabmanObject):
     """Simple class to hold Bridge API key information"""
 
     def __str__(self):
-        return f"Resource #{self.resource_id}: {self.apiKey}"
+        api_key = "xxxx" + self.apiKey[-4:]
+        return f"Resource #{self.resource_id}: {api_key}"
 
 
 class Resource(FabmanObject):

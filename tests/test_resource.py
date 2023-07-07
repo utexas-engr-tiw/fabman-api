@@ -61,6 +61,8 @@ class TestResource(unittest.TestCase):
         self.assertIsInstance(api_key, ResourceBridgeApiKey)
         self.assertTrue(api_key.resource_id == 1)
 
+        self.assertEqual(str(api_key), "Resource #1: xxxx3456")
+
     def test_switch_on(self, m):
         register_uris({"resource": ["switch_on"]}, m)
 
