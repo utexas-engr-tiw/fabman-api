@@ -42,6 +42,7 @@ class MemberCreditUse(FabmanObject):
     """
 
     def __str__(self):
+        # TODO: Test this method. No current way of applying credits with account available to developers
         return f"{self.id}: {self.amount} - {self.description}"
 
 
@@ -111,7 +112,7 @@ class MemberDevice(FabmanObject):
     """Simple Class to represent a Member Device"""
 
     def __str__(self):
-        return f"{self.id}: {self.name} - {self.type}"
+        return f"Device: {self.name}"
 
 
 class MemberDeviceChange(FabmanObject):
@@ -139,9 +140,6 @@ class MemberDeviceChange(FabmanObject):
 
 class MemberInvitation(FabmanObject):
     """Simple class to represent a MemberInvitation"""
-
-    def __str__(self) -> str:
-        return super().__str__()
 
 
 class MemberKey(FabmanObject):

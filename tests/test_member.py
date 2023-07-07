@@ -106,6 +106,8 @@ class TestMembers(unittest.TestCase):
         self.assertIsInstance(device, MemberDevice)
         self.assertEqual(device.name, "Starfleet Tricorder")
 
+        self.assertEqual(str(device), "Device: Starfleet Tricorder")
+
     def test_get_device_embeded(self, m):
         register_uris({"fabman": ["get_member_by_id_device_embed"]}, m)
 
