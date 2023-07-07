@@ -496,7 +496,7 @@ class Member(FabmanObject):
 
         return MemberDevice(self._requester, data)
 
-    def get_device_changes(self, **kwargs) -> list[MemberDeviceChange]:
+    def get_device_changes(self, **kwargs) -> List[MemberDeviceChange]:
         """
         Retrieves the device changes of a member
         
