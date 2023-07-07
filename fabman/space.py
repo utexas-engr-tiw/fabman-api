@@ -349,9 +349,6 @@ class Space(FabmanObject):
 
         response = self._requester.request("PUT", uri, _kwargs=kwargs)
 
-        if "openingHours" in self._embedded:
-            self._embedded["openingHours"] = self.get_opening_hours()
-
         data = response.json()
         out = {"days": data}
         out.update({"space_id": self.id})
