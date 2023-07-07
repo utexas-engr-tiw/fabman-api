@@ -115,6 +115,18 @@ class SpaceHoliday(FabmanObject):
             setattr(self, attr, val)
 
 
+class SpaceOpeningHours(FabmanObject):
+    """Class for holding Opening Hours requests"""
+
+    def __str__(self):
+        out = f"Space #{self.space_id} Opening Hours:\n"
+        out += "+-----------------+-----------------+\n"
+        for day in self.days:
+            out += f"{day['dayOfWeek']}: {day['fromTime']} - {day['untilTime']}\n"
+
+        return out
+
+
 class Space(FabmanObject):
     """Class for interacting with the Space endpoint on the Fabman API"""
 
@@ -312,7 +324,7 @@ class Space(FabmanObject):
 
         return response
 
-    def update_opening_hours(self, **kwargs) -> requests.Response:
+    def update_opening_hours(self, **kwargs) -> SpaceOpeningHours:
         """
         Updates the opening hours of a space. If the the openingHours key is
         present in the _embedded attribute, the opening hours are updated in
@@ -322,7 +334,7 @@ class Space(FabmanObject):
 		<https://fabman.io/api/v1/documentation#/spaces/putSpacesIdOpeninghours>
   
         :return: response information of call
-        :rtype: requests.Response
+        :rtype: SpaceOpeningHours
         """
 
         uri = f"/spaces/{self.id}/opening-hours"
@@ -332,4 +344,8 @@ class Space(FabmanObject):
         if "openingHours" in self._embedded:
             self._embedded["openingHours"] = self.get_opening_hours()
 
-        return response
+        data = response.json()
+        out = {"days": data}
+        out.update({"space_id": self.id})
+
+        return SpaceOpeningHours(self._requester, out)
