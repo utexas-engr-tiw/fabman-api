@@ -370,6 +370,19 @@ class Member(FabmanObject):
         )
 
         return MemberKey(self._requester, response.json())
+    
+    def create_package(self, **kwargs) -> MemberPackage:
+        """Creates a Package object which links a member to a package.
+        
+        :return: MemberPackage object
+        :rtype: MemberPackage
+        """
+            
+        response = self._requester.request(
+            "POST", f"/members/{self.id}/packages", _kwargs=kwargs
+        )
+
+        return MemberPackage(self._requester, response.json())
 
     def create_training(self, **kwargs) -> MemberTraining:
         """Creates a Training object which links a member to a training course.
